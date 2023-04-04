@@ -1,0 +1,28 @@
+#' Calculate standard error on MSE from nested CV results
+#'
+#' @param cvSplitReps The list of outer and inner CV results
+#' @param nOuterFolds The number of outer folds
+#' @param n The sample size
+#'
+#' @return The estimate of the MSE and its standard error
+getSEsNested = function(cvSplitReps, nOuterFolds, n){
+    ErrNCV = mean(sapply(cvSplitReps, function(y) sapply(y, function(x) x[["errHatTilde"]])))
+    MSEhat = mean(sapply(cvSplitReps, function(y) sapply(y, function(x) x[["a"]]))) -
+        mean(sapply(cvSplitReps, function(y) sapply(y, function(x) x[["b"]])))
+    errOuter0 = lapply(cvSplitReps, function(y) lapply(y, function(x) x[["eOut"]]))
+    mseOuter = sapply(errOuter0, function(w) sapply(w, mean))
+    errOuter = unlist(errOuter0)
+    SEest = sqrt(max(0, nOuterFolds/(nOuterFolds-1)*MSEhat))
+    naiveRMSE = sd(errOuter)/sqrt(n)
+    maxMSE = naiveRMSE * sqrt(nOuterFolds)
+    if(is.na(SEest) || (SEest < naiveRMSE)){ #See below equation (17), prevent implausible values
+        SEest = naiveRMSE
+    } else if (SEest > maxMSE){
+        SEest = maxMSE
+    }
+    #Correct the bias
+    ErrCV = mean(errOuter)
+    Bias = (1+(nOuterFolds-2)/nOuterFolds)*(ErrNCV-ErrCV)
+    ErrNCVBC = ErrNCV - Bias#Bias correction
+    c("MSEhat" = ErrNCVBC, "SE" = SEest)
+}
