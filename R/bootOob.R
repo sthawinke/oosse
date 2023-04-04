@@ -1,12 +1,11 @@
 #The oob bootstrap (smooths leave-one-out CV)
-bootOob = function(dat, id, id0){
+bootOob = function(y, x, id, id0){
     id2 = id0[-id]
-    Eis = matrix(0, length(id), p <- NCOL(dat$x))
     Nis = vapply(id0, FUN.VALUE = integer(1), function(x) sum(x==id))
-    Eis[id2,] = vapply(FUN.VALUE = double(length(id2)), seq_len(p), function(j){
-        predTest = predLin(dat$x[id,j], dat$y[id], dat$x[id2,j])
-        (predTest-dat$y[id2])^2
-    })
+    Eis = {
+        predTest = evalPredFun(predFun(x = x[id,], y = y[id]), x[id2,])
+        (predTest-y[id2])^2
+    }
     cbind(Eis, "Nis" = Nis)
 }
 processOob = function(oobObj){
@@ -29,4 +28,15 @@ processOobIn = function(x){
     Dis = (2+1/(n-1))*(Eis-errEsts)/n + ((Nmat-rowMeans(Nmat)) %*% qMat)/rI
     seEsts = sqrt(colSums(Dis^2))
     cbind("MSEhat" = errEsts, "SEhat" = seEsts, "SEhatNaive" = apply(Eis, 2, sd)/sqrt(n))
+}
+process632In = function(x, oobObj = NULL){
+    bootEsts = matrix(sapply(x, function(y) sum(y$bootRes*expvec)), ncol = length(x))
+    MSEhat = rowMeans(bootEsts)
+    if(!is.null(oobObj)){
+        SEhatNaive = sd(bootEsts)
+        SEhat = MSEhat/oobObj[, "MSEhat"]*oobObj[, "SEhat"]
+    } else {
+        SEhat = SEhatNaive = NULL
+    }
+    rbind("MSEhat" = MSEhat, "SEhat" = SEhat, "SEhatNaive" = SEhatNaive)
 }
