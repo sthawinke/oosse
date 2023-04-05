@@ -1,8 +1,8 @@
-#' Estimate the MSE and its standard error
+#' Estimate the out-of-sample R squared and its standard error
 #'
 #' @param y The vector of outcome values
 #' @param x The matrix of predictors
-#' @param fitFun The function for fitting the predicition model
+#' @param fitFun The function for fitting the prediction model
 #' @param predFun The function for evaluating the prediction model
 #' @param methodMSE The method to estimate the MSE, either "CV" for cross-validation or "bootstrap" for .632 bootstrap
 #' @param methodCor The method to estimate the correlation between MSE and MST estimators, either "nonparametric" or "jackknife"
@@ -16,7 +16,7 @@
 #' @export
 #'
 #' @examples
-estMSEandSE = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), methodCor = c("nonparametric", "jackknife"),
+R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), methodCor = c("nonparametric", "jackknife"),
                        nFolds = 10, nInnerFolds = nFolds - 1, cvReps = 200, nBootstraps = 200, nInnerBootstraps = 200, nBootstrapsCor = 50, ...){
     fitFun = checkFitFun(fitFun)
     methodMSE = match.arg(methodMSE)
@@ -42,7 +42,7 @@ estMSEandSE = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), 
     formatSeconds((switch(methodMSE, "CV" = cvReps*nFolds, "bootstraps" = nBootstraps) +
                        switch(methodCor, "nonparametric" = nBootstrapsCor, "jackknife" = n))*singleRunTime/nCores))
 
-
+    seVec = estMSE(y, x, fitFun, predFun, methodMSE, nFolds = nFolds, nInnerFolds = nInnerFolds, cvReps = cvReps, nBootstraps = nBootstraps)
     corMSEMST = estCorMSEMST(y, x, fitFun, predFun, methodMSE, methodCor, nBootstrapsCor)
     R2est = RsquaredSE(MSE = seVec["MSEhat"], margVar = var(y), n = n, SEMSE = seVec["SEhat"], corMSEMST = corMSEMST)
 }
