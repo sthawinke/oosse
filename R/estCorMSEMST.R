@@ -7,7 +7,7 @@
 estCorMSEMST = function(y, x, fitFun, predFun, methodMSE, methodCor, nBootstrapsCor, nFolds){
     nReps = switch(methodCor, "nonparametric" = nBootstrapsCor, "jackknife" = n <- length(y))
     matMSEMST = simplify2array(bplapply(seq_len(nReps), function(i){
-            id = switch(methodCor, "nonparametric" = sample(n, replace = TRUE), "jackknife" = -i)
+            id = switch(methodCor, "nonparametric" = sample(length(y), replace = TRUE), "jackknife" = -i)
             c("MSEest" = switch(methodMSE,
                                 "bootstrap" = boot632(y, x, id, fitFun, predFun),
                                 "CV" = simpleCV(y, x, fitFun, predFun, nFolds)),

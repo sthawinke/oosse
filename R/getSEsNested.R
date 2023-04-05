@@ -26,5 +26,5 @@ getSEsNested = function(cvSplitReps, nOuterFolds, n){
     ErrCV = mean(errOuter)
     Bias = (1+(nOuterFolds-2)/nOuterFolds)*(ErrNCV-ErrCV)
     ErrNCVBC = ErrNCV - Bias#Bias correction
-    c("MSEhat" = ErrNCVBC, "SE" = SEest)
+    c("MSE" = ErrNCVBC, "MSESE" = SEest)
 }
