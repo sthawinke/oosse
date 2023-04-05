@@ -1,6 +1,6 @@
 #' The .632 bootstrap estimation of the MSE
 #'
-#' @inheritParams estMSEandSE
+#' @inheritParams R2oosse
 #'
 #' @return The MSE estimate
 boot632 = function(y, x, id, fitFun, predFun){

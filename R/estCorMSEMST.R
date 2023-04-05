@@ -1,9 +1,9 @@
 #' Estimate correlation between MSE and MST estimators
 #'
-#' @inheritParams estMSEandSE
+#' @inheritParams R2oosse
 #'
 #' @return the estimated correlation
-estCorMSEMST = function(y, x, fitFun, predFun, methodMSE, methodCor, nBootstrapsCor){
+estCorMSEMST = function(y, x, fitFun, predFun, methodMSE, methodCor, nBootstrapsCor, nFolds){
     nReps = switch(methodCor, "nonparametric" = nBootstrapsCor, "jackknife" = n <- length(y))
     matMSEMST = simplify2array(bplapply(seq_len(nReps), function(i){
             id = switch(methodCor, "nonparametric" = sample(n, replace = TRUE), "jackknife" = -i)
