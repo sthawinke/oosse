@@ -9,15 +9,16 @@
 #' @param nFolds The number of outer folds for cross-validation
 #' @param nInnerFolds The number of inner cross-validation folds
 #' @param cvReps The number of repeats for the cross-validation
-#' @param nBootstraps
-#' @param ...
+#' @param nBootstraps The number of .632 bootstraps
+#' @param nBootstrapsCor The number of bootstraps to estimate the correlation
+#' @param ... passed onto fitFun
 #'
 #' @return
 #' @export
 #'
 #' @examples
 R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), methodCor = c("nonparametric", "jackknife"),
-                       nFolds = 10, nInnerFolds = nFolds - 1, cvReps = 200, nBootstraps = 200, nInnerBootstraps = 200, nBootstrapsCor = 50, ...){
+                       nFolds = 10, nInnerFolds = nFolds - 1, cvReps = 200, nBootstraps = 200, nBootstrapsCor = 50, ...){
     fitFun = checkFitFun(fitFun)
     methodMSE = match.arg(methodMSE)
     methodCor = match.arg(methodCor)
@@ -44,7 +45,12 @@ R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), meth
 
     seVec = estMSE(y, x, fitFun, predFun, methodMSE, nFolds = nFolds, nInnerFolds = nInnerFolds, cvReps = cvReps, nBootstraps = nBootstraps)
     corMSEMST = estCorMSEMST(y, x, fitFun, predFun, methodMSE, methodCor, nBootstrapsCor)
-    R2est = RsquaredSE(MSE = seVec["MSEhat"], margVar = var(y), n = n, SEMSE = seVec["SEhat"], corMSEMST = corMSEMST)
+    R2est = RsquaredSE(MSE = seVec["MSEhat"], margVar = margVar <- var(y), n = n, SEMSE = seVec["SEhat"], corMSEMST = corMSEMST)
+    return(list("R2" = R2est, "MSE" = seVec, "MST" = margVar*(n+1)/n, "corMSEMST" = corMSEMST,
+         "params" = c(switch(methodMSE,
+                             "CV" = c("nFolds" = nFolds, "nInnerFolds" = nInnerFolds, "cvReps" = cvReps),
+                             "bootstrap" = c("nBootstraps" = nBootstraps)), "methodCor" = methodCor,
+         if(methodCor=="nonparametric") nBootstrapsCor = 50)))
 }
 n = 40;p=3
 y = rnorm(n)
