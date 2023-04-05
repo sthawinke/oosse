@@ -1,3 +1,3 @@
 library(testthat)
-library(pengls)
-test_check("pengls")
+library(oosse)
+test_check("oosse")

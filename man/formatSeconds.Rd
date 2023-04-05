@@ -4,10 +4,12 @@
 \alias{formatSeconds}
 \title{Format seconds into human readable format}
 \usage{
-formatSeconds(seconds)
+formatSeconds(seconds, digits = 3)
 }
 \arguments{
-\item{seconds}{}
+\item{seconds}{The number of seconds to be formatted}
+
+\item{digits}{the number of digits for rounding}
 }
 \value{
 A character vector expressing time in human readable format

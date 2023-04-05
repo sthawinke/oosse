@@ -6,13 +6,13 @@
 #'
 #' @return The estimate of the MSE and its standard error
 getSEsNested = function(cvSplitReps, nOuterFolds, n){
-    ErrNCV = mean(vapply(y, FUN.VALUE = double(nOuterFolds), cvSplitReps,
+    ErrNCV = mean(vapply(cvSplitReps, FUN.VALUE = double(nOuterFolds),
                          function(y) vapply(y, FUN.VALUE = double(1), function(x) x[["errHatTilde"]])))
-    MSEhat = mean(vapply(y, FUN.VALUE = double(nOuterFolds), function(y) vapply(y, FUN.VALUE = double(1),function(x) x[["a"]]-x[["b"]])))
+    MSEhat = mean(vapply(cvSplitReps, FUN.VALUE = double(nOuterFolds), function(y) vapply(y, FUN.VALUE = double(1),function(x) x[["a"]]-x[["b"]])))
     #mean(vapply(y, FUN.VALUE = double(nOuterFolds), cvSplitReps, function(y) vapply(y, FUN.VALUE = double(1),function(x) x[["a"]]))) -
      #   mean(vapply(y, FUN.VALUE = double(nOuterFolds), function(y) vapply(y, FUN.VALUE = double(1),function(x) x[["b"]])))
     errOuter0 = lapply(cvSplitReps, function(y) lapply(y, function(x) x[["eOut"]]))
-    mseOuter = vapply(y, FUN.VALUE = double(nOuterFolds), errOuter0, function(w) vapply(FUN.VALUE = double(1), w, mean))
+    mseOuter = vapply(FUN.VALUE = double(nOuterFolds), errOuter0, function(w) vapply(FUN.VALUE = double(1), w, mean))
     errOuter = unlist(errOuter0)
     SEest = sqrt(max(0, nOuterFolds/(nOuterFolds-1)*MSEhat))
     naiveRMSE = sd(errOuter)/sqrt(n)

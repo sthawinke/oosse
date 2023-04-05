@@ -2,8 +2,11 @@
 #'
 #' @inheritParams R2oosse
 #' @return A vector with MSE estimate and its standard error
+#' @importFrom BiocParallel bplapply
+#' @importFrom stats var
 estMSE = function(y, x, fitFun, predFun, methodMSE, nFolds, nInnerFolds,
                   cvReps, nBootstraps){
+        n <- length(y)
         seVec =  if(methodMSE == "CV"){
             #Nested cross-validation
             unFolds <- seq_len(nFolds);unFoldsIn <- seq_len(nInnerFolds) #Prepare the folds
@@ -13,14 +16,14 @@ estMSE = function(y, x, fitFun, predFun, methodMSE, nFolds, nInnerFolds,
                     #Outer loop
                     idTrain = folds!=uf
                     modTrain = fitFun(y, x, idTrain)
-                    predTest = predFun(modTrain, x[!idTrain,])
+                    predTest = predFun(modTrain, x[!idTrain, , drop = FALSE])
                     eOut = (predTest-y[!idTrain])^2
                     #Inner loop
                     inFolds = sample(rep(unFoldsIn, length.out = sum(idTrain)))
                     eIn =  lapply(unFoldsIn, function(inf){
                         idTrainIn = inFolds!=inf
                         modTrain = fitFun(y, x, idTrainIn)
-                        predTest = predFun(modTrain, x[!idTrainIn])
+                        predTest = predFun(modTrain, x[!idTrainIn, , drop = FALSE])
                         (predTest-y[!idTrainIn])^2
                     })
                     #summary statistics
@@ -30,20 +33,20 @@ estMSE = function(y, x, fitFun, predFun, methodMSE, nFolds, nInnerFolds,
                     list("a" = a, "b" = b, "errHatTilde" = errHatTilde, "eOut" = eOut)
                 })
             })
-            getSEsNested(cvSplitReps, nFolds, n)
+            getSEsNested(cvSplitReps, nFolds, n = n)
     } else if(methodMSE == "bootstrap") {
             bootReps = bplapply(seq_len(nBootstraps), function(br){
                 id = sample(n, replace = TRUE)
                 #.632 bootstrap
                 MSE632est = boot632(y, x, id, fitFun, predFun)
                 #Out of bag bootstrap
-                oob = bootOob(y, x, id, seq_along(y), fitFun, predFun)
+                oob = bootOob(y, x, id, fitFun, predFun)
                 list("oobObj" = oob, "MSE632est" = MSE632est)
             })
             MSE632est = mean(vapply(FUN.VALUE = double(1), bootReps, function(x) {x$MSE632est}))
             MSEoob = processOob(bootReps)
             SEmse = MSE632est/MSEoob["MSEhat"]*MSEoob["SEhat"]
-            c("MSEhat" = MSE632est, "SEhat" = SEmse)
+            c("MSE" = MSE632est, "MSESE" = SEmse)
     }
 return(seVec)
 }

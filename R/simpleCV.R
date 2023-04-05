@@ -6,7 +6,7 @@ simpleCV = function(y, x, fitFun, predFun, nFolds){
     folds = sample(rep(unFolds <- seq_len(nFolds), length.out = length(y)))
     mean(unlist(lapply(unFolds, function(uf){
             idTrain = folds!=uf
-            redTest = predFun(fitFUn(x[idTrain,], y[idTrain]), x[!idTrain,])
+            predTest = predFun(fitFun(y, x, idTrain), x[!idTrain,,drop = FALSE])
             (predTest-y[!idTrain])^2
     })))
 }

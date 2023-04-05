@@ -11,6 +11,7 @@ R2oosse(
   predFun,
   methodMSE = c("CV", "bootstrap"),
   methodCor = c("nonparametric", "jackknife"),
+  printTimeEstimate = TRUE,
   nFolds = 10,
   nInnerFolds = nFolds - 1,
   cvReps = 200,
@@ -32,6 +33,8 @@ R2oosse(
 
 \item{methodCor}{The method to estimate the correlation between MSE and MST estimators, either "nonparametric" or "jackknife"}
 
+\item{printTimeEstimate}{A boolean, should an estimate of the running time be printed?}
+
 \item{nFolds}{The number of outer folds for cross-validation}
 
 \item{nInnerFolds}{The number of inner cross-validation folds}
@@ -44,6 +47,23 @@ R2oosse(
 
 \item{...}{passed onto fitFun}
 }
+\value{
+A list with components
+\item{R2}{Estimate of the R² with standard error}
+\item{MSE}{Estimate of the MSE with standard error}
+\item{MST}{Estimate of the MST with standard error}
+\item{corMSEMST}{Estimated correlatio between MSE and MST estimators}
+\item{params}{List of parameters used}
+\item{y,x,fitFun,predFun}{Arguments as provided}
+}
 \description{
 Estimate the out-of-sample R squared and its standard error
+}
+\examples{
+n = 40;p=3
+y = rnorm(n)
+x = matrix(rnorm(n*p),n,p)
+fitFun = function(y, x, id){lm.fit(y = y[id], x = cbind(1, x[id,]))}
+predFun = function(mod, x) {cbind(1,x) \%*\% mod$coef}
+R2oosse(y = y, x = x, predFun = predFun, fitFun = fitFun)
 }
