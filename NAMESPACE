@@ -2,11 +2,12 @@
 
 export(R2oosse)
 export(RsquaredSE)
-export(buildConfint)
+export(buildConfInt)
 importFrom(BiocParallel,bplapply)
 importFrom(BiocParallel,multicoreWorkers)
 importFrom(Matrix,nearPD)
 importFrom(methods,formalArgs)
 importFrom(stats,cor)
+importFrom(stats,qnorm)
 importFrom(stats,sd)
 importFrom(stats,var)
