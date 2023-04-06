@@ -4,18 +4,19 @@
 #' @param reqArgs The vector of required arguments
 #'
 #' @return Throws an error when requirements not met, otherwise returns the function
-checkFitFun = function(fitFun, reqArgs = c("y", "x", "id")){
+checkFitFun = function(fitFun, reqArgs = c("y", "x")){
     fitFun = match.fun(fitFun)
     if(!all(id <- (reqArgs %in%  (args <- formalArgs(fitFun))))){
-        stop("Arguments", paste(reqArgs[id], sep = ","), "not accepted by fitting function")
+        stop("Fitting function does not accept\n", paste(reqArgs[!id], collapse = ", "), "\nas argument")
     } else {
-        return(fitFun)
+        newFitFun = function(y, x, id, ...){fitFun(y[id], x[id, ,drop = FALSE], ...)}
+        return(newFitFun)
     }
 }
-checkPredFun = function(predFun, reqArgs = c("x")){
+checkPredFun = function(predFun, reqArgs = c("mod", "x")){
     predFun = match.fun(predFun)
     if(!all(id <- (reqArgs %in%  (args <- formalArgs(predFun))))){
-        stop("Arguments", paste(reqArgs[id], sep = ","), "not accepted by prediction function")
+        stop("Prediction function does not accept\n", paste(reqArgs[!id], collapse = ", "), "\nas argument")
     } else {
         return(predFun)
     }

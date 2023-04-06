@@ -2,7 +2,7 @@ context("Input components")
 n = 100;p=4
 y = rnorm(n)
 x = matrix(rnorm(n*p),n,p)
-fitFunTest = function(y, x, id){lm.fit(y = y[id], x = cbind(1, x[id,]))}
+fitFunTest = function(y, x){lm.fit(y = y, x = cbind(1, x))}
 predFunTest = function(mod, x) {cbind(1,x) %*% mod$coef}
 test_that("oosse works as expected when correct input is provided", {
     expect_message(R2objCV <- R2oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest))

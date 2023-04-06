@@ -14,12 +14,33 @@ vignette: >
 
 # Introduction
 
-This vignette demonstrates the use of the __oosse__ package.
+This vignette demonstrates the use of the __oosse__ package for estimating for estimating the out-of-sample R² and its standard error through resampling algorithms.
 
 \setcounter{tocdepth}{5}
 \tableofcontents
 
 # Installation instuctions
+
+# Illustrative examples
+
+The _R2oosse_ function works with any pair of fitting and prediction functions. Here we illustrate a number of them, but any prediction function implemented in R can be used. The built-in dataset _Brassica_ is used, which contains _rlog_-transformed gene expression measurements for the 1,000 most expressed genes in the _BrassicaExpr_ object, as well as 5 outcome phenotypes in the _BrassicaPheno_ object.
+
+
+
+## Linear model
+
+The fitting model must accept at least an outcome vector _y_ and a regressor matrix _x_:
+
+```{r linModelFit} 
+fitFunLM = function(y, x){lm.fit(y = y, x = cbind(1, x))}
+```
+
+The predictive model must accept arguments _mod_ (the fitted model) and _x_, the regressor matrix for a new set of observations.
+
+```{r linModelPredict} 
+predFunLM = function(mod, x) {cbind(1,x) %*% mod$coef}
+```
+
 
 # Session info
 

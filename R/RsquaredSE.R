@@ -9,6 +9,8 @@
 #' @details The marginal variance is scaled by (n+1)/n to the out-of-sample MST, so the user does not need to do this
 #' @return A vector with the R² and standard error estimates
 #' @importFrom Matrix nearPD
+#' @export
+#' @examples
 RsquaredSE = function(MSE, margVar, SEMSE, n, corMSEMST){
     MST = margVar*(n+1)/n #Inflate marginal variance to out-of-sample MST
     Grad = c(-1/MST, MSE/MST^2) #The gradient
