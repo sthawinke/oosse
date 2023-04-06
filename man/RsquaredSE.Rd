@@ -9,7 +9,7 @@ RsquaredSE(MSE, margVar, SEMSE, n, corMSEMST)
 \arguments{
 \item{MSE}{An estimate of the mean squared error (MSE)}
 
-\item{margVar}{The marginal variance of the outcome}
+\item{margVar}{The marginal variance of the outcome, not scaled by (n+1)/n}
 
 \item{SEMSE}{The standard error on the MSE estimate}
 
@@ -24,7 +24,9 @@ A vector with the R² and standard error estimates
 Calculate the out-of-sample R² and its standard error
 }
 \details{
-The marginal variance is scaled by (n+1)/n to the out-of-sample MST, so the user does not need to do this
+This function is exported to allow the user to estimate the MSE and its standard error
+and the correlation between MSE and MST estimators himself.
+The marginal variance is scaled by (n+1)/n to the out-of-sample MST, so the user does not need to do this.
 }
 \examples{
 #The out-of-sample R² calculated using externally provided estimates

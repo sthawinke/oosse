@@ -16,7 +16,7 @@
 #' #The out-of-sample R² calculated using externally provided estimates
 #' RsquaredSE(MSE = 3, margVar = 4, SEMSE = 0.4, n = 50, corMSEMST = 0.75)
 RsquaredSE = function(MSE, margVar, SEMSE, n, corMSEMST){
-    stopifnot(corMSEMST >= 0, corMSEMST <=1, MSE > 0, margVar > 0, n > 1, SEMSE > 0)
+    stopifnot(corMSEMST >= -1, corMSEMST <=1, MSE > 0, margVar > 0, n > 1, SEMSE > 0)
     MST = margVar*(n+1)/n #Inflate marginal variance to out-of-sample MST
     Grad = c(-1/MST, MSE/MST^2) #The gradient
     SEmargVar = sqrt(2/(n-1))*MST #The standard error on the MST

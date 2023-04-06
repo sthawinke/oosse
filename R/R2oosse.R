@@ -33,6 +33,7 @@
 #' #Linear model
 #' fitFunLM = function(y, x){lm.fit(y = y, x = cbind(1, x))}
 #' predFunLM = function(mod, x) {cbind(1,x) %*% mod$coef}
+#' y = Brassica$Pheno$Leaf_8_width
 #' R2lm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
 #' fitFun = fitFunLM, predFun = predFunLM)
 R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), methodCor = c("nonparametric", "jackknife"), printTimeEstimate = TRUE,
