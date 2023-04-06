@@ -4,7 +4,7 @@
 \alias{checkFitFun}
 \title{Check whether supplied prediction function meets the requirements}
 \usage{
-checkFitFun(fitFun, reqArgs = c("y", "x", "id"))
+checkFitFun(fitFun, reqArgs = c("y", "x"))
 }
 \arguments{
 \item{fitFun}{The prediction function, or its name as character string}
