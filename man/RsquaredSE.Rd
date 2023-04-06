@@ -27,6 +27,6 @@ Calculate the out-of-sample R² and its standard error
 The marginal variance is scaled by (n+1)/n to the out-of-sample MST, so the user does not need to do this
 }
 \examples{
-The out-of-sample R² calculated using externally provided estimates
-Rsquared(MSE = 3, margVar = 4, SEMSE = 0.4, n = 50, corMSEMST = 0.75)
+#The out-of-sample R² calculated using externally provided estimates
+RsquaredSE(MSE = 3, margVar = 4, SEMSE = 0.4, n = 50, corMSEMST = 0.75)
 }

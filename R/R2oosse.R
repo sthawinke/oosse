@@ -1,4 +1,4 @@
-#' Estimate the out-of-sample R squared and its standard error
+#' Estimate the out-of-sample R² and its standard error
 #'
 #' @param y The vector of outcome values
 #' @param x The matrix of predictors
@@ -26,7 +26,8 @@
 #' @importFrom BiocParallel bplapply multicoreWorkers
 #'
 #' @details Multithreading is used as provided by the BiocParallel package,
-#' so its best to set this up before running R2oosse
+#' so its best to set this up before running R2oosse.
+#' The options to estimate the mean squared error (MSE) are cross-validation or the .632 bootstrap.
 #' @examples
 #' n = 40;p=3
 #' y = rnorm(n)

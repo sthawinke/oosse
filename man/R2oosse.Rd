@@ -2,7 +2,7 @@
 % Please edit documentation in R/R2oosse.R
 \name{R2oosse}
 \alias{R2oosse}
-\title{Estimate the out-of-sample R squared and its standard error}
+\title{Estimate the out-of-sample R² and its standard error}
 \usage{
 R2oosse(
   y,
@@ -56,11 +56,12 @@ A list with components
 \item{params}{List of parameters used}
 }
 \description{
-Estimate the out-of-sample R squared and its standard error
+Estimate the out-of-sample R² and its standard error
 }
 \details{
 Multithreading is used as provided by the BiocParallel package,
-so its best to set this up before running R2oosse
+so its best to set this up before running R2oosse.
+The options to estimate the mean squared error (MSE) are cross-validation or the .632 bootstrap.
 }
 \examples{
 n = 40;p=3

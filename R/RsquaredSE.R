@@ -11,8 +11,8 @@
 #' @importFrom Matrix nearPD
 #' @export
 #' @examples
-#' The out-of-sample R² calculated using externally provided estimates
-#' Rsquared(MSE = 3, margVar = 4, SEMSE = 0.4, n = 50, corMSEMST = 0.75)
+#' #The out-of-sample R² calculated using externally provided estimates
+#' RsquaredSE(MSE = 3, margVar = 4, SEMSE = 0.4, n = 50, corMSEMST = 0.75)
 RsquaredSE = function(MSE, margVar, SEMSE, n, corMSEMST){
     MST = margVar*(n+1)/n #Inflate marginal variance to out-of-sample MST
     Grad = c(-1/MST, MSE/MST^2) #The gradient

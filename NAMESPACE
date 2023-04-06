@@ -2,6 +2,7 @@
 
 export(R2oosse)
 export(RsquaredSE)
+export(buildConfint)
 importFrom(BiocParallel,bplapply)
 importFrom(BiocParallel,multicoreWorkers)
 importFrom(Matrix,nearPD)

@@ -21,9 +21,18 @@ This vignette demonstrates the use of the __oosse__ package for estimating for e
 
 # Installation instuctions
 
+```{r}
+library(oosse)
+```
+
+
 # Illustrative examples
 
-The _R2oosse_ function works with any pair of fitting and prediction functions. Here we illustrate a number of them, but any prediction function implemented in R can be used. The built-in dataset _Brassica_ is used, which contains _rlog_-transformed gene expression measurements for the 1,000 most expressed genes in the _BrassicaExpr_ object, as well as 5 outcome phenotypes in the _BrassicaPheno_ object.
+The _R2oosse_ function works with any pair of fitting and prediction functions. Here we illustrate a number of them, but any prediction function implemented in R can be used. The built-in dataset _Brassica_ is used, which contains _rlog_-transformed gene expression measurements for the 1,000 most expressed genes in the _Expr_ slot, as well as 5 outcome phenotypes in the _Pheno_ slot.
+
+```{r loadBrassica}
+data(Brassica)
+```
 
 ## Linear model
 
@@ -38,6 +47,42 @@ The predictive model must accept arguments _mod_ (the fitted model) and _x_, the
 ```{r linModelPredict} 
 predFunLM = function(mod, x) {cbind(1,x) %*% mod$coef}
 ```
+
+Now that these functions have been defined, we apply the prediction model for leaf_8_width using the first 10 genes. Multithreading is used automatically using the _BiocParallel_ package; and an estimate of the computation time is given.
+
+```{r LMpred}
+R2lm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10], fitFun = fitFunLM, predFun = predFunLM)
+```
+
+Estimates and standard error of the different components are now available.
+
+```{r lmests}
+#R2
+R2lm$R2
+#MSE
+R2lm$MSE
+#MST
+R2lm$MST
+```
+
+Also confidence intervals can be constructed:
+
+```{r confintlm}
+# R2
+buildConfint(R2lm)
+#MSE
+buildConfint(R2lm, what = "MSE", conf = 0.9)
+```
+
+By default, cross-validation (CV) is used to estimate the MSE, and nonparametric bootstrapping is used to estimate the correlation between MSE and MST estimators. Other parameters can be supplied though, e.g. for bootstrap .632 estimation of the MSE and jackknife estimation of the correlation:
+
+```{r lmBoot}
+R2lm632jn = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10], 
+                    fitFun = fitFunLM, predFun = predFunLM, methodMSE = "bootstrap",
+                    methodCor = "jackknife")
+```
+
+
 
 # Session info
 
