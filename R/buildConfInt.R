@@ -19,6 +19,11 @@ buildConfInt = function(oosseObj, what = c("R2", "MSE", "MST"), conf = 0.95){
     what = match.arg(what)
     zQuants = qnorm(bounds <- c((1-conf)/2, conf + (1-conf)/2))
     ci = with(oosseObj, R2[what] + R2[paste0(what,"SE")]*zQuants)
+    if(what == "R2"){
+        ci[2] = min(ci[2], 1)#Truncate at 1
+    } else if(what %in% c("MSE", "MST")){
+        ci[1] = max(ci[1], 0)#Truncate at 0
+    }
     names(ci) = paste0(bounds*100, "%")
     return(ci)
 }
