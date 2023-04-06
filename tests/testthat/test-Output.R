@@ -1,2 +1,0 @@
-context("Output components")
-
