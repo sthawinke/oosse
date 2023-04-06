@@ -9,8 +9,7 @@ checkFitFun = function(fitFun, reqArgs = c("y", "x")){
     if(!all(id <- (reqArgs %in%  (args <- formalArgs(fitFun))))){
         stop("Fitting function does not accept\n", paste(reqArgs[!id], collapse = ", "), "\nas argument")
     } else {
-        newFitFun = function(y, x, id, ...){fitFun(y[id], x[id, ,drop = FALSE], ...)}
-        return(newFitFun)
+        return(fitFun)
     }
 }
 checkPredFun = function(predFun, reqArgs = c("mod", "x")){

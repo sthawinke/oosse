@@ -15,14 +15,14 @@ estMSE = function(y, x, fitFun, predFun, methodMSE, nFolds, nInnerFolds,
                 lapply(unFolds, function(uf){
                     #Outer loop
                     idTrain = folds!=uf
-                    modTrain = fitFun(y, x, idTrain)
+                    modTrain = fitFun(y[idTrain], x[idTrain,,drop = FALSE])
                     predTest = predFun(modTrain, x[!idTrain, , drop = FALSE])
                     eOut = (predTest-y[!idTrain])^2
                     #Inner loop
                     inFolds = sample(rep(unFoldsIn, length.out = sum(idTrain)))
                     eIn =  lapply(unFoldsIn, function(inf){
                         idTrainIn = inFolds!=inf
-                        modTrain = fitFun(y, x, idTrainIn)
+                        modTrain = fitFun(y[idTrainIn], x[idTrainIn,,drop = FALSE])
                         predTest = predFun(modTrain, x[!idTrainIn, , drop = FALSE])
                         (predTest-y[!idTrainIn])^2
                     })

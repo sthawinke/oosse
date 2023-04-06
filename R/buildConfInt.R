@@ -1,7 +1,7 @@
 #' Calculate a confidence interval for the R²
 #'
 #' @param oosseObj The result of the R2oosse call
-#' @param what FOr which property should the ci be found: R² (default), MSE or MST
+#' @param what For which property should the ci be found: R² (default), MSE or MST
 #' @param conf the confidence level required
 #'
 #' @return

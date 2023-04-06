@@ -48,7 +48,15 @@ The predictive model must accept arguments _mod_ (the fitted model) and _x_, the
 predFunLM = function(mod, x) {cbind(1,x) %*% mod$coef}
 ```
 
-Now that these functions have been defined, we apply the prediction model for leaf_8_width using the first 10 genes. Multithreading is used automatically using the _BiocParallel_ package; and an estimate of the computation time is given.
+Now that these functions have been defined, we apply the prediction model for leaf_8_width using the first 10 genes. Multithreading is used automatically using the _BiocParallel_ package. Change the following setup depending on your system.
+. 
+```{r multithread}
+library(BiocParallel)
+nCores = 10
+register(MulticoreParam(nCores))
+```
+
+Now estimate the $R^2$, also an estimate of the computation time is given.
 
 ```{r LMpred}
 R2lm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10], fitFun = fitFunLM, predFun = predFunLM)
@@ -84,7 +92,35 @@ R2lm632jn = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
 
 ## Regularised linear models
 
-For high-dimensional problems, such as the Brassica dataset, 
+For high-dimensional problems, such as the Brassica dataset, a regularised linear model is better suited to incorporate information for all genes. We use the _cv.glmnet_ function from the _glmnet_ package, which includes internal cross-validation for tuning the penalty parameter. Following custom function definitions are needed to fit in with the naming convention of the _oosse_ package.
+
+```{r reglinmod}
+library(glmnet)
+fitFunReg = function(y, x, ...) {cv.glmnet(y = y, x = x, ...)}
+predFunReg = function(mod, x, ...){predict(mod, newx = x)}
+```
+
+We adapt the parameter settings a bit to reduce computation time
+
+```{r reglinmodR2}
+R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr, nFolds = 5, cvReps = 1e2,
+                    fitFun = fitFunReg, predFun = predFunReg, alpha = 1)#Lasso model
+```
+
+## Support vector machine
+
+As a final example we use a support vector machine as a prediction model. We use the implementation from the _e1071_ package.
+
+```{r predBart}
+library(e1071)
+fitFunSvm = function(y, x, ...){svm(y = y, x, ...)}
+predFunSvm = function(mod, x, ...){predict(mod, x, ...)}
+R2svm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr,
+                    fitFun = fitFunSvm, predFun = predFunSvm)
+R2svm$R2
+```
+
+The $R^2$ estimate is comparable to that of the penalised regression model.
 
 # Session info
 

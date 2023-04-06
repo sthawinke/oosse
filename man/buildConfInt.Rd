@@ -9,7 +9,7 @@ buildConfInt(oosseObj, what = c("R2", "MSE", "MST"), conf = 0.95)
 \arguments{
 \item{oosseObj}{The result of the R2oosse call}
 
-\item{what}{FOr which property should the ci be found: R² (default), MSE or MST}
+\item{what}{For which property should the ci be found: R² (default), MSE or MST}
 
 \item{conf}{the confidence level required}
 }

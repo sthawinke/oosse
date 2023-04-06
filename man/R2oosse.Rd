@@ -64,10 +64,10 @@ so its best to set this up before running R2oosse.
 The options to estimate the mean squared error (MSE) are cross-validation or the .632 bootstrap.
 }
 \examples{
-n = 40;p=3
-y = rnorm(n)
-x = matrix(rnorm(n*p),n,p)
-fitFun = function(y, x, id){lm.fit(y = y[id], x = cbind(1, x[id,]))}
-predFun = function(mod, x) {cbind(1,x) \%*\% mod$coef}
-R2oosse(y = y, x = x, predFun = predFun, fitFun = fitFun)
+data(Brassica)
+#Linear model
+fitFunLM = function(y, x){lm.fit(y = y, x = cbind(1, x))}
+predFunLM = function(mod, x) {cbind(1,x) \%*\% mod$coef}
+R2lm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
+fitFun = fitFunLM, predFun = predFunLM)
 }
