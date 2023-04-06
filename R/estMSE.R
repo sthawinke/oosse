@@ -45,7 +45,7 @@ estMSE = function(y, x, fitFun, predFun, methodMSE, nFolds, nInnerFolds,
             })
             MSE632est = mean(vapply(FUN.VALUE = double(1), bootReps, function(x) {x$MSE632est}))
             MSEoob = processOob(bootReps)
-            SEmse = MSE632est/MSEoob["MSEhat"]*MSEoob["SEhat"]
+            SEmse = unname(MSE632est/MSEoob["MSEhat"]*MSEoob["SEhat"])
             c("MSE" = MSE632est, "MSESE" = SEmse)
     }
 return(seVec)

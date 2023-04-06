@@ -12,7 +12,8 @@ estCorMSEMST(
   methodMSE,
   methodCor,
   nBootstrapsCor,
-  nFolds
+  nFolds,
+  nBootstraps
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ estCorMSEMST(
 \item{nBootstrapsCor}{The number of bootstraps to estimate the correlation}
 
 \item{nFolds}{The number of outer folds for cross-validation}
+
+\item{nBootstraps}{The number of .632 bootstraps}
 }
 \value{
 the estimated correlation

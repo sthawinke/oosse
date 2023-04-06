@@ -4,7 +4,7 @@
 #' @param digits the number of digits for rounding
 #'
 #' @return A character vector expressing time in human readable format
-formatSeconds = function(seconds, digits = 3){
+formatSeconds = function(seconds, digits = 2){
     minutes = seconds %/% 60
     hours = minutes %/% 60
     days = hours %/% 24

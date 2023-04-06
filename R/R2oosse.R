@@ -20,12 +20,13 @@
 #' \item{MST}{Estimate of the MST with standard error}
 #' \item{corMSEMST}{Estimated correlatio between MSE and MST estimators}
 #' \item{params}{List of parameters used}
-#' \item{y,x,fitFun,predFun}{Arguments as provided}
 #' @export
 #' @importFrom methods formalArgs
 #' @importFrom stats cor sd var
 #' @importFrom BiocParallel bplapply multicoreWorkers
 #'
+#' @details Multithreading is used as provided by the BiocParallel package,
+#' so its best to set this up before running R2oosse
 #' @examples
 #' n = 40;p=3
 #' y = rnorm(n)
@@ -34,39 +35,46 @@
 #' predFun = function(mod, x) {cbind(1,x) %*% mod$coef}
 #' R2oosse(y = y, x = x, predFun = predFun, fitFun = fitFun)
 R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), methodCor = c("nonparametric", "jackknife"), printTimeEstimate = TRUE,
-                       nFolds = 10, nInnerFolds = nFolds - 1, cvReps = 200, nBootstraps = 200, nBootstrapsCor = 50, ...){
+                       nFolds = 10L, nInnerFolds = nFolds - 1L, cvReps = 200L, nBootstraps = 200L, nBootstrapsCor = 50L, ...){
     fitFun = checkFitFun(fitFun)
+    predFun = checkPredFun(predFun)
     methodMSE = match.arg(methodMSE)
     methodCor = match.arg(methodCor)
     if((n <- length(y)) != NROW(x)){
         stop("Number of observations in y and x must match!")
     }
     if(NCOL(y)!=1){
-        stop("Outcome must be one-dimesnional!")
+        stop("Outcome must be one-dimensional!")
     }
+    stopifnot(is.numeric(nFolds), is.numeric(nInnerFolds), is.numeric(cvReps), is.numeric(nBootstraps), is.numeric(nBootstrapsCor))
     if(cvReps < 1e2){
         warning("Fewer than 100 repeats of the cross-validation split does not yield reliable estimates of the standard error!",
                 immediate. = TRUE)
     }
 
-    #Predict time this will take
-    singleRunTime = system.time(predFun(fullModel <- fitFun(y, x, id = seq_len(n), ...), x))["elapsed"]
-    cat("Fitting and evaluating the model once took", formatSeconds(singleRunTime), ".\nYou requested",
-        switch(methodMSE,
-               "CV" = paste0(cvReps, " repeats of ", nFolds, "-fold cross-validation"),
-               "bootstrap" = paste(nBootstraps, ".632 bootstrap instances")),
-    "with", nCores <- multicoreWorkers(), "cores, which is expected to last for\n",
-    formatSeconds((switch(methodMSE, "CV" = cvReps*nFolds, "bootstraps" = nBootstraps) +
-                       switch(methodCor, "nonparametric" = nBootstrapsCor, "jackknife" = n))*singleRunTime/nCores))
+    if(printTimeEstimate){
+        #Predict time this will take
+        singleRunTime = system.time((predFun(fullModel <- fitFun(y, x, id = seq_len(n), ...), x)-y)^2)["elapsed"]
+        estMSEreps = switch(methodMSE, "CV" = cvReps*nFolds*(nFolds-1),
+                            "bootstrap" = nBootstraps*2)
+        # Number of repeats for estimating the MSE and its SE
+        estCorReps = switch(methodCor, "nonparametric" = nBootstrapsCor, "jackknife" = n)*
+            switch(methodMSE, "CV" = nFolds, "bootstrap" = nBootstraps) #Number of repeats for correlation estimation
+        message("Fitting and evaluating the model once took ", formatSeconds(singleRunTime), ".\nYou requested ",
+            switch(methodMSE,
+                   "CV" = paste0(cvReps, " repeats of ", nFolds, "-fold cross-validation"),
+                   "bootstrap" = paste(nBootstraps, ".632 bootstrap instances")),
+        " with ", nCores <- multicoreWorkers(), " cores, which is expected to last for\n",
+        formatSeconds((estMSEreps + estCorReps)*singleRunTime/(nCores-1)))
+    }
 
     seVec = estMSE(y, x, fitFun, predFun, methodMSE, nFolds = nFolds, nInnerFolds = nInnerFolds, cvReps = cvReps, nBootstraps = nBootstraps)
-    corMSEMST = estCorMSEMST(y, x, fitFun, predFun, methodMSE, methodCor, nBootstrapsCor, nFolds = nFolds)
+    corMSEMST = estCorMSEMST(y, x, fitFun, predFun, methodMSE, methodCor, nBootstrapsCor, nFolds = nFolds, nBootstraps = nBootstraps)
     R2est = RsquaredSE(MSE = seVec["MSE"], margVar = margVar <- var(y), n = n, SEMSE = seVec["MSESE"], corMSEMST = corMSEMST)
     MST = margVar*(n+1)/n
     return(list("R2" = R2est, "MSE" = seVec, "MST" = c("MST" = MST, "MSTSE" = sqrt(2/(n-1))*MST), "corMSEMST" = corMSEMST,
          "params" = c(switch(methodMSE,
                              "CV" = c("nFolds" = nFolds, "nInnerFolds" = nInnerFolds, "cvReps" = cvReps),
-                             "bootstrap" = c("nBootstraps" = nBootstraps)), "methodCor" = methodCor,
-                         "methodMSE" = methodMSE, "nBootstrapsCor" = if(methodCor=="nonparametric") 50),
-         "y" = y, "x" = x, "fitFun" = fitFun, "predFun" = predFun))
+                             "bootstrap" = c("nBootstraps" = nBootstraps)), "methodMSE" = methodMSE,
+                      "methodCor" = methodCor, "nBootstrapsCor" = if(methodCor=="nonparametric") nBootstrapsCor)))
 }

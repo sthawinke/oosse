@@ -4,7 +4,7 @@
 \alias{formatSeconds}
 \title{Format seconds into human readable format}
 \usage{
-formatSeconds(seconds, digits = 3)
+formatSeconds(seconds, digits = 2)
 }
 \arguments{
 \item{seconds}{The number of seconds to be formatted}

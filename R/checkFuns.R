@@ -7,8 +7,16 @@
 checkFitFun = function(fitFun, reqArgs = c("y", "x", "id")){
     fitFun = match.fun(fitFun)
     if(!all(id <- (reqArgs %in%  (args <- formalArgs(fitFun))))){
-        stop("Arguments", paste(reqArgs[id], sep = ","), "not accepted by prediction function")
+        stop("Arguments", paste(reqArgs[id], sep = ","), "not accepted by fitting function")
     } else {
         return(fitFun)
+    }
+}
+checkPredFun = function(predFun, reqArgs = c("x")){
+    predFun = match.fun(predFun)
+    if(!all(id <- (reqArgs %in%  (args <- formalArgs(predFun))))){
+        stop("Arguments", paste(reqArgs[id], sep = ","), "not accepted by prediction function")
+    } else {
+        return(predFun)
     }
 }

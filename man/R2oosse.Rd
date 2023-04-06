@@ -12,11 +12,11 @@ R2oosse(
   methodMSE = c("CV", "bootstrap"),
   methodCor = c("nonparametric", "jackknife"),
   printTimeEstimate = TRUE,
-  nFolds = 10,
-  nInnerFolds = nFolds - 1,
-  cvReps = 200,
-  nBootstraps = 200,
-  nBootstrapsCor = 50,
+  nFolds = 10L,
+  nInnerFolds = nFolds - 1L,
+  cvReps = 200L,
+  nBootstraps = 200L,
+  nBootstrapsCor = 50L,
   ...
 )
 }
@@ -54,10 +54,13 @@ A list with components
 \item{MST}{Estimate of the MST with standard error}
 \item{corMSEMST}{Estimated correlatio between MSE and MST estimators}
 \item{params}{List of parameters used}
-\item{y,x,fitFun,predFun}{Arguments as provided}
 }
 \description{
 Estimate the out-of-sample R squared and its standard error
+}
+\details{
+Multithreading is used as provided by the BiocParallel package,
+so its best to set this up before running R2oosse
 }
 \examples{
 n = 40;p=3
