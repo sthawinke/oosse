@@ -26,7 +26,7 @@
 #' @importFrom BiocParallel bplapply multicoreWorkers
 #'
 #' @details Multithreading is used as provided by the BiocParallel package,
-#' so its best to set this up before running R2oosse.
+#' so it is best to set this up before running R2oosse.
 #' The options to estimate the mean squared error (MSE) are cross-validation or the .632 bootstrap.
 #' @examples
 #' data(Brassica)

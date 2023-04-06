@@ -12,7 +12,7 @@ Encoding: UTF-8
 RoxygenNote: 7.2.3
 Imports: stats, BiocParallel, Matrix, methods
 Suggests:
-    knitr,rmarkdown,testthat
+    knitr,rmarkdown,testthat,e1071,glmnet
 VignetteBuilder: knitr
 Depends: R (>= 4.2.0)
 BugReports: https://github.com/sthawinke/pengls
