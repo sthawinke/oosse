@@ -95,17 +95,18 @@ R2lm632jn = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
 For high-dimensional problems, such as the Brassica dataset, a regularised linear model is better suited to incorporate information for all genes. We use the _cv.glmnet_ function from the _glmnet_ package \parencite{Friedman2010}, which includes internal cross-validation for tuning the penalty parameter. Following custom function definitions are needed to fit in with the naming convention of the _oosse_ package.
 
 ```{r reglinmod}
-library(glmnet)
 fitFunReg = function(y, x, ...) {cv.glmnet(y = y, x = x, ...)}
 predFunReg = function(mod, x, ...){predict(mod, newx = x)}
 ```
 
-We adapt the parameter settings a bit to reduce computation time
+We adapt the parameter settings a bit to reduce computation time of the vignette.
 
 ```{r reglinmodR2}
-R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(5e2)], 
-                nFolds = 5, cvReps = 1e2, nBootstrapsCor = 30,
-                    fitFun = fitFunReg, predFun = predFunReg, alpha = 1)#Lasso model
+if(require(glmnet)){
+    R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)], #Subset genes for speed
+                    nFolds = 5, cvReps = 1e2, nBootstrapsCor = 30,
+                        fitFun = fitFunReg, predFun = predFunReg, alpha = 1)#Lasso model
+}
 ```
 
 ## Support vector machine
@@ -113,12 +114,13 @@ R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(5e2
 As a final example we use a support vector machine as a prediction model. We use the implementation from the _e1071_ package \parencite{Meyer2023}.
 
 ```{r predBart}
-library(e1071)
-fitFunSvm = function(y, x, ...){svm(y = y, x, ...)}
-predFunSvm = function(mod, x, ...){predict(mod, x, ...)}
-R2svm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr,
-                    fitFun = fitFunSvm, predFun = predFunSvm)
-R2svm$R2
+if(require(e1071)){
+    fitFunSvm = function(y, x, ...){svm(y = y, x, ...)}
+    predFunSvm = function(mod, x, ...){predict(mod, x, ...)}
+    R2svm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr,
+                        fitFun = fitFunSvm, predFun = predFunSvm)
+    R2svm$R2
+}
 ```
 
 The $R^2$ estimate is comparable to that of the penalised regression model.

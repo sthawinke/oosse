@@ -4,7 +4,9 @@
 #' @param what For which property should the ci be found: R² (default), MSE or MST
 #' @param conf the confidence level required
 #'
-#' @return
+#' @return A vector of length2 with lower and upper bound of the confidence interval
+#' @details The upper bound of the interval is truncated at 1 for the R² and
+#' the lower bound at 0 for the MSE
 #' @importFrom stats qnorm
 #' @export
 #'
@@ -15,13 +17,13 @@
 #' R2lm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
 #' fitFun = fitFunLM, predFun = predFunLM)
 #' buildConfInt(R2lm)
-buildConfInt = function(oosseObj, what = c("R2", "MSE", "MST"), conf = 0.95){
+buildConfInt = function(oosseObj, what = c("R2", "MSE"), conf = 0.95){
     what = match.arg(what)
     zQuants = qnorm(bounds <- c((1-conf)/2, conf + (1-conf)/2))
     ci = with(oosseObj, R2[what] + R2[paste0(what,"SE")]*zQuants)
     if(what == "R2"){
         ci[2] = min(ci[2], 1)#Truncate at 1
-    } else if(what %in% c("MSE", "MST")){
+    } else if(what == "MSE"){
         ci[1] = max(ci[1], 0)#Truncate at 0
     }
     names(ci) = paste0(bounds*100, "%")

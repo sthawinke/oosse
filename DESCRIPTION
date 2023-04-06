@@ -1,7 +1,7 @@
 Package: oosse
 Type: Package
 Title: Out-of-sample R² with standard error estimation
-Version: 1.5.0
+Version: 1.0.1
 Authors@R: 
     c(person(given = "Stijn", family = "Hawinkel", 
     email = "stijn.hawinkel@psb.ugent.be", 
@@ -12,7 +12,7 @@ Encoding: UTF-8
 RoxygenNote: 7.2.3
 Imports: stats, BiocParallel, Matrix, methods
 Suggests:
-    knitr,rmarkdown,testthat
+    knitr,rmarkdown,testthat,e1017,glmnet
 LazyData: true
 VignetteBuilder: knitr
 Depends: R (>= 4.2.0)

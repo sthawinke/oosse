@@ -4,7 +4,7 @@
 \alias{buildConfInt}
 \title{Calculate a confidence interval for the R²}
 \usage{
-buildConfInt(oosseObj, what = c("R2", "MSE", "MST"), conf = 0.95)
+buildConfInt(oosseObj, what = c("R2", "MSE"), conf = 0.95)
 }
 \arguments{
 \item{oosseObj}{The result of the R2oosse call}
@@ -13,8 +13,15 @@ buildConfInt(oosseObj, what = c("R2", "MSE", "MST"), conf = 0.95)
 
 \item{conf}{the confidence level required}
 }
+\value{
+A vector of length2 with lower and upper bound of the confidence interval
+}
 \description{
 Calculate a confidence interval for the R²
+}
+\details{
+The upper bound of the interval is truncated at 1 for the R² and
+the lower bound at 0 for the MSE
 }
 \examples{
 data(Brassica)
