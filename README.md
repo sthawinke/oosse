@@ -17,34 +17,6 @@ if (!require("BiocManager", quietly = TRUE))
 BiocManager::install("BiocParallel")
 ```
 
-    ## 'getOption("repos")' replaces Bioconductor standard repositories, see
-    ## 'help("repositories", package = "BiocManager")' for details.
-    ## Replacement repositories:
-    ##     CRAN: https://cloud.r-project.org
-
-    ## Bioconductor version 3.16 (BiocManager 1.30.20), R 4.2.1 (2022-06-23)
-
-    ## Installing package(s) 'BiocParallel'
-
-    ## Installation paths not writeable, unable to update packages
-    ##   path: /usr/lib/R/library
-    ##   packages:
-    ##     boot, class, cluster, codetools, foreign, lattice, MASS, mgcv, nlme, nnet,
-    ##     rpart, spatial, survival
-
-    ## Old packages: 'ALDEx2', 'ANCOMBC', 'batchelor', 'biomaRt', 'bumphunter', 'car',
-    ##   'caret', 'cli', 'clusterExperiment', 'commonmark', 'covr', 'dada2', 'dbplyr',
-    ##   'dendextend', 'DESeq2', 'dplyr', 'dtplyr', 'ellipse', 'ffpe', 'FNN',
-    ##   'geneLenDataBase', 'geneplotter', 'ggplot2', 'glmnet', 'googledrive',
-    ##   'googlesheets4', 'goseq', 'gtable', 'hardhat', 'hexbin', 'hms', 'htmltools',
-    ##   'igraph', 'interp', 'lumi', 'Matrix', 'methylumi', 'mia', 'minfi', 'modelr',
-    ##   'NMF', 'parallelly', 'pillar', 'prodlim', 'ps', 'psych', 'quantmod',
-    ##   'ranger', 'RCM', 'RcppArmadillo', 'RCurl', 'Rfast', 'rgl', 'rhdf5filters',
-    ##   'riskRegression', 'rmarkdown', 'robustbase', 'RSQLite', 'scater', 'sf',
-    ##   'ShortRead', 'SingleCellExperiment', 'slingshot', 'sn', 'tibble', 'tradeSeq',
-    ##   'TrajectoryUtils', 'TreeSummarizedExperiment', 'truncnorm', 'TSP', 'vctrs',
-    ##   'xfun', 'XML', 'zinbwave'
-
 As soon as the package is available on CRAN, it can be installed as:
 
 ``` r
@@ -117,13 +89,12 @@ library(glmnet)
 
 ``` r
 R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)], 
-                nFolds = 5, cvReps = 1e2, nBootstrapsCor = 30,
                fitFun = fitFunReg, predFun = predFunReg, alpha = 1) #Lasso model
 ```
 
     ## Fitting and evaluating the model once took 0.07 seconds.
-    ## You requested 100 repeats of 5-fold cross-validation with 10 cores, which is expected to last for roughly
-    ## 19.73 seconds
+    ## You requested 200 repeats of 10-fold cross-validation with 10 cores, which is expected to last for roughly
+    ## 2 minutes and 39.44 seconds
 
 Estimates and standard error of the different components are now
 available.
@@ -134,7 +105,7 @@ R2pen$R2
 ```
 
     ##         R2       R2SE 
-    ## 0.61436181 0.08945934
+    ## 0.62742380 0.09900512
 
 ``` r
 #MSE
@@ -142,7 +113,7 @@ R2pen$MSE
 ```
 
     ##      MSE    MSESE 
-    ## 2.205575 0.394421
+    ## 2.130870 0.384306
 
 ``` r
 #MST
@@ -160,15 +131,15 @@ buildConfInt(R2pen)
 ```
 
     ##      2.5%     97.5% 
-    ## 0.4390247 0.7896989
+    ## 0.4333773 0.8214703
 
 ``` r
 #MSE, 90% confidence interval
 buildConfInt(R2pen, what = "MSE", conf = 0.9)
 ```
 
-    ##      5%     95% 
-    ## 1.55681 2.85434
+    ##       5%      95% 
+    ## 1.498743 2.762997
 
 By default, cross-validation (CV) is used to estimate the MSE, and
 nonparametric bootstrapping is used to estimate the correlation between
@@ -182,9 +153,9 @@ R2penBoot = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len
                         predFun = predFunReg, alpha = 1, nBootstraps = 1e2)#Lasso model
 ```
 
-    ## Fitting and evaluating the model once took 0.06 seconds.
+    ## Fitting and evaluating the model once took 0.08 seconds.
     ## You requested 100 .632 bootstrap instances with 10 cores, which is expected to last for roughly
-    ## 44.8 seconds
+    ## 59.02 seconds
 
 ## Support vector machine
 
@@ -195,18 +166,17 @@ model. We use the implementation from the *e1071* package.
 library(e1071)
 fitFunSvm = function(y, x, ...){svm(y = y, x, ...)}
 predFunSvm = function(mod, x, ...){predict(mod, x, ...)}
-R2svm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr, cvReps = 1e2,
+R2svm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr,
                     fitFun = fitFunSvm, predFun = predFunSvm)
 ```
 
     ## Fitting and evaluating the model once took 0.05 seconds.
-    ## You requested 100 repeats of 10-fold cross-validation with 10 cores, which is expected to last for roughly
-    ## 57.17 seconds
+    ## You requested 200 repeats of 10-fold cross-validation with 10 cores, which is expected to last for roughly
+    ## 1 minutes and 44.78 seconds
 
 ``` r
-#CHECK timings!
 R2svm$R2
 ```
 
     ##        R2      R2SE 
-    ## 0.5423861 0.1252615
+    ## 0.5416442 0.1250534
