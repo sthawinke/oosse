@@ -61,7 +61,7 @@ nCores = 10
 register(MulticoreParam(nCores))
 ```
 
-Now estimate the $R^2$, also a rough estimate of the computation time is given.
+Now estimate the $R^2$, also a rough estimate of the computation time is given. Remember to provide the cluster for multithreading.
 
 ```{r LMpred}
 R2lm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10], 

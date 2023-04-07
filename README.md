@@ -8,15 +8,6 @@ information and options see the package vignette and the help files.
 
 # Installation instructions
 
-The package relies on the BioConductor package BiocParallel for parallel
-computing. It can be installed as.
-
-``` r
-if (!require("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-BiocManager::install("BiocParallel")
-```
-
 As soon as the package is available on CRAN, it can be installed as:
 
 ``` r
@@ -76,8 +67,8 @@ nCores = 10
 register(MulticoreParam(nCores))
 ```
 
-Now estimate the $R^2$, also an estimate of the computation time is
-given.
+Now estimate the $R^2$ while passing on the cluster object, also an
+estimate of the computation time is given.
 
 ``` r
 library(glmnet)
@@ -94,7 +85,7 @@ R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2
 
     ## Fitting and evaluating the model once took 0.07 seconds.
     ## You requested 200 repeats of 10-fold cross-validation with 10 cores, which is expected to last for roughly
-    ## 2 minutes and 39.44 seconds
+    ## 2 minutes and 25.55 seconds
 
 Estimates and standard error of the different components are now
 available.
@@ -150,33 +141,41 @@ of the correlation:
 ``` r
 R2penBoot = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)],
                      methodMSE = "bootstrap", methodCor = "jackknife", fitFun = fitFunReg,
-                        predFun = predFunReg, alpha = 1, nBootstraps = 1e2)#Lasso model
-```
-
-    ## Fitting and evaluating the model once took 0.08 seconds.
-    ## You requested 100 .632 bootstrap instances with 10 cores, which is expected to last for roughly
-    ## 59.02 seconds
-
-## Support vector machine
-
-As a second example we use a support vector machine as a prediction
-model. We use the implementation from the *e1071* package.
-
-``` r
-library(e1071)
-fitFunSvm = function(y, x, ...){svm(y = y, x, ...)}
-predFunSvm = function(mod, x, ...){predict(mod, x, ...)}
-R2svm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr,
-                    fitFun = fitFunSvm, predFun = predFunSvm)
+                        predFun = predFunReg, alpha = 1, nBootstraps = 1e2, cl = cl)#Lasso model
 ```
 
     ## Fitting and evaluating the model once took 0.05 seconds.
-    ## You requested 200 repeats of 10-fold cross-validation with 10 cores, which is expected to last for roughly
-    ## 1 minutes and 44.78 seconds
+    ## You requested 100 .632 bootstrap instances with 10 cores, which is expected to last for roughly
+    ## 33.92 seconds
+
+## Support vector machine
+
+As a second example we use a random forest as a prediction model. We use
+the implementation from the *randomForest* package.
 
 ``` r
-R2svm$R2
+library(randomForest)
+```
+
+    ## randomForest 4.7-1.1
+
+    ## Type rfNews() to see new features/changes/bug fixes.
+
+``` r
+fitFunrf = function(y, x, ...){randomForest(y = y, x, ...)}
+predFunrf = function(mod, x, ...){predict(mod, x, ...)}
+R2rf = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)],
+                 nFolds = 5, cvReps = 1e2, nBootstrapsCor = 30,
+                    fitFun = fitFunrf, predFun = predFunrf, cl = cl)
+```
+
+    ## Fitting and evaluating the model once took 0.15 seconds.
+    ## You requested 100 repeats of 5-fold cross-validation with 10 cores, which is expected to last for roughly
+    ## 40.02 seconds
+
+``` r
+R2rf$R2
 ```
 
     ##        R2      R2SE 
-    ## 0.5416442 0.1250534
+    ## 0.6758210 0.1106841

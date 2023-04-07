@@ -28,7 +28,6 @@
 #'
 #' @details Implements the calculation of the R² and its standard error by \insertCite{Hawinkel2023}{oosse}.
 #'  Multithreading is used as provided by the BiocParallel package,
-#' so it is best to set this up before running R2oosse.
 #' A rough estimate of expected computation time is printed when prinTimeEstimate is true, but this is purely indicative.
 #' The options to estimate the mean squared error (MSE) are cross-validation \insertCite{Bates2021}{oosse} or the .632 bootstrap \insertCite{Efron1997}{oosse}.
 #' @examples
@@ -44,7 +43,7 @@
 #' @references
 #'   \insertAllCited{}
 R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), methodCor = c("nonparametric", "jackknife"), printTimeEstimate = TRUE,
-                       nFolds = 10L, nInnerFolds = nFolds - 1L, cvReps = 200L, nBootstraps = 200L, nBootstrapsCor = 50L, ...){
+                       nFolds = 10L, nInnerFolds = nFolds - 1L, cvReps = 200L, nBootstraps = 200L, nBootstrapsCor = 50L,...){
     fitFun = checkFitFun(fitFun) #Version of the fit function for internal use
     predFun = checkPredFun(predFun)
     methodMSE = match.arg(methodMSE)
@@ -73,9 +72,9 @@ R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), meth
                    "CV" = paste0(cvReps, " repeats of ", nFolds, "-fold cross-validation"),
                    "bootstrap" = paste(nBootstraps, ".632 bootstrap instances")),
         " with ", nCores <- multicoreWorkers(), " cores, which is expected to last for roughly\n",
-        formatSeconds((estMSEreps + estCorReps)*singleRunTime/(nCores-1)))
+        formatSeconds(sec <- (estMSEreps + estCorReps)*singleRunTime/nCores),
+        if(nCores==1 && (sec >10)) "\nConsider using multithreading with the 'BiocParallel' package to speed up computations.")
     }
-
     seVec = estMSE(y, x, fitFun, predFun, methodMSE, nFolds = nFolds, nInnerFolds = nInnerFolds, cvReps = cvReps, nBootstraps = nBootstraps)
     corMSEMST = estCorMSEMST(y, x, fitFun, predFun, methodMSE, methodCor, nBootstrapsCor, nFolds = nFolds, nBootstraps = nBootstraps)
     R2est = RsquaredSE(MSE = seVec["MSE"], margVar = margVar <- var(y), n = n, SEMSE = seVec["MSESE"], corMSEMST = corMSEMST)

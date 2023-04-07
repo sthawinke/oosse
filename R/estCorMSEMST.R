@@ -3,7 +3,7 @@
 #' @inheritParams R2oosse
 #'
 #' @return the estimated correlation
-#' @importFrom BiocParallel bplapply
+#' @importFrom parallel parLapply
 estCorMSEMST = function(y, x, fitFun, predFun, methodMSE, methodCor, nBootstrapsCor, nFolds, nBootstraps){
     nReps = switch(methodCor, "nonparametric" = nBootstrapsCor, "jackknife" = length(y))
     matMSEMST = simplify2array(bplapply(seq_len(nReps), function(i){
