@@ -7,6 +7,19 @@ and options see the package vignette and the help files.
 
 # Installation instuctions
 
+As soon as the package is available on CRAN:
+
+``` r
+install.packages("oosse") #When available on CRAN
+```
+
+Installation from github
+
+``` r
+library(devtools)
+install_github("sthawinke/oosse")
+```
+
 # Illustration
 
 The *R2oosse* function works with any pair of fitting and prediction
@@ -27,14 +40,6 @@ As first example, we use the *cv.glmnet* function from the *glmnet*
 package, which includes internal cross-validation for tuning the penalty
 parameter. Following custom function definitions are needed to fit in
 with the naming convention of the *oosse* package.
-
-``` r
-library(glmnet)
-```
-
-    ## Loading required package: Matrix
-
-    ## Loaded glmnet 4.1-6
 
 The fitting model must accept at least an outcome vector *y* and a
 regressor matrix *x*:
@@ -65,14 +70,22 @@ Now estimate the $R^2$, also an estimate of the computation time is
 given.
 
 ``` r
+library(glmnet)
+```
+
+    ## Loading required package: Matrix
+
+    ## Loaded glmnet 4.1-6
+
+``` r
 R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(2e2)], 
                 nFolds = 5, cvReps = 1e2, nBootstrapsCor = 30,
                fitFun = fitFunReg, predFun = predFunReg, alpha = 1) #Lasso model
 ```
 
-    ## Fitting and evaluating the model once took 0.08 seconds.
+    ## Fitting and evaluating the model once took 0.27 seconds.
     ## You requested 100 repeats of 5-fold cross-validation with 10 cores, which is expected to last for
-    ## 19.83 seconds
+    ## 1 minutes and 3.78 seconds
 
 Estimates and standard error of the different components are now
 available.
@@ -127,13 +140,13 @@ of the correlation:
 
 ``` r
 R2penBoot = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(2e2)],
-                 methodMSE = "bootstrap", methodCor = "jackknife", fitFun = fitFunReg,
-                    predFun = predFunReg, alpha = 1, nBootstraps = 1e2)#Lasso model
+                     methodMSE = "bootstrap", methodCor = "jackknife", fitFun = fitFunReg,
+                        predFun = predFunReg, alpha = 1, nBootstraps = 1e2)#Lasso model
 ```
 
-    ## Fitting and evaluating the model once took 0.07 seconds.
+    ## Fitting and evaluating the model once took 0.18 seconds.
     ## You requested 100 .632 bootstrap instances with 10 cores, which is expected to last for
-    ## 46.22 seconds
+    ## 2 minutes and 11.56 seconds
 
 ## Support vector machine
 
@@ -142,19 +155,19 @@ model. We use the implementation from the *e1071* package.
 
 ``` r
 library(e1071)
-fitFunSvm = function(y, x, ...){svm(y = y, x, ...)}
-predFunSvm = function(mod, x, ...){predict(mod, x, ...)}
-R2svm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr,
-                    fitFun = fitFunSvm, predFun = predFunSvm)
+    fitFunSvm = function(y, x, ...){svm(y = y, x, ...)}
+    predFunSvm = function(mod, x, ...){predict(mod, x, ...)}
+    R2svm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr, cvReps = 1e2,
+                        fitFun = fitFunSvm, predFun = predFunSvm)
 ```
 
-    ## Fitting and evaluating the model once took 0.04 seconds.
-    ## You requested 200 repeats of 10-fold cross-validation with 10 cores, which is expected to last for
-    ## 1 minutes and 32.5 seconds
+    ## Fitting and evaluating the model once took 0.05 seconds.
+    ## You requested 100 repeats of 10-fold cross-validation with 10 cores, which is expected to last for
+    ## 50.67 seconds
 
 ``` r
-R2svm$R2
+    R2svm$R2
 ```
 
     ##        R2      R2SE 
-    ## 0.5450240 0.1377658
+    ## 0.5428769 0.1381585
