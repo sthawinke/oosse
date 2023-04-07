@@ -12,13 +12,13 @@
 #' @param cvReps The number of repeats for the cross-validation
 #' @param nBootstraps The number of .632 bootstraps
 #' @param nBootstrapsCor The number of bootstraps to estimate the correlation
-#' @param ... passed onto fitFun
+#' @param ... passed onto fitFun and predFun
 #'
 #' @return A list with components
 #' \item{R2}{Estimate of the R² with standard error}
 #' \item{MSE}{Estimate of the MSE with standard error}
 #' \item{MST}{Estimate of the MST with standard error}
-#' \item{corMSEMST}{Estimated correlatio between MSE and MST estimators}
+#' \item{corMSEMST}{Estimated correlation between MSE and MST estimators}
 #' \item{params}{List of parameters used}
 #' \item{fullModel}{The model trained on the entire dataset using fitFun}
 #' @export

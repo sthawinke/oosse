@@ -45,7 +45,7 @@ R2oosse(
 
 \item{nBootstrapsCor}{The number of bootstraps to estimate the correlation}
 
-\item{...}{passed onto fitFun}
+\item{...}{passed onto fitFun and predFun}
 }
 \value{
 A list with components

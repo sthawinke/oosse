@@ -22,7 +22,7 @@ https://doi.org/10.48550/arXiv.2302.05131) by Hawinkel et al. 2023.
 
 # Installation instuctions
 
-```{r install}
+```{r install, eval = FALSE}
 install.packages("oosse")
 ```
 
