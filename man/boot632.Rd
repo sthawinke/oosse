@@ -30,5 +30,5 @@ The implementation follows \insertCite{Efron1997}{oosse}
 \insertAllCited{}
 }
 \seealso{
-estMSE bootOob
+\link{estMSE} \link{bootOob}
 }

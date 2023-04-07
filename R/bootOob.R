@@ -4,7 +4,7 @@
 #' @param id sample indices sampled with replacement
 #' @details The implementation follows \insertCite{Efron1997}{oosse}
 #' @return matrix of errors and inclusion times
-#' @seealso estMSE boot632
+#' @seealso \link{estMSE} \link{boot632}
 #' @references
 #'   \insertAllCited{}
 bootOob = function(y, x, id, fitFun, predFun){

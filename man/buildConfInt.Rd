@@ -32,5 +32,5 @@ fitFun = fitFunLM, predFun = predFunLM)
 buildConfInt(R2lm)
 }
 \seealso{
-R2oosse
+\link{R2oosse}
 }

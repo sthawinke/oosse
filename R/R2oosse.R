@@ -38,7 +38,7 @@
 #' y = Brassica$Pheno$Leaf_8_width
 #' R2lm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
 #' fitFun = fitFunLM, predFun = predFunLM)
-#' @seealso buildConfInt
+#' @seealso \link{buildConfInt}
 #' @importFrom Rdpack reprompt
 #' @references
 #'   \insertAllCited{}

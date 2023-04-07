@@ -6,7 +6,7 @@
 #'
 #' @return The estimate of the MSE and its standard error
 #' @details The calculation of the standard error of the MSE as proposed by \insertCite{Bates2021}{oosse}
-#' @seealso estMSE
+#' @seealso \link{estMSE}
 #' @references
 #'   \insertAllCited{}
 getSEsNested = function(cvSplitReps, nOuterFolds, n){

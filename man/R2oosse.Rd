@@ -78,5 +78,5 @@ fitFun = fitFunLM, predFun = predFunLM)
 \insertAllCited{}
 }
 \seealso{
-buildConfInt
+\link{buildConfInt}
 }

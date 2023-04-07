@@ -36,5 +36,5 @@ RsquaredSE(MSE = 3, margVar = 4, SEMSE = 0.4, n = 50, corMSEMST = 0.75)
 \insertRef{Hawinkel2023}{oosse}
 }
 \seealso{
-R2oosse
+\link{R2oosse}
 }
