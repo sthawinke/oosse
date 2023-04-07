@@ -119,6 +119,7 @@ if(require(e1071)){
     fitFunSvm = function(y, x, ...){e1071::svm(y = y, x, ...)}
     predFunSvm = function(mod, x, ...){predict(mod, x, ...)}
     R2svm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr,
+                     nFolds = 5, cvReps = 1e2, nBootstrapsCor = 30,
                         fitFun = fitFunSvm, predFun = predFunSvm)
     R2svm$R2
 }

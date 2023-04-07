@@ -56,10 +56,9 @@ R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), meth
         warning("Fewer than 100 repeats of the cross-validation split does not yield reliable estimates of the standard error!",
                 immediate. = TRUE)
     }
-
+    singleRunTime = system.time((predFun(fullModel <- fitFun(y, x, ...), x)-y)^2)["elapsed"]
     if(printTimeEstimate){
         #Predict time this will take
-        singleRunTime = system.time((predFun(fullModel <- fitFun(y, x, ...), x)-y)^2)["elapsed"]
         estMSEreps = switch(methodMSE, "CV" = cvReps*nFolds*(nInnerFolds+1),
                             "bootstrap" = nBootstraps*2)
         # Number of repeats for estimating the MSE and its SE

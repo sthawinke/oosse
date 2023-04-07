@@ -12,7 +12,7 @@ A list with two components Expr and Pheno
 }
 }
 \source{
-\url{https://doi.org/10.1101/2022.10.21.513275 }
+\doi{10.1101/2022.10.21.513275}
 }
 \usage{
 Brassica

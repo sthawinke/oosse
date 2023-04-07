@@ -1,12 +1,49 @@
 
 This repository demonstrates the use of the *oosse* package for
 estimating the out-of-sample R² and its standard error through
-resampling algorithms of the [“corresponding
-article”](https://arxiv.org/abs/2302.05131). In this readme file, we
+resampling algorithms of the [corresponding
+article](https://arxiv.org/abs/2302.05131). In this readme file, we
 provide installation instructions and basic usage examples, for more
 information and options see the package vignette and the help files.
 
 # Installation instuctions
+
+The package relies on the BioConductor package BiocParallel for parallel
+computing. It can be installed as.
+
+``` r
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("BiocParallel")
+```
+
+    ## 'getOption("repos")' replaces Bioconductor standard repositories, see
+    ## 'help("repositories", package = "BiocManager")' for details.
+    ## Replacement repositories:
+    ##     CRAN: https://cloud.r-project.org
+
+    ## Bioconductor version 3.16 (BiocManager 1.30.20), R 4.2.1 (2022-06-23)
+
+    ## Installing package(s) 'BiocParallel'
+
+    ## Installation paths not writeable, unable to update packages
+    ##   path: /usr/lib/R/library
+    ##   packages:
+    ##     boot, class, cluster, codetools, foreign, lattice, MASS, mgcv, nlme, nnet,
+    ##     rpart, spatial, survival
+
+    ## Old packages: 'ALDEx2', 'ANCOMBC', 'batchelor', 'biomaRt', 'bumphunter', 'car',
+    ##   'caret', 'cli', 'clusterExperiment', 'commonmark', 'covr', 'dada2', 'dbplyr',
+    ##   'dendextend', 'DESeq2', 'dplyr', 'dtplyr', 'ellipse', 'ffpe', 'FNN',
+    ##   'geneLenDataBase', 'geneplotter', 'ggplot2', 'glmnet', 'googledrive',
+    ##   'googlesheets4', 'goseq', 'gtable', 'hardhat', 'hexbin', 'hms', 'htmltools',
+    ##   'igraph', 'interp', 'lumi', 'Matrix', 'methylumi', 'mia', 'minfi', 'modelr',
+    ##   'NMF', 'parallelly', 'pillar', 'prodlim', 'ps', 'psych', 'quantmod',
+    ##   'ranger', 'RCM', 'RcppArmadillo', 'RCurl', 'Rfast', 'rgl', 'rhdf5filters',
+    ##   'riskRegression', 'rmarkdown', 'robustbase', 'RSQLite', 'scater', 'sf',
+    ##   'ShortRead', 'SingleCellExperiment', 'slingshot', 'sn', 'tibble', 'tradeSeq',
+    ##   'TrajectoryUtils', 'TreeSummarizedExperiment', 'truncnorm', 'TSP', 'vctrs',
+    ##   'xfun', 'XML', 'zinbwave'
 
 As soon as the package is available on CRAN, it can be installed as:
 
@@ -84,9 +121,9 @@ R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2
                fitFun = fitFunReg, predFun = predFunReg, alpha = 1) #Lasso model
 ```
 
-    ## Fitting and evaluating the model once took 0.15 seconds.
-    ## You requested 100 repeats of 5-fold cross-validation with 10 cores, which is expected to last for
-    ## 35.36 seconds
+    ## Fitting and evaluating the model once took 0.07 seconds.
+    ## You requested 100 repeats of 5-fold cross-validation with 10 cores, which is expected to last for roughly
+    ## 19.73 seconds
 
 Estimates and standard error of the different components are now
 available.
@@ -96,16 +133,16 @@ available.
 R2pen$R2
 ```
 
-    ##        R2      R2SE 
-    ## 0.6195417 0.0874667
+    ##         R2       R2SE 
+    ## 0.61436181 0.08945934
 
 ``` r
 #MSE
 R2pen$MSE
 ```
 
-    ##       MSE     MSESE 
-    ## 2.1759498 0.4037016
+    ##      MSE    MSESE 
+    ## 2.205575 0.394421
 
 ``` r
 #MST
@@ -123,15 +160,15 @@ buildConfInt(R2pen)
 ```
 
     ##      2.5%     97.5% 
-    ## 0.4481101 0.7909733
+    ## 0.4390247 0.7896989
 
 ``` r
 #MSE, 90% confidence interval
 buildConfInt(R2pen, what = "MSE", conf = 0.9)
 ```
 
-    ##  5% 95% 
-    ##  NA  NA
+    ##      5%     95% 
+    ## 1.55681 2.85434
 
 By default, cross-validation (CV) is used to estimate the MSE, and
 nonparametric bootstrapping is used to estimate the correlation between
@@ -145,9 +182,9 @@ R2penBoot = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len
                         predFun = predFunReg, alpha = 1, nBootstraps = 1e2)#Lasso model
 ```
 
-    ## Fitting and evaluating the model once took 0.16 seconds.
-    ## You requested 100 .632 bootstrap instances with 10 cores, which is expected to last for
-    ## 1 minutes and 51.64 seconds
+    ## Fitting and evaluating the model once took 0.06 seconds.
+    ## You requested 100 .632 bootstrap instances with 10 cores, which is expected to last for roughly
+    ## 44.8 seconds
 
 ## Support vector machine
 
@@ -162,9 +199,9 @@ R2svm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr, cvReps = 1e2
                     fitFun = fitFunSvm, predFun = predFunSvm)
 ```
 
-    ## Fitting and evaluating the model once took 0.04 seconds.
-    ## You requested 100 repeats of 10-fold cross-validation with 10 cores, which is expected to last for
-    ## 46.44 seconds
+    ## Fitting and evaluating the model once took 0.05 seconds.
+    ## You requested 100 repeats of 10-fold cross-validation with 10 cores, which is expected to last for roughly
+    ## 57.17 seconds
 
 ``` r
 #CHECK timings!
@@ -172,4 +209,4 @@ R2svm$R2
 ```
 
     ##        R2      R2SE 
-    ## 0.5428769 0.1381585
+    ## 0.5423861 0.1252615

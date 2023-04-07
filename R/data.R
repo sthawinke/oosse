@@ -7,5 +7,5 @@
 #'   \item{Expr}{Matrix with Rlog values of 1000 most expressed genes}
 #'   \item{Pheno}{Data frame with 5 phenotypes and x and y coordinates of the plants in the field}
 #' }
-#' @source \url{https://doi.org/10.1101/2022.10.21.513275 }
+#' @source \doi{10.1101/2022.10.21.513275}
 "Brassica"
