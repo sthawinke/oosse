@@ -1,0 +1,112 @@
+---
+output: github_document
+---
+
+This repository demonstrates the use of the _oosse_ package for estimating the out-of-sample R² and its standard error through resampling algorithms of the [corresponding article](https://arxiv.org/abs/2302.05131). In this readme file, we provide installation instructions and basic usage examples, for more information and options see the package vignette and the help files.
+
+# Installation instuctions
+
+The package relies on the BioConductor package BiocParallel for parallel computing. It can be installed as.
+
+```{r biocparallel, eval = FALSE}
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("BiocParallel")
+```
+
+As soon as the package is available on CRAN, it can be installed as:
+
+```{r cran, eval = FALSE}
+install.packages("oosse") #When available on CRAN
+```
+
+For now, installation from github is available.
+
+```{r github, eval = FALSE}
+library(devtools)
+install_github("sthawinke/oosse")
+```
+
+# Illustration
+
+The _R2oosse_ function works with any pair of fitting and prediction functions. Here we illustrate a number of them, but any prediction function implemented in R can be used. The built-in dataset _Brassica_ is used, which contains _rlog_-transformed gene expression measurements for the 1,000 most expressed genes in the _Expr_ slot, as well as 5 outcome phenotypes in the _Pheno_ slot.
+
+```{r loadBrassica}
+library(oosse)
+data(Brassica)
+```
+
+## Regularised linear models
+
+As first example, we use the _cv.glmnet_ function from the _glmnet_ package, which includes internal cross-validation for tuning the penalty parameter. Following custom function definitions are needed to fit in with the naming convention of the _oosse_ package.
+
+The fitting model must accept at least an outcome vector _y_ and a regressor matrix _x_:
+
+```{r linModelFit}
+fitFunReg = function(y, x, ...) {cv.glmnet(y = y, x = x, ...)}
+```
+
+The predictive model must accept arguments _mod_ (the fitted model) and _x_, the regressor matrix for a new set of observations.
+
+```{r linModelPredict}
+predFunReg = function(mod, x, ...){predict(mod, newx = x)}
+```
+
+Now that these functions have been defined, we apply the prediction model for leaf_8_width using the LASSO. Multithreading is used automatically using the _BiocParallel_ package. Change the following setup depending on your system.
+
+```{r multithread}
+library(BiocParallel)
+nCores = 10
+register(MulticoreParam(nCores))
+```
+
+Now estimate the $R^2$, also an estimate of the computation time is given.
+
+```{r LMpred}
+library(glmnet)
+R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)], 
+               fitFun = fitFunReg, predFun = predFunReg, alpha = 1) #Lasso model
+```
+
+Estimates and standard error of the different components are now available.
+
+```{r lmests}
+#R2
+R2pen$R2
+#MSE
+R2pen$MSE
+#MST
+R2pen$MST
+```
+
+Also confidence intervals can be constructed:
+
+```{r confintlm}
+# R2
+buildConfInt(R2pen)
+#MSE, 90% confidence interval
+buildConfInt(R2pen, what = "MSE", conf = 0.9)
+```
+
+By default, cross-validation (CV) is used to estimate the MSE, and nonparametric bootstrapping is used to estimate the correlation between MSE and MST estimators. Other parameters can be supplied though, e.g. for bootstrap .632 estimation of the MSE and jackknife estimation of the correlation:
+
+```{r lmBoot}
+R2penBoot = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)],
+                     methodMSE = "bootstrap", methodCor = "jackknife", fitFun = fitFunReg,
+                        predFun = predFunReg, alpha = 1, nBootstraps = 1e2)#Lasso model
+```
+
+## Support vector machine
+
+As a second example we use a support vector machine as a prediction model. We use the implementation from the _e1071_ package.
+
+```{r predSvm}
+library(e1071)
+fitFunSvm = function(y, x, ...){svm(y = y, x, ...)}
+predFunSvm = function(mod, x, ...){predict(mod, x, ...)}
+R2svm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr,
+                    fitFun = fitFunSvm, predFun = predFunSvm)
+R2svm$R2
+```
+
+
