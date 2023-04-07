@@ -20,6 +20,7 @@
 #' \item{MST}{Estimate of the MST with standard error}
 #' \item{corMSEMST}{Estimated correlatio between MSE and MST estimators}
 #' \item{params}{List of parameters used}
+#' \item{fullModel}{The model trained on the entire dataset using fitFun}
 #' @export
 #' @importFrom methods formalArgs
 #' @importFrom stats cor sd var
@@ -27,7 +28,8 @@
 #'
 #' @details Multithreading is used as provided by the BiocParallel package,
 #' so it is best to set this up before running R2oosse.
-#' The options to estimate the mean squared error (MSE) are cross-validation or the .632 bootstrap.
+#' A rough estimate of expected computation time is printed when prinTimeEstimate is true, but this is purely indicative.
+#' The options to estimate the mean squared error (MSE) are cross-validation \cite{Bates2021} or the .632 bootstrap \cite{Efron1997}.
 #' @examples
 #' data(Brassica)
 #' #Linear model
@@ -36,6 +38,7 @@
 #' y = Brassica$Pheno$Leaf_8_width
 #' R2lm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
 #' fitFun = fitFunLM, predFun = predFunLM)
+#' @seealso buildConfInt
 R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), methodCor = c("nonparametric", "jackknife"), printTimeEstimate = TRUE,
                        nFolds = 10L, nInnerFolds = nFolds - 1L, cvReps = 200L, nBootstraps = 200L, nBootstrapsCor = 50L, ...){
     fitFun = checkFitFun(fitFun) #Version of the fit function for internal use
@@ -57,7 +60,7 @@ R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), meth
     if(printTimeEstimate){
         #Predict time this will take
         singleRunTime = system.time((predFun(fullModel <- fitFun(y, x, ...), x)-y)^2)["elapsed"]
-        estMSEreps = switch(methodMSE, "CV" = cvReps*nFolds*(nFolds-1),
+        estMSEreps = switch(methodMSE, "CV" = cvReps*nFolds*(nInnerFolds+1),
                             "bootstrap" = nBootstraps*2)
         # Number of repeats for estimating the MSE and its SE
         estCorReps = switch(methodCor, "nonparametric" = nBootstrapsCor, "jackknife" = n)*
@@ -66,7 +69,7 @@ R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), meth
             switch(methodMSE,
                    "CV" = paste0(cvReps, " repeats of ", nFolds, "-fold cross-validation"),
                    "bootstrap" = paste(nBootstraps, ".632 bootstrap instances")),
-        " with ", nCores <- multicoreWorkers(), " cores, which is expected to last for\n",
+        " with ", nCores <- multicoreWorkers(), " cores, which is expected to last for roughly\n",
         formatSeconds((estMSEreps + estCorReps)*singleRunTime/(nCores-1)))
     }
 
@@ -78,5 +81,6 @@ R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), meth
          "params" = c(switch(methodMSE,
                              "CV" = c("nFolds" = nFolds, "nInnerFolds" = nInnerFolds, "cvReps" = cvReps),
                              "bootstrap" = c("nBootstraps" = nBootstraps)), "methodMSE" = methodMSE,
-                      "methodCor" = methodCor, "nBootstrapsCor" = if(methodCor=="nonparametric") nBootstrapsCor)))
+                      "methodCor" = methodCor, "nBootstrapsCor" = if(methodCor=="nonparametric") nBootstrapsCor),
+         "fullModel" = fullModel))
 }

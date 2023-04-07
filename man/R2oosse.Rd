@@ -54,6 +54,7 @@ A list with components
 \item{MST}{Estimate of the MST with standard error}
 \item{corMSEMST}{Estimated correlatio between MSE and MST estimators}
 \item{params}{List of parameters used}
+\item{fullModel}{The model trained on the entire dataset using fitFun}
 }
 \description{
 Estimate the out-of-sample R² and its standard error
@@ -61,7 +62,8 @@ Estimate the out-of-sample R² and its standard error
 \details{
 Multithreading is used as provided by the BiocParallel package,
 so it is best to set this up before running R2oosse.
-The options to estimate the mean squared error (MSE) are cross-validation or the .632 bootstrap.
+A rough estimate of expected computation time is printed when prinTimeEstimate is true, but this is purely indicative.
+The options to estimate the mean squared error (MSE) are cross-validation \cite{Bates2021} or the .632 bootstrap \cite{Efron1997}.
 }
 \examples{
 data(Brassica)
@@ -71,4 +73,7 @@ predFunLM = function(mod, x) {cbind(1,x) \%*\% mod$coef}
 y = Brassica$Pheno$Leaf_8_width
 R2lm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
 fitFun = fitFunLM, predFun = predFunLM)
+}
+\seealso{
+buildConfInt
 }

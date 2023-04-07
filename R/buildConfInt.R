@@ -9,6 +9,7 @@
 #' the lower bound at 0 for the MSE
 #' @importFrom stats qnorm
 #' @export
+#' @seealso R2oosse
 #'
 #' @examples
 #' data(Brassica)

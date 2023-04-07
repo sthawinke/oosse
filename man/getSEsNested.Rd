@@ -22,3 +22,6 @@ Calculate standard error on MSE from nested CV results
 \details{
 The calculation of the standard error of the MSE as proposed by \cite{Bates2021}
 }
+\seealso{
+estMSE
+}

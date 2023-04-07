@@ -31,3 +31,6 @@ R2lm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
 fitFun = fitFunLM, predFun = predFunLM)
 buildConfInt(R2lm)
 }
+\seealso{
+R2oosse
+}

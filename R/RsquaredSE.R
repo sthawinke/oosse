@@ -15,6 +15,7 @@
 #' @examples
 #' #The out-of-sample R² calculated using externally provided estimates
 #' RsquaredSE(MSE = 3, margVar = 4, SEMSE = 0.4, n = 50, corMSEMST = 0.75)
+#' @seealso R2oosse
 RsquaredSE = function(MSE, margVar, SEMSE, n, corMSEMST){
     stopifnot(corMSEMST >= -1, corMSEMST <=1, MSE > 0, margVar > 0, n > 1, SEMSE > 0)
     MST = margVar*(n+1)/n #Inflate marginal variance to out-of-sample MST

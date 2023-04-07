@@ -116,7 +116,7 @@ As a final example we use a support vector machine as a prediction model. We use
 
 ```{r predBart}
 if(require(e1071)){
-    fitFunSvm = function(y, x, ...){svm(y = y, x, ...)}
+    fitFunSvm = function(y, x, ...){e1071::svm(y = y, x, ...)}
     predFunSvm = function(mod, x, ...){predict(mod, x, ...)}
     R2svm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr,
                         fitFun = fitFunSvm, predFun = predFunSvm)

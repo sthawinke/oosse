@@ -1,19 +1,20 @@
 
 This repository demonstrates the use of the *oosse* package for
 estimating the out-of-sample R² and its standard error through
-resampling algorithms of the . In this readme file, we provide
-installation instructions and basic usage examples, for more information
-and options see the package vignette and the help files.
+resampling algorithms of the [“corresponding
+article”](https://arxiv.org/abs/2302.05131). In this readme file, we
+provide installation instructions and basic usage examples, for more
+information and options see the package vignette and the help files.
 
 # Installation instuctions
 
-As soon as the package is available on CRAN:
+As soon as the package is available on CRAN, it can be installed as:
 
 ``` r
 install.packages("oosse") #When available on CRAN
 ```
 
-Installation from github
+For now, installation from github is available.
 
 ``` r
 library(devtools)
@@ -78,14 +79,14 @@ library(glmnet)
     ## Loaded glmnet 4.1-6
 
 ``` r
-R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(2e2)], 
+R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)], 
                 nFolds = 5, cvReps = 1e2, nBootstrapsCor = 30,
                fitFun = fitFunReg, predFun = predFunReg, alpha = 1) #Lasso model
 ```
 
-    ## Fitting and evaluating the model once took 0.27 seconds.
+    ## Fitting and evaluating the model once took 0.15 seconds.
     ## You requested 100 repeats of 5-fold cross-validation with 10 cores, which is expected to last for
-    ## 1 minutes and 3.78 seconds
+    ## 35.36 seconds
 
 Estimates and standard error of the different components are now
 available.
@@ -95,8 +96,8 @@ available.
 R2pen$R2
 ```
 
-    ##         R2       R2SE 
-    ## 0.62964397 0.09541882
+    ##        R2      R2SE 
+    ## 0.6195417 0.0874667
 
 ``` r
 #MSE
@@ -104,7 +105,7 @@ R2pen$MSE
 ```
 
     ##       MSE     MSESE 
-    ## 2.1181720 0.4098121
+    ## 2.1759498 0.4037016
 
 ``` r
 #MST
@@ -122,7 +123,7 @@ buildConfInt(R2pen)
 ```
 
     ##      2.5%     97.5% 
-    ## 0.4426265 0.8166614
+    ## 0.4481101 0.7909733
 
 ``` r
 #MSE, 90% confidence interval
@@ -139,14 +140,14 @@ e.g. for bootstrap .632 estimation of the MSE and jackknife estimation
 of the correlation:
 
 ``` r
-R2penBoot = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(2e2)],
+R2penBoot = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)],
                      methodMSE = "bootstrap", methodCor = "jackknife", fitFun = fitFunReg,
                         predFun = predFunReg, alpha = 1, nBootstraps = 1e2)#Lasso model
 ```
 
-    ## Fitting and evaluating the model once took 0.18 seconds.
+    ## Fitting and evaluating the model once took 0.16 seconds.
     ## You requested 100 .632 bootstrap instances with 10 cores, which is expected to last for
-    ## 2 minutes and 11.56 seconds
+    ## 1 minutes and 51.64 seconds
 
 ## Support vector machine
 
@@ -155,18 +156,19 @@ model. We use the implementation from the *e1071* package.
 
 ``` r
 library(e1071)
-    fitFunSvm = function(y, x, ...){svm(y = y, x, ...)}
-    predFunSvm = function(mod, x, ...){predict(mod, x, ...)}
-    R2svm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr, cvReps = 1e2,
-                        fitFun = fitFunSvm, predFun = predFunSvm)
+fitFunSvm = function(y, x, ...){svm(y = y, x, ...)}
+predFunSvm = function(mod, x, ...){predict(mod, x, ...)}
+R2svm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr, cvReps = 1e2,
+                    fitFun = fitFunSvm, predFun = predFunSvm)
 ```
 
-    ## Fitting and evaluating the model once took 0.05 seconds.
+    ## Fitting and evaluating the model once took 0.04 seconds.
     ## You requested 100 repeats of 10-fold cross-validation with 10 cores, which is expected to last for
-    ## 50.67 seconds
+    ## 46.44 seconds
 
 ``` r
-    R2svm$R2
+#CHECK timings!
+R2svm$R2
 ```
 
     ##        R2      R2SE 

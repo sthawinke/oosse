@@ -26,3 +26,6 @@ The .632 bootstrap estimation of the MSE
 \details{
 The implementation follows \cite{Efron1997}
 }
+\seealso{
+estMSE bootOob
+}

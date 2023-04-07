@@ -26,3 +26,6 @@ The oob bootstrap (smooths leave-one-out CV)
 \details{
 The implementation follows \cite{Efron1997}
 }
+\seealso{
+estMSE boot632
+}
