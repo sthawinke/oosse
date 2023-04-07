@@ -72,7 +72,8 @@ fitFunLM = function(y, x){lm.fit(y = y, x = cbind(1, x))}
 predFunLM = function(mod, x) {cbind(1,x) \%*\% mod$coef}
 y = Brassica$Pheno$Leaf_8_width
 R2lm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
-fitFun = fitFunLM, predFun = predFunLM)
+fitFun = fitFunLM, predFun = predFunLM, nFolds = 5)
+# A higher number of folds (e.g. 10) is recommended if computational resources allow
 }
 \references{
 \insertAllCited{}
