@@ -41,3 +41,7 @@ A vector with MSE estimate and its standard error
 \description{
 Estimate MSE and its standard error
 }
+\details{
+The nested cross-validation scheme follows \cite{Bates2021},
+the .632 bootstrap is implemented as in \cite{Efron1997}
+}

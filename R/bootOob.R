@@ -2,7 +2,7 @@
 #'
 #' @inheritParams R2oosse
 #' @param id sample indices sampled with replacement
-#'
+#' @details The implementation follows \cite{Efron1997}
 #' @return matrix of errors and inclusion times
 bootOob = function(y, x, id, fitFun, predFun){
     id2 = (id0 <- seq_along(y))[-id]

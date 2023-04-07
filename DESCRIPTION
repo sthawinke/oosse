@@ -16,4 +16,4 @@ Suggests:
 LazyData: true
 VignetteBuilder: knitr
 Depends: R (>= 4.2.0)
-BugReports: https://github.com/sthawinke/pengls
+BugReports: https://github.com/sthawinke/oosse

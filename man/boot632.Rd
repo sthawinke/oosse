@@ -23,3 +23,6 @@ The MSE estimate
 \description{
 The .632 bootstrap estimation of the MSE
 }
+\details{
+The implementation follows \cite{Efron1997}
+}

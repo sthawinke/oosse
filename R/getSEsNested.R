@@ -5,6 +5,7 @@
 #' @param n The sample size
 #'
 #' @return The estimate of the MSE and its standard error
+#' @details The calculation of the standard error of the MSE as proposed by \cite{Bates2021}
 getSEsNested = function(cvSplitReps, nOuterFolds, n){
     ErrNCV = mean(vapply(cvSplitReps, FUN.VALUE = double(nOuterFolds),
                          function(y) vapply(y, FUN.VALUE = double(1), function(x) x[["errHatTilde"]])))

@@ -18,6 +18,6 @@ A list with two components Expr and Pheno
 Brassica
 }
 \description{
-RNA-sequencing data of genetically identical Brassica napus plants in autumn, with 5 phenotypes next spring
+RNA-sequencing data of genetically identical Brassica napus plants in autumn, with 5 phenotypes next spring, as published by \cite{DeMeyer2022}.
 }
 \keyword{datasets}

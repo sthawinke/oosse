@@ -7,14 +7,15 @@ output:
     number_sections: true
     keep_md: true
 vignette: >
-  %\VignetteIndexEntry{Vignette of the pengls package}
+  %\VignetteIndexEntry{Vignette of the oosse package}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 # Introduction
 
-This vignette demonstrates the use of the __oosse__ package for estimating for estimating the out-of-sample R² and its standard error through resampling algorithms by \textcite{Hawinkel2023}.
+This vignette demonstrates the use of the __oosse__ package for estimating for estimating the out-of-sample R² and its standard error through resampling algorithms, described in ["The out-of-sample R²: estimation and inference"]( 	
+https://doi.org/10.48550/arXiv.2302.05131) by \textcite{Hawinkel2023}.
 
 \setcounter{tocdepth}{5}
 \tableofcontents

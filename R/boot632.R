@@ -3,6 +3,7 @@
 #' @inheritParams R2oosse
 #' @param id the sample indices resampled with replacement
 #'
+#'@details The implementation follows \cite{Efron1997}
 #' @return The MSE estimate
 boot632 = function(y, x, id, fitFun, predFun){
             modTrain = fitFun(y, x) #Fit on full model

@@ -23,3 +23,6 @@ matrix of errors and inclusion times
 \description{
 The oob bootstrap (smooths leave-one-out CV)
 }
+\details{
+The implementation follows \cite{Efron1997}
+}
