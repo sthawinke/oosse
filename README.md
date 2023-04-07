@@ -6,7 +6,7 @@ article](https://arxiv.org/abs/2302.05131). In this readme file, we
 provide installation instructions and basic usage examples, for more
 information and options see the package vignette and the help files.
 
-# Installation instuctions
+# Installation instructions
 
 The package relies on the BioConductor package BiocParallel for parallel
 computing. It can be installed as.

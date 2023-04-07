@@ -20,7 +20,7 @@ https://doi.org/10.48550/arXiv.2302.05131) by Hawinkel et al. 2023.
 \setcounter{tocdepth}{5}
 \tableofcontents
 
-# Installation instuctions
+# Installation instructions
 
 ```{r install, eval = FALSE}
 install.packages("oosse")
@@ -54,7 +54,7 @@ predFunLM = function(mod, x) {cbind(1,x) %*% mod$coef}
 ```
 
 Now that these functions have been defined, we apply the prediction model for leaf_8_width using the first 10 genes. Multithreading is used automatically using the _BiocParallel_ package. Change the following setup depending on your system.
-. 
+
 ```{r multithread}
 library(BiocParallel)
 nCores = 10
@@ -98,7 +98,7 @@ R2lm632jn = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
 
 ## Regularised linear model
 
-For high-dimensional problems, such as the Brassica dataset, a regularised linear model is better suited to incorporate information for all genes. We use the _cv.glmnet_ function from the _glmnet_ package \parencite{Friedman2010}, which includes internal cross-validation for tuning the penalty parameter. Following custom function definitions are needed to fit in with the naming convention of the _oosse_ package.
+For high-dimensional problems, such as the Brassica dataset, a regularised linear model is better suited to incorporate information for all genes. We use the _cv.glmnet_ function from the _glmnet_ package, which includes internal cross-validation for tuning the penalty parameter. Following custom function definitions are needed to fit in with the naming convention of the _oosse_ package.
 
 ```{r reglinmod}
 fitFunReg = function(y, x, ...) {cv.glmnet(y = y, x = x, ...)}
@@ -116,18 +116,18 @@ if(require(glmnet)){
 }
 ```
 
-## Support vector machine
+## Random forest
 
-As a final example we use a support vector machine as a prediction model. We use the implementation from the _e1071_ package \parencite{Meyer2023}.
+As a final example we use a random forest as a prediction model. We use the implementation from the _randomForest_ package.
 
 ```{r predBart}
-if(require(e1071)){
-    fitFunSvm = function(y, x, ...){e1071::svm(y = y, x, ...)}
-    predFunSvm = function(mod, x, ...){predict(mod, x, ...)}
-    R2svm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr,
+if(require(randomForest)){
+    fitFunrf = function(y, x, ...){randomForest(y = y, x, ...)}
+    predFunrf = function(mod, x, ...){predict(mod, x, ...)}
+    R2rf = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)],
                      nFolds = 5, cvReps = 1e2, nBootstrapsCor = 30,
-                        fitFun = fitFunSvm, predFun = predFunSvm)
-    R2svm$R2
+                        fitFun = fitFunrf, predFun = predFunrf)
+    R2rf$R2
 }
 ```
 
