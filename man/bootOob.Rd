@@ -24,7 +24,10 @@ matrix of errors and inclusion times
 The oob bootstrap (smooths leave-one-out CV)
 }
 \details{
-The implementation follows \cite{Efron1997}
+The implementation follows \insertCite{Efron1997}{oosse}
+}
+\references{
+\insertAllCited{}
 }
 \seealso{
 estMSE boot632

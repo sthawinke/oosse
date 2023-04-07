@@ -26,10 +26,11 @@
 #' @importFrom stats cor sd var
 #' @importFrom BiocParallel bplapply multicoreWorkers
 #'
-#' @details Multithreading is used as provided by the BiocParallel package,
+#' @details Implements the calculation of the R² and its standard error by \insertCite{Hawinkel2023}{oosse}.
+#'  Multithreading is used as provided by the BiocParallel package,
 #' so it is best to set this up before running R2oosse.
 #' A rough estimate of expected computation time is printed when prinTimeEstimate is true, but this is purely indicative.
-#' The options to estimate the mean squared error (MSE) are cross-validation \cite{Bates2021} or the .632 bootstrap \cite{Efron1997}.
+#' The options to estimate the mean squared error (MSE) are cross-validation \insertCite{Bates2021}{oosse} or the .632 bootstrap \insertCite{Efron1997}{oosse}.
 #' @examples
 #' data(Brassica)
 #' #Linear model
@@ -39,6 +40,9 @@
 #' R2lm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
 #' fitFun = fitFunLM, predFun = predFunLM)
 #' @seealso buildConfInt
+#' @importFrom Rdpack reprompt
+#' @references
+#'   \insertAllCited{}
 R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), methodCor = c("nonparametric", "jackknife"), printTimeEstimate = TRUE,
                        nFolds = 10L, nInnerFolds = nFolds - 1L, cvReps = 200L, nBootstraps = 200L, nBootstrapsCor = 50L, ...){
     fitFun = checkFitFun(fitFun) #Version of the fit function for internal use

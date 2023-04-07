@@ -4,8 +4,10 @@
 #' @return A vector with MSE estimate and its standard error
 #' @importFrom BiocParallel bplapply
 #' @importFrom stats var
-#' @details The nested cross-validation scheme follows \cite{Bates2021},
-#' the .632 bootstrap is implemented as in \cite{Efron1997}
+#' @details The nested cross-validation scheme follows \insertCite{Bates2021}{oosse},
+#' the .632 bootstrap is implemented as in \insertCite{Efron1997}{oosse}
+#' @references
+#'   \insertAllCited{}
 estMSE = function(y, x, fitFun, predFun, methodMSE, nFolds, nInnerFolds,
                   cvReps, nBootstraps){
         n <- length(y)

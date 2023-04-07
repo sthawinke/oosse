@@ -32,6 +32,9 @@ The marginal variance is scaled by (n+1)/n to the out-of-sample MST, so the user
 #The out-of-sample R² calculated using externally provided estimates
 RsquaredSE(MSE = 3, margVar = 4, SEMSE = 0.4, n = 50, corMSEMST = 0.75)
 }
+\references{
+\insertRef{Hawinkel2023}{oosse}
+}
 \seealso{
 R2oosse
 }

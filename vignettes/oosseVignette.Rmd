@@ -15,14 +15,18 @@ vignette: >
 # Introduction
 
 This vignette demonstrates the use of the __oosse__ package for estimating for estimating the out-of-sample R² and its standard error through resampling algorithms, described in ["The out-of-sample R²: estimation and inference"]( 	
-https://doi.org/10.48550/arXiv.2302.05131) by \textcite{Hawinkel2023}.
+https://doi.org/10.48550/arXiv.2302.05131) by Hawinkel et al. 2023.
 
 \setcounter{tocdepth}{5}
 \tableofcontents
 
 # Installation instuctions
 
-```{r}
+```{r install}
+install.packages("oosse")
+```
+
+```{r load}
 library(oosse)
 ```
 
@@ -57,10 +61,11 @@ nCores = 10
 register(MulticoreParam(nCores))
 ```
 
-Now estimate the $R^2$, also an estimate of the computation time is given.
+Now estimate the $R^2$, also a rough estimate of the computation time is given.
 
 ```{r LMpred}
-R2lm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10], fitFun = fitFunLM, predFun = predFunLM)
+R2lm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10], 
+               fitFun = fitFunLM, predFun = predFunLM)
 ```
 
 Estimates and standard error of the different components are now available.
@@ -83,7 +88,7 @@ buildConfInt(R2lm)
 buildConfInt(R2lm, what = "MSE", conf = 0.9)
 ```
 
-By default, cross-validation (CV) is used to estimate the MSE, and nonparametric bootstrapping is used to estimate the correlation between MSE and MST estimators. Other parameters can be supplied though, e.g. for bootstrap .632 estimation of the MSE and jackknife estimation of the correlation:
+By default, cross-validation (CV) is used to estimate the MSE, and nonparametric bootstrapping is used to estimate the correlation between MSE and MST estimators. Other choices can be supplied though, e.g. for bootstrap .632 estimation of the MSE and jackknife estimation of the correlation:
 
 ```{r lmBoot}
 R2lm632jn = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10], 
@@ -91,13 +96,13 @@ R2lm632jn = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
                     methodCor = "jackknife")
 ```
 
-## Regularised linear models
+## Regularised linear model
 
 For high-dimensional problems, such as the Brassica dataset, a regularised linear model is better suited to incorporate information for all genes. We use the _cv.glmnet_ function from the _glmnet_ package \parencite{Friedman2010}, which includes internal cross-validation for tuning the penalty parameter. Following custom function definitions are needed to fit in with the naming convention of the _oosse_ package.
 
 ```{r reglinmod}
 fitFunReg = function(y, x, ...) {cv.glmnet(y = y, x = x, ...)}
-predFunReg = function(mod, x, ...){predict(mod, newx = x)}
+predFunReg = function(mod, x, ...){predict(mod, newx = x, ...)}
 ```
 
 We adapt the parameter settings a bit to reduce computation time of the vignette.
@@ -107,6 +112,7 @@ if(require(glmnet)){
     R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)], #Subset genes for speed
                     nFolds = 5, cvReps = 1e2, nBootstrapsCor = 30,
                         fitFun = fitFunReg, predFun = predFunReg, alpha = 1)#Lasso model
+    R2pen$R2
 }
 ```
 
@@ -134,7 +140,4 @@ sessionInfo()
 ```
 
 \clearpage
-
-\printbibliography
-
 

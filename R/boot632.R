@@ -3,9 +3,11 @@
 #' @inheritParams R2oosse
 #' @param id the sample indices resampled with replacement
 #'
-#' @details The implementation follows \cite{Efron1997}
+#' @details The implementation follows \insertCite{Efron1997}{oosse}
 #' @return The MSE estimate
 #' @seealso estMSE bootOob
+#' @references
+#'   \insertAllCited{}
 boot632 = function(y, x, id, fitFun, predFun){
             modTrain = fitFun(y, x) #Fit on full model
             eOut = predFun(modTrain, x[-id, , drop = FALSE]) #Out of sample prediction

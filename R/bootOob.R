@@ -2,9 +2,11 @@
 #'
 #' @inheritParams R2oosse
 #' @param id sample indices sampled with replacement
-#' @details The implementation follows \cite{Efron1997}
+#' @details The implementation follows \insertCite{Efron1997}{oosse}
 #' @return matrix of errors and inclusion times
 #' @seealso estMSE boot632
+#' @references
+#'   \insertAllCited{}
 bootOob = function(y, x, id, fitFun, predFun){
     id2 = (id0 <- seq_along(y))[-id]
     Eis = double(length(id))

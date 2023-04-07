@@ -24,7 +24,10 @@ The MSE estimate
 The .632 bootstrap estimation of the MSE
 }
 \details{
-The implementation follows \cite{Efron1997}
+The implementation follows \insertCite{Efron1997}{oosse}
+}
+\references{
+\insertAllCited{}
 }
 \seealso{
 estMSE bootOob
