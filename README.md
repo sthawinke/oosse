@@ -8,13 +8,14 @@ information and options see the package vignette and the help files.
 
 # Installation instructions
 
-As soon as the package is available on CRAN, it can be installed as:
+The *oosse* package can be installed from CRAN as:
 
 ``` r
 install.packages("oosse") #When available on CRAN
 ```
 
-For now, installation from github is available.
+Alternatively, the latest (devel) version can be installed from github
+as follows.
 
 ``` r
 library(devtools)
@@ -85,7 +86,7 @@ R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2
 
     ## Fitting and evaluating the model once took 0.07 seconds.
     ## You requested 200 repeats of 10-fold cross-validation with 10 cores, which is expected to last for roughly
-    ## 2 minutes and 25.55 seconds
+    ## 2 minutes and 23.5 seconds
 
 Estimates and standard error of the different components are now
 available.
@@ -144,11 +145,11 @@ R2penBoot = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len
                         predFun = predFunReg, alpha = 1, nBootstraps = 1e2, cl = cl)#Lasso model
 ```
 
-    ## Fitting and evaluating the model once took 0.05 seconds.
+    ## Fitting and evaluating the model once took 0.06 seconds.
     ## You requested 100 .632 bootstrap instances with 10 cores, which is expected to last for roughly
-    ## 33.92 seconds
+    ## 37.12 seconds
 
-## Support vector machine
+## Random forest
 
 As a second example we use a random forest as a prediction model. We use
 the implementation from the *randomForest* package.
@@ -171,7 +172,7 @@ R2rf = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)
 
     ## Fitting and evaluating the model once took 0.15 seconds.
     ## You requested 100 repeats of 5-fold cross-validation with 10 cores, which is expected to last for roughly
-    ## 40.02 seconds
+    ## 39.22 seconds
 
 ``` r
 R2rf$R2

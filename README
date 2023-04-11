@@ -6,13 +6,13 @@ This repository demonstrates the use of the _oosse_ package for estimating the o
 
 # Installation instructions
 
-As soon as the package is available on CRAN, it can be installed as:
+The _oosse_ package can be installed from CRAN as:
 
 ```{r cran, eval = FALSE}
 install.packages("oosse") #When available on CRAN
 ```
 
-For now, installation from github is available.
+Alternatively, the latest (devel) version can be installed from github as follows.
 
 ```{r github, eval = FALSE}
 library(devtools)
@@ -88,7 +88,7 @@ R2penBoot = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len
                         predFun = predFunReg, alpha = 1, nBootstraps = 1e2, cl = cl)#Lasso model
 ```
 
-## Support vector machine
+## Random forest
 
 As a second example we use a random forest as a prediction model. We use the implementation from the _randomForest_ package.
 
