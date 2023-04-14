@@ -80,13 +80,13 @@ library(glmnet)
     ## Loaded glmnet 4.1-6
 
 ``` r
-R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)], 
+R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)],
                fitFun = fitFunReg, predFun = predFunReg, alpha = 1) #Lasso model
 ```
 
     ## Fitting and evaluating the model once took 0.07 seconds.
     ## You requested 200 repeats of 10-fold cross-validation with 10 cores, which is expected to last for roughly
-    ## 2 minutes and 23.5 seconds
+    ## 2 minutes and 25.55 seconds
 
 Estimates and standard error of the different components are now
 available.
@@ -133,6 +133,14 @@ buildConfInt(R2pen, what = "MSE", conf = 0.9)
     ##       5%      95% 
     ## 1.498743 2.762997
 
+``` r
+#MST
+buildConfInt(R2pen, what = "MST") 
+```
+
+    ##     2.5%    97.5% 
+    ## 4.129867 8.446729
+
 By default, cross-validation (CV) is used to estimate the MSE, and
 nonparametric bootstrapping is used to estimate the correlation between
 MSE and MST estimators. Other parameters can be supplied though,
@@ -147,7 +155,7 @@ R2penBoot = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len
 
     ## Fitting and evaluating the model once took 0.06 seconds.
     ## You requested 100 .632 bootstrap instances with 10 cores, which is expected to last for roughly
-    ## 37.12 seconds
+    ## 36.48 seconds
 
 ## Random forest
 

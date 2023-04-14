@@ -2,3 +2,6 @@
 output: github_document
 ---
 
+# 1.0.3
+
+ - Confidence intervals for the MST provided based on chi-squared distribution.

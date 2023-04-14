@@ -12,7 +12,7 @@
 #' @seealso \link{R2oosse}
 #' @details The confidence intervals for the R² and MSE are based on standard errors and normal approximations.
 #' The confidence interval for the MST is based on the chi-squared distribution as in equation (16) of \insertCite{Harding2014}{oosse},
-#' but with inflation by a factor (n+1)/n.
+#' but with inflation by a factor (n+1)/n. All quantities are out-of-sample.
 #'
 #' @examples
 #' data(Brassica)
@@ -22,8 +22,8 @@
 #' fitFun = fitFunLM, predFun = predFunLM, nFolds = 5)
 #' # A higher number of folds (e.g. 10) is recommended if computational resources allow
 #' buildConfInt(R2lm)
-#' buildConfInt(R2lm, what = "MSE)
-#' buildConfInt(R2lm, what = "MST)
+#' buildConfInt(R2lm, what = "MSE")
+#' buildConfInt(R2lm, what = "MST")
 #' @references
 #'     \insertRef{Hawinkel2023}{oosse}
 #'     \insertRef{Harding2014}{oosse}

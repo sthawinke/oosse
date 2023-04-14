@@ -56,7 +56,7 @@ Now estimate the $R^2$ while passing on the cluster object, also an estimate of 
 
 ```{r LMpred}
 library(glmnet)
-R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)], 
+R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)],
                fitFun = fitFunReg, predFun = predFunReg, alpha = 1) #Lasso model
 ```
 
@@ -78,6 +78,8 @@ Also confidence intervals can be constructed:
 buildConfInt(R2pen)
 #MSE, 90% confidence interval
 buildConfInt(R2pen, what = "MSE", conf = 0.9)
+#MST
+buildConfInt(R2pen, what = "MST") 
 ```
 
 By default, cross-validation (CV) is used to estimate the MSE, and nonparametric bootstrapping is used to estimate the correlation between MSE and MST estimators. Other parameters can be supplied though, e.g. for bootstrap .632 estimation of the MSE and jackknife estimation of the correlation:
