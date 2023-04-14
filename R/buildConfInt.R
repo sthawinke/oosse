@@ -25,8 +25,7 @@
 #' buildConfInt(R2lm, what = "MSE")
 #' buildConfInt(R2lm, what = "MST")
 #' @references
-#'     \insertRef{Hawinkel2023}{oosse}
-#'     \insertRef{Harding2014}{oosse}
+#'    \insertAllCited{}
 buildConfInt = function(oosseObj, what = c("R2", "MSE", "MST"), conf = 0.95){
     stopifnot(conf >0, conf <1)
     what = match.arg(what)

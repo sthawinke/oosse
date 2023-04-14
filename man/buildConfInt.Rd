@@ -39,8 +39,7 @@ buildConfInt(R2lm, what = "MSE")
 buildConfInt(R2lm, what = "MST")
 }
 \references{
-\insertRef{Hawinkel2023}{oosse}
-    \insertRef{Harding2014}{oosse}
+\insertAllCited{}
 }
 \seealso{
 \link{R2oosse}
