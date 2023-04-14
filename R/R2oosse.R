@@ -21,6 +21,7 @@
 #' \item{corMSEMST}{Estimated correlation between MSE and MST estimators}
 #' \item{params}{List of parameters used}
 #' \item{fullModel}{The model trained on the entire dataset using fitFun}
+#' \item{n}{The sample size of the training data}
 #' @export
 #' @importFrom methods formalArgs
 #' @importFrom stats cor sd var
@@ -85,5 +86,5 @@ R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), meth
                              "CV" = c("nFolds" = nFolds, "nInnerFolds" = nInnerFolds, "cvReps" = cvReps),
                              "bootstrap" = c("nBootstraps" = nBootstraps)), "methodMSE" = methodMSE,
                       "methodCor" = methodCor, "nBootstrapsCor" = if(methodCor=="nonparametric") nBootstrapsCor),
-         "fullModel" = fullModel))
+         "fullModel" = fullModel, "n" = n))
 }

@@ -86,6 +86,8 @@ Also confidence intervals can be constructed:
 buildConfInt(R2lm)
 #MSE, 90% confidence interval
 buildConfInt(R2lm, what = "MSE", conf = 0.9)
+#MST, based on chi-square distribution
+buildConfInt(R2lm, what = "MST")
 ```
 
 By default, cross-validation (CV) is used to estimate the MSE, and nonparametric bootstrapping is used to estimate the correlation between MSE and MST estimators. Other choices can be supplied though, e.g. for bootstrap .632 estimation of the MSE and jackknife estimation of the correlation:

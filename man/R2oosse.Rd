@@ -55,6 +55,7 @@ A list with components
 \item{corMSEMST}{Estimated correlation between MSE and MST estimators}
 \item{params}{List of parameters used}
 \item{fullModel}{The model trained on the entire dataset using fitFun}
+\item{n}{The sample size of the training data}
 }
 \description{
 Estimate the out-of-sample R² and its standard error
