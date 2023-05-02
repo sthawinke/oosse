@@ -135,7 +135,7 @@ buildConfInt(R2pen, what = "MSE", conf = 0.9)
 
 ``` r
 #MST
-buildConfInt(R2pen, what = "MST") 
+buildConfInt(R2pen, what = "MST")
 ```
 
     ##     2.5%    97.5% 
@@ -150,12 +150,12 @@ of the correlation:
 ``` r
 R2penBoot = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)],
                      methodMSE = "bootstrap", methodCor = "jackknife", fitFun = fitFunReg,
-                        predFun = predFunReg, alpha = 1, nBootstraps = 1e2, cl = cl)#Lasso model
+                        predFun = predFunReg, alpha = 1, nBootstraps = 1e2)#Lasso model
 ```
 
-    ## Fitting and evaluating the model once took 0.06 seconds.
+    ## Fitting and evaluating the model once took 0.05 seconds.
     ## You requested 100 .632 bootstrap instances with 10 cores, which is expected to last for roughly
-    ## 36.48 seconds
+    ## 33.28 seconds
 
 ## Random forest
 
@@ -175,12 +175,12 @@ fitFunrf = function(y, x, ...){randomForest(y = y, x, ...)}
 predFunrf = function(mod, x, ...){predict(mod, x, ...)}
 R2rf = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)],
                  nFolds = 5, cvReps = 1e2, nBootstrapsCor = 30,
-                    fitFun = fitFunrf, predFun = predFunrf, cl = cl)
+                    fitFun = fitFunrf, predFun = predFunrf)
 ```
 
     ## Fitting and evaluating the model once took 0.15 seconds.
     ## You requested 100 repeats of 5-fold cross-validation with 10 cores, which is expected to last for roughly
-    ## 39.22 seconds
+    ## 41.07 seconds
 
 ``` r
 R2rf$R2
