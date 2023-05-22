@@ -2,7 +2,7 @@
 % Please edit documentation in R/R2oosse.R
 \name{R2oosse}
 \alias{R2oosse}
-\title{Estimate the out-of-sample R² and its standard error}
+\title{Estimate out-of-sample R² and its standard error}
 \usage{
 R2oosse(
   y,
@@ -58,7 +58,7 @@ A list with components
 \item{n}{The sample size of the training data}
 }
 \description{
-Estimate the out-of-sample R² and its standard error
+Estimate out-of-sample R² and its standard error
 }
 \details{
 Implements the calculation of the R² and its standard error by \insertCite{Hawinkel2023}{oosse}.

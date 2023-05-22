@@ -1,4 +1,4 @@
-#' Calculate the out-of-sample R² and its standard error based on MSE estimates
+#' Calculate out-of-sample R² and its standard error based on MSE estimates
 #'
 #' @param MSE An estimate of the mean squared error (MSE)
 #' @param margVar The marginal variance of the outcome, not scaled by (n+1)/n

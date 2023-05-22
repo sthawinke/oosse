@@ -2,7 +2,7 @@
 % Please edit documentation in R/RsquaredSE.R
 \name{RsquaredSE}
 \alias{RsquaredSE}
-\title{Calculate the out-of-sample R² and its standard error based on MSE estimates}
+\title{Calculate out-of-sample R² and its standard error based on MSE estimates}
 \usage{
 RsquaredSE(MSE, margVar, SEMSE, n, corMSEMST)
 }
@@ -21,7 +21,7 @@ RsquaredSE(MSE, margVar, SEMSE, n, corMSEMST)
 A vector with the R² and standard error estimates
 }
 \description{
-Calculate the out-of-sample R² and its standard error based on MSE estimates
+Calculate out-of-sample R² and its standard error based on MSE estimates
 }
 \details{
 This function is exported to allow the user to estimate the MSE and its standard error

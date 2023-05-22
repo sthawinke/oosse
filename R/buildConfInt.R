@@ -1,4 +1,4 @@
-#' Calculate a confidence interval for the R²
+#' Calculate a confidence interval for R², MSE and MST
 #'
 #' @param oosseObj The result of the R2oosse call
 #' @param what For which property should the ci be found: R² (default), MSE or MST
@@ -10,7 +10,7 @@
 #' @importFrom stats qnorm
 #' @export
 #' @seealso \link{R2oosse}
-#' @details The confidence intervals for the R² and MSE are based on standard errors and normal approximations.
+#' @details The confidence intervals for R² and the MSE are based on standard errors and normal approximations.
 #' The confidence interval for the MST is based on the chi-squared distribution as in equation (16) of \insertCite{Harding2014}{oosse},
 #' but with inflation by a factor (n+1)/n. All quantities are out-of-sample.
 #'

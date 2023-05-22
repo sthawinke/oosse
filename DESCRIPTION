@@ -7,7 +7,7 @@ Authors@R:
     email = "stijn.hawinkel@psb.ugent.be", 
     role=c("cre", "aut"), comment = c(ORCID = "0000-0002-4501-5180")))
 Maintainer: Stijn Hawinkel <stijn.hawinkel@psb.ugent.be>
-Description: Estimates the out-of-sample R² through bootstrap or cross-validation as a measure of predictive performance. In addition, a standard error for this point estimate is provided, and confidence intervals are constructed.
+Description: Estimates out-of-sample R² through bootstrap or cross-validation as a measure of predictive performance. In addition, a standard error for this point estimate is provided, and confidence intervals are constructed.
 License: GPL-2
 Encoding: UTF-8
 RoxygenNote: 7.2.3

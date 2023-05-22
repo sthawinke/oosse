@@ -14,7 +14,7 @@ vignette: >
 
 # Introduction
 
-This vignette demonstrates the use of the __oosse__ package for estimating for estimating the out-of-sample R² and its standard error through resampling algorithms, described in ["The out-of-sample R²: estimation and inference"]( 	
+This vignette demonstrates the use of the __oosse__ package for estimating for estimating out-of-sample R² and its standard error through resampling algorithms, described in ["Out-of-sample R²: estimation and inference"]( 	
 https://doi.org/10.48550/arXiv.2302.05131) by Hawinkel et al. 2023.
 
 \setcounter{tocdepth}{5}
@@ -57,11 +57,11 @@ Now that these functions have been defined, we apply the prediction model for le
 
 ```{r multithread}
 library(BiocParallel)
-nCores = 2 # For cRAN build
+nCores = 2 # For CRAN build
 register(MulticoreParam(nCores))
 ```
 
-Now estimate the $R^2$, also a rough estimate of the computation time is given. Remember to provide the cluster for multithreading.
+Now estimate out-of-sample $R^2$, also a rough estimate of the computation time is given. Remember to provide the cluster for multithreading.
 
 ```{r LMpred}
 R2lm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10], 

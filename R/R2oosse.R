@@ -1,4 +1,4 @@
-#' Estimate the out-of-sample R² and its standard error
+#' Estimate out-of-sample R² and its standard error
 #'
 #' @param y The vector of outcome values
 #' @param x The matrix of predictors
