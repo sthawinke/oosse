@@ -1,7 +1,7 @@
 Package: oosse
 Type: Package
 Title: Out-of-Sample R² with Standard Error Estimation
-Version: 1.0.3
+Version: 1.0.4
 Authors@R: 
     c(person(given = "Stijn", family = "Hawinkel", 
     email = "stijn.hawinkel@psb.ugent.be", 
