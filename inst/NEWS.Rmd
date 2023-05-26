@@ -9,3 +9,7 @@ output: github_document
 # 1.0.4
 
  - Change nomenclature to omit "the" from $R^2$.
+ 
+# 1.0.6
+
+ - Cited publication in The American Statistician rather than preprint
