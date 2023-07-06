@@ -2,9 +2,10 @@
 This repository demonstrates the use of the *oosse* package for
 estimating out-of-sample R² and its standard error through resampling
 algorithms of the [corresponding
-article](https://arxiv.org/abs/2302.05131). In this readme file, we
-provide installation instructions and basic usage examples, for more
-information and options see the package vignette and the help files.
+article](https://doi.org/10.1080/00031305.2023.2216252). In this readme
+file, we provide installation instructions and basic usage examples, for
+more information and options see the package vignette and the help
+files.
 
 # Installation instructions
 
@@ -58,7 +59,7 @@ predFunReg = function(mod, x, ...){predict(mod, newx = x)}
 ```
 
 Now that these functions have been defined, we apply the prediction
-model for leaf_8\_width using the LASSO. Multithreading is used
+model for leaf_8_width using the LASSO. Multithreading is used
 automatically using the *BiocParallel* package. Change the following
 setup depending on your system.
 
@@ -77,7 +78,7 @@ library(glmnet)
 
     ## Loading required package: Matrix
 
-    ## Loaded glmnet 4.1-6
+    ## Loaded glmnet 4.1-7
 
 ``` r
 R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)],
@@ -97,15 +98,15 @@ R2pen$R2
 ```
 
     ##         R2       R2SE 
-    ## 0.62742380 0.09900512
+    ## 0.62903914 0.08722818
 
 ``` r
 #MSE
 R2pen$MSE
 ```
 
-    ##      MSE    MSESE 
-    ## 2.130870 0.384306
+    ##       MSE     MSESE 
+    ## 2.1216311 0.3840195
 
 ``` r
 #MST
@@ -123,7 +124,7 @@ buildConfInt(R2pen)
 ```
 
     ##      2.5%     97.5% 
-    ## 0.4333773 0.8214703
+    ## 0.4580750 0.8000032
 
 ``` r
 #MSE, 90% confidence interval
@@ -131,7 +132,7 @@ buildConfInt(R2pen, what = "MSE", conf = 0.9)
 ```
 
     ##       5%      95% 
-    ## 1.498743 2.762997
+    ## 1.489975 2.753287
 
 ``` r
 #MST
@@ -153,9 +154,9 @@ R2penBoot = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len
                         predFun = predFunReg, alpha = 1, nBootstraps = 1e2)#Lasso model
 ```
 
-    ## Fitting and evaluating the model once took 0.06 seconds.
+    ## Fitting and evaluating the model once took 0.07 seconds.
     ## You requested 100 .632 bootstrap instances with 10 cores, which is expected to last for roughly
-    ## 37.12 seconds
+    ## 46.72 seconds
 
 ## Random forest
 
@@ -178,13 +179,13 @@ R2rf = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)
                     fitFun = fitFunrf, predFun = predFunrf)
 ```
 
-    ## Fitting and evaluating the model once took 0.16 seconds.
+    ## Fitting and evaluating the model once took 0.15 seconds.
     ## You requested 100 repeats of 5-fold cross-validation with 10 cores, which is expected to last for roughly
-    ## 41.34 seconds
+    ## 40.81 seconds
 
 ``` r
 R2rf$R2
 ```
 
-    ##        R2      R2SE 
-    ## 0.6758210 0.1106841
+    ##         R2       R2SE 
+    ## 0.67358124 0.09647814
