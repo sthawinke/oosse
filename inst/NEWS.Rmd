@@ -13,3 +13,7 @@ output: github_document
 # 1.0.6
 
  - Cited publication in The American Statistician rather than preprint
+ 
+# 1.0.7
+
+ - Bug fix when supplying vector rather than matrix of regressors
