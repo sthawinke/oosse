@@ -52,6 +52,8 @@ R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), meth
     methodCor = match.arg(methodCor)
     if((n <- length(y)) != NROW(x)){
         stop("Number of observations in y and x must match!")
+    } else {
+        x = matrix(x, nrow = n) #Convert to matrix if vector supplied
     }
     if(NCOL(y)!=1){
         stop("Outcome must be one-dimensional!")
