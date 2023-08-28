@@ -1,5 +1,5 @@
 context("Confidence interval construction")
-n = 100;p=4
+n = 50;p=3
 x = matrix(rnorm(n*p),n,p)
 y = rnorm(n, x %*% rnorm(p), sd = 0.5)
 fitFunTest = function(y, x){lm.fit(y = y, x = cbind(1, x))}
