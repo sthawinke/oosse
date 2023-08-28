@@ -6,6 +6,7 @@ fitFunTest = function(y, x){lm.fit(y = y, x = cbind(1, x))}
 predFunTest = function(mod, x) {cbind(1,x) %*% mod$coef}
 test_that("oosse works as expected when correct input is provided", {
     expect_message(R2objCV <- R2oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest))
+    expect_message(R2objCV <- R2oosse(y = y, x = x[, 1, drop = TRUE], predFun = predFunTest, fitFun = fitFunTest)) # Vector input
     expect_message(R2objCVjn <- R2oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest, methodCor = "jackknife"))
     expect_message(R2objBoot <- R2oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest,
                                         methodMSE = "bootstrap"))
