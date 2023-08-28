@@ -4,5 +4,4 @@
 .Ruserdata
 *.Rproj
 .Rbuildignore
-README.Rmd
 revdep
