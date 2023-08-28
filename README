@@ -2,7 +2,7 @@
 output: github_document
 ---
 
-[![](https://cranlogs.r-pkg.org/badges/oosse)](https://cran.rstudio.com/web/packages/oosse/index.html)
+[![](https://cranlogs.r-pkg.org/badges/oosse)](https://cran.r-project.org/package=oosse)
 
 This repository demonstrates the use of the _oosse_ package for estimating out-of-sample R² and its standard error through resampling algorithms of the [corresponding article](https://doi.org/10.1080/00031305.2023.2216252). In this readme file, we provide installation instructions and basic usage examples, for more information and options see the package vignette and the help files.
 
