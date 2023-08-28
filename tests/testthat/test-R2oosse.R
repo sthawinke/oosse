@@ -1,5 +1,5 @@
 context("Input components")
-n = 100;p=4
+n = 50;p=3
 y = rnorm(n)
 x = matrix(rnorm(n*p),n,p)
 fitFunTest = function(y, x){lm.fit(y = y, x = cbind(1, x))}
