@@ -1,14 +1,9 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
 
-[![](https://cranlogs.r-pkg.org/badges/oosse)](https://cran.rstudio.com/web/packages/oosse/index.html)
+[![](https://cranlogs.r-pkg.org/badges/oosse)](https://cran.r-project.org/package=oosse)
 
 This repository demonstrates the use of the *oosse* package for
-estimating out-of-sample R² and its standard error through resampling
-algorithms of the [corresponding
+estimating out-of-sample R² (also called Q² in chemometrics) and its
+standard error through resampling algorithms of the [corresponding
 article](https://doi.org/10.1080/00031305.2023.2216252). In this readme
 file, we provide installation instructions and basic usage examples, for
 more information and options see the package vignette and the help
@@ -94,7 +89,7 @@ R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2
 
     ## Fitting and evaluating the model once took 0.07 seconds.
     ## You requested 200 repeats of 10-fold cross-validation with 10 cores, which is expected to last for roughly
-    ## 2 minutes and 17.35 seconds
+    ## 2 minutes and 25.55 seconds
 
 Estimates and standard error of the different components are now
 available.
@@ -163,7 +158,7 @@ R2penBoot = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len
 
     ## Fitting and evaluating the model once took 0.05 seconds.
     ## You requested 100 .632 bootstrap instances with 10 cores, which is expected to last for roughly
-    ## 31.36 seconds
+    ## 33.92 seconds
 
 ## Random forest
 
