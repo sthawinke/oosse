@@ -17,3 +17,7 @@ output: github_document
 # 1.0.7
 
  - Bug fix when supplying vector rather than matrix of regressors
+ 
+# 1.0.8
+
+ - Multithreading for windows machines in vignette

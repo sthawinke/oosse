@@ -56,7 +56,7 @@ predFunLM = function(mod, x) {cbind(1,x) %*% mod$coef}
 Now that these functions have been defined, we apply the prediction model for leaf_8_width using the first 10 genes. Multithreading is used automatically using the _BiocParallel_ package. Change the following setup depending on your system.
 
 ```{r multithread}
-nCores = 2 # For CRAN build
+nCores = 4 # For CRAN build
 if(.Platform$OS.type == "unix"){
     #On unix-based systems, use MulticoreParam
     library(BiocParallel)
@@ -66,6 +66,7 @@ if(.Platform$OS.type == "unix"){
     library(doParallel)
     Clus = makeCluster(nCores)
     registerDoParallel(Clus)
+    register(DoparParam(), default = TRUE)
 }
 ```
 
@@ -118,12 +119,12 @@ predFunReg = function(mod, x, ...){predict(mod, newx = x, ...)}
 We adapt the parameter settings a bit to reduce computation time of the vignette, it is recommended to use 10-fold cross-validation, at least 200 repeats of the cross-validation splits and 50 bootstrap replicates.
 
 ```{r reglinmodR2}
-nFolds = 4; cvReps = 5e1; nBoots = 3e1
+nFolds = 4; cvReps = 5e1; nBoots = 3e1;numFeat = 25
 if(require(glmnet)){
     if(.Platform$OS.type == "windows"){
         clusterEvalQ(Clus, require(glmnet))
     }
-    R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(25)], #Subset genes for speed
+    R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(numFeat)], #Subset genes for speed
                     nFolds = nFolds, cvReps = cvReps, nBootstrapsCor = nBoots,
                         fitFun = fitFunReg, predFun = predFunReg, alpha = 1)#Lasso model
     R2pen$R2
@@ -141,7 +142,7 @@ if(require(randomForest)){
     }
     fitFunrf = function(y, x, ...){randomForest(y = y, x, ...)}
     predFunrf = function(mod, x, ...){predict(mod, x, ...)}
-    R2rf = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(25)],
+    R2rf = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(numFeat)],
                      nFolds = nFolds, cvReps = cvReps, nBootstrapsCor = nBoots,
                         fitFun = fitFunrf, predFun = predFunrf)
     R2rf$R2

@@ -75,7 +75,7 @@ R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), meth
             switch(methodMSE,
                    "CV" = paste0(cvReps, " repeats of ", nFolds, "-fold cross-validation"),
                    "bootstrap" = paste(nBootstraps, ".632 bootstrap instances")),
-        " with ", nCores <- multicoreWorkers(), " cores, which is expected to last for roughly\n",
+        " with ", nCores <-  bpnworkers(bpparam()), " cores, which is expected to last for roughly\n",
         formatSeconds(sec <- (estMSEreps + estCorReps)*singleRunTime/nCores),
         if(nCores==1 && (sec >10)) {"\nConsider using multithreading with the 'BiocParallel' package to speed up computations."}, "\n")
     }
