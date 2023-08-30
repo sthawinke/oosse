@@ -23,9 +23,9 @@
 #' \item{fullModel}{The model trained on the entire dataset using fitFun}
 #' \item{n}{The sample size of the training data}
 #' @export
+#' @import BiocParallel
 #' @importFrom methods formalArgs
 #' @importFrom stats cor sd var
-#' @importFrom BiocParallel bplapply multicoreWorkers
 #' @importFrom doParallel registerDoParallel
 #' @importFrom Rdpack reprompt
 #'
