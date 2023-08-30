@@ -11,7 +11,7 @@ Description: Estimates out-of-sample R² through bootstrap or cross-validation a
 License: GPL-2
 Encoding: UTF-8
 RoxygenNote: 7.2.3
-Imports: stats, BiocParallel, Matrix, methods, Rdpack
+Imports: stats, BiocParallel, Matrix, methods, doParallel, Rdpack
 RdMacros: Rdpack
 Suggests:
     knitr,rmarkdown,testthat,randomForest,glmnet
