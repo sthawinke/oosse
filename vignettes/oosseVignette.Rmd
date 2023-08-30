@@ -64,7 +64,7 @@ register(MulticoreParam(nCores))
 Now estimate out-of-sample $R^2$, also a rough estimate of the computation time is given. Remember to provide the cluster for multithreading.
 
 ```{r LMpred}
-R2lm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10], 
+R2lm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:5], 
                fitFun = fitFunLM, predFun = predFunLM)
 ```
 
@@ -93,7 +93,7 @@ buildConfInt(R2lm, what = "MST")
 By default, cross-validation (CV) is used to estimate the MSE, and nonparametric bootstrapping is used to estimate the correlation between MSE and MST estimators. Other choices can be supplied though, e.g. for bootstrap .632 estimation of the MSE and jackknife estimation of the correlation:
 
 ```{r lmBoot}
-R2lm632jn = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10], 
+R2lm632jn = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:5], 
                     fitFun = fitFunLM, predFun = predFunLM, methodMSE = "bootstrap",
                     methodCor = "jackknife")
 ```
@@ -107,12 +107,12 @@ fitFunReg = function(y, x, ...) {cv.glmnet(y = y, x = x, ...)}
 predFunReg = function(mod, x, ...){predict(mod, newx = x, ...)}
 ```
 
-We adapt the parameter settings a bit to reduce computation time of the vignette.
+We adapt the parameter settings a bit to reduce computation time of the vignette, it is recommended to use 10-fold cross-validation, at least 200 repeats of the cross-validation splits and 50 bootstrap replicates.
 
 ```{r reglinmodR2}
 if(require(glmnet)){
-    R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(5e1)], #Subset genes for speed
-                    nFolds = 4, cvReps = 1e2, nBootstrapsCor = 30,
+    R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(25)], #Subset genes for speed
+                    nFolds = 3, cvReps = 5e1, nBootstrapsCor = 25,
                         fitFun = fitFunReg, predFun = predFunReg, alpha = 1)#Lasso model
     R2pen$R2
 }
@@ -122,12 +122,12 @@ if(require(glmnet)){
 
 As a final example we use a random forest as a prediction model. We use the implementation from the _randomForest_ package.
 
-```{r predBart}
+```{r predRf}
 if(require(randomForest)){
     fitFunrf = function(y, x, ...){randomForest(y = y, x, ...)}
     predFunrf = function(mod, x, ...){predict(mod, x, ...)}
-    R2rf = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(5e1)],
-                     nFolds = 4, cvReps = 1e2, nBootstrapsCor = 30,
+    R2rf = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(25)],
+                     nFolds = 3, cvReps = 5e1, nBootstrapsCor = 25,
                         fitFun = fitFunrf, predFun = predFunrf)
     R2rf$R2
 }

@@ -87,9 +87,9 @@ R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2
                fitFun = fitFunReg, predFun = predFunReg, alpha = 1) #Lasso model
 ```
 
-    ## Fitting and evaluating the model once took 0.07 seconds.
+    ## Fitting and evaluating the model once took 0.08 seconds.
     ## You requested 200 repeats of 10-fold cross-validation with 10 cores, which is expected to last for roughly
-    ## 2 minutes and 29.65 seconds
+    ## 2 minutes and 39.9 seconds
 
 Estimates and standard error of the different components are now
 available.
@@ -183,7 +183,7 @@ R2rf = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)
 
     ## Fitting and evaluating the model once took 0.16 seconds.
     ## You requested 100 repeats of 5-fold cross-validation with 10 cores, which is expected to last for roughly
-    ## 41.34 seconds
+    ## 42.4 seconds
 
 ``` r
 R2rf$R2
