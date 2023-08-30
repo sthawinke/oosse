@@ -121,7 +121,7 @@ We adapt the parameter settings a bit to reduce computation time of the vignette
 ```{r reglinmodR2}
 nFolds = 4; cvReps = 5e1; nBoots = 3e1;numFeat = 25
 if(require(glmnet)){
-    if(.Platform$OS.type == "windows"){
+    if(onWindows <- (.Platform$OS.type == "windows"){
         clusterEvalQ(Clus, require(glmnet))
     }
     R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(numFeat)], #Subset genes for speed
@@ -137,7 +137,7 @@ As a final example we use a random forest as a prediction model. We use the impl
 
 ```{r predRf}
 if(require(randomForest)){
-   if(.Platform$OS.type == "windows"){
+   if(onWindows){
         clusterEvalQ(Clus, require(randomForest))
     }
     fitFunrf = function(y, x, ...){randomForest(y = y, x, ...)}
@@ -147,7 +147,7 @@ if(require(randomForest)){
                         fitFun = fitFunrf, predFun = predFunrf)
     R2rf$R2
 }
-if(.Platform$OS.type == "windows"){
+if(onWindows){
     stopCluster(Clus)
 }
 ```
