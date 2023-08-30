@@ -57,9 +57,9 @@ Now that these functions have been defined, we apply the prediction model for le
 
 ```{r multithread}
 nCores = 2 # For CRAN build max 2
+library(BiocParallel)
 if(.Platform$OS.type == "unix"){
     #On unix-based systems, use MulticoreParam
-    library(BiocParallel)
     register(MulticoreParam(nCores))
 } else {
     #On windows, use makeCluster
@@ -119,7 +119,7 @@ predFunReg = function(mod, x, ...){predict(mod, newx = x, ...)}
 We adapt the parameter settings a bit to reduce computation time of the vignette, it is recommended to use 10-fold cross-validation, at least 200 repeats of the cross-validation splits and 50 bootstrap replicates.
 
 ```{r reglinmodR2}
-nFolds = 4; cvReps = 5e1; nBoots = 3e1;numFeat = 25
+nFolds = 5; cvReps = 1e2; nBoots = 4e1;numFeat = 25
 if(require(glmnet)){
     if(onWindows <- (.Platform$OS.type == "windows")){
         clusterEvalQ(Clus, require(glmnet))
