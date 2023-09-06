@@ -47,7 +47,7 @@ The fitting model must accept at least an outcome vector _y_ and a regressor mat
 fitFunLM = function(y, x){lm.fit(y = y, x = cbind(1, x))}
 ```
 
-The predictive model must accept arguments _mod_ (the fitted model) and _x_, the regressor matrix for a new set of observations.
+The predictive model must accept arguments _mod_ (the fitted model) and _x_, the regressor matrix for a new set of observations. 
 
 ```{r linModelPredict} 
 predFunLM = function(mod, x) {cbind(1,x) %*% mod$coef}
@@ -106,6 +106,19 @@ R2lm632jn = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:5],
                     fitFun = fitFunLM, predFun = predFunLM, methodMSE = "bootstrap",
                     methodCor = "jackknife")
 ```
+
+Supplying a dataframe with predictor variables is not allowed. The user is asked to build the design matrix yourself with model.matrix prior to calling _R2oosse_:
+
+```{r modelMatrix}
+#We construct a fake data frame also containing genotypes
+fakeDf = data.frame(Brassica$Expr[, 1:5], "genotype" = sample(c("Genotype1", "Genotype2", "Genotype3"), replace = TRUE, nrow(Brassica$Expr)))
+#Build the design matrix. The model.matrix variables automatically constructs dummy variables
+designMatrix = model.matrix(~ .  , data = fakeDf)[, -1] #Include no intercept as fitting function already does this
+#Now run oosse
+R2modMat = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = designMatrix, 
+                    fitFun = fitFunLM, predFun = predFunLM)
+```
+
 
 ## Regularised linear model
 

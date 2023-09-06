@@ -21,3 +21,7 @@ output: github_document
 # 1.0.8
 
  - Multithreading for windows machines in vignette
+ 
+# 1.0.9
+
+ - Disallow data frames as input

@@ -50,6 +50,9 @@ R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), meth
     predFun = checkPredFun(predFun)
     methodMSE = match.arg(methodMSE)
     methodCor = match.arg(methodCor)
+    if(is.data.frame(x)){
+        stop("Supplying dataframes as predictors is not supported. Convert to a design matrix using model.matrix.\nSee the vignette for an example.")
+    }
     if((n <- length(y)) != NROW(x)){
         stop("Number of observations in y and x must match!")
     } else if(NCOL(x) == 1){
@@ -58,13 +61,20 @@ R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), meth
     if(NCOL(y)!=1){
         stop("Outcome must be one-dimensional!")
     }
+    if(nFolds < 2){
+        stop("Number of folds must be at least 2!")
+        }
     stopifnot(is.numeric(nFolds), is.numeric(nInnerFolds), is.numeric(cvReps), is.numeric(nBootstraps), is.numeric(nBootstrapsCor))
     if(cvReps < 1e2){
         warning("Fewer than 100 repeats of the cross-validation split does not yield reliable estimates of the standard error!",
                 immediate. = TRUE)
     }
-    singleRunTime = system.time((predFun(fullModel <- fitFun(y, x, ...), x)-y)^2)["elapsed"]
-    if(printTimeEstimate){
+    singleRunTime = system.time(fullPred <- try(predFun(fullModel <- try(fitFun(y, x, ...), silent = TRUE), x), silent = TRUE))["elapsed"]
+    if(inherits(fullModel, "try-error")){
+        stop("Fitting model failed with error", fullModel, "\nCheck your fitFun")
+    } else if (inherits(fullPred, "try-error")){
+        stop("Prediction model failed with error", fullPred, "\nCheck your predFun")
+    } else if(printTimeEstimate){
         #Predict time this will take
         estMSEreps = switch(methodMSE, "CV" = cvReps*nFolds*(nInnerFolds+1),
                             "bootstrap" = nBootstraps*2)
