@@ -25,3 +25,7 @@ output: github_document
 # 1.0.9
 
  - Disallow data frames as input
+ 
+# 1.0.10
+
+- Set minimum of folds to 3 to prevent problems in CV

@@ -61,8 +61,8 @@ R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), meth
     if(NCOL(y)!=1){
         stop("Outcome must be one-dimensional!")
     }
-    if(nFolds < 2){
-        stop("Number of folds must be at least 2!")
+    if(nFolds < 3){
+        stop("Number of folds must be at least 3!")
         }
     stopifnot(is.numeric(nFolds), is.numeric(nInnerFolds), is.numeric(cvReps), is.numeric(nBootstraps), is.numeric(nBootstrapsCor))
     if(cvReps < 1e2){
