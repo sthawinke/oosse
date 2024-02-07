@@ -15,7 +15,7 @@ vignette: >
 # Introduction
 
 This vignette demonstrates the use of the __oosse__ package for estimating for estimating out-of-sample R² and its standard error through resampling algorithms, described in ["Out-of-sample R²: estimation and inference"]( 	
-https://doi.org/10.48550/arXiv.2302.05131) by Hawinkel et al. 2023.
+https://doi.org/10.1080/00031305.2023.2216252) by Hawinkel et al. 2023.
 
 \setcounter{tocdepth}{5}
 \tableofcontents
