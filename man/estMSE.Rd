@@ -42,7 +42,7 @@ A vector with MSE estimate and its standard error
 Estimate MSE and its standard error
 }
 \details{
-The nested cross-validation scheme follows \insertCite{Bates2021}{oosse},
+The nested cross-validation scheme follows \insertCite{Bates2023}{oosse},
 the .632 bootstrap is implemented as in \insertCite{Efron1997}{oosse}
 }
 \references{

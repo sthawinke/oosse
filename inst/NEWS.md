@@ -7,3 +7,27 @@
 # 1.0.4
 
 - Change nomenclature to omit “the” from $R^2$.
+
+# 1.0.6
+
+- Cited publication in The American Statistician rather than preprint
+
+# 1.0.7
+
+- Bug fix when supplying vector rather than matrix of regressors
+
+# 1.0.8
+
+- Multithreading for windows machines in vignette
+
+# 1.0.9
+
+- Disallow data frames as input
+
+# 1.0.10
+
+- Set minimum of folds to 3 to prevent problems in CV
+
+# 1.0.11
+
+- Update Bates and own publication from preprints to published articles

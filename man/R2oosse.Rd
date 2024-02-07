@@ -64,7 +64,7 @@ Estimate out-of-sample R² and its standard error
 Implements the calculation of the R² and its standard error by \insertCite{Hawinkel2023}{oosse}.
 Multithreading is used as provided by the BiocParallel or doParallel packages,
 A rough estimate of expected computation time is printed when printTimeEstimate is true, but this is purely indicative.
-The options to estimate the mean squared error (MSE) are cross-validation \insertCite{Bates2021}{oosse} or the .632 bootstrap \insertCite{Efron1997}{oosse}.
+The options to estimate the mean squared error (MSE) are cross-validation \insertCite{Bates2023}{oosse} or the .632 bootstrap \insertCite{Efron1997}{oosse}.
 }
 \examples{
 data(Brassica)

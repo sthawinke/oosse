@@ -1,7 +1,7 @@
 Package: oosse
 Type: Package
 Title: Out-of-Sample R² with Standard Error Estimation
-Version: 1.0.10
+Version: 1.0.11
 Authors@R: 
     c(person(given = "Stijn", family = "Hawinkel", 
     email = "stijn.hawinkel@psb.ugent.be", 
@@ -10,7 +10,7 @@ Maintainer: Stijn Hawinkel <stijn.hawinkel@psb.ugent.be>
 Description: Estimates out-of-sample R² through bootstrap or cross-validation as a measure of predictive performance. In addition, a standard error for this point estimate is provided, and confidence intervals are constructed.
 License: GPL-2
 Encoding: UTF-8
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.0
 Imports: stats, BiocParallel, Matrix, methods, doParallel, Rdpack
 RdMacros: Rdpack
 Suggests:

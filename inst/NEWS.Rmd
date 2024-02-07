@@ -29,3 +29,7 @@ output: github_document
 # 1.0.10
 
 - Set minimum of folds to 3 to prevent problems in CV
+
+# 1.0.11
+
+- Update Bates and own publication from preprints to published articles

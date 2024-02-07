@@ -20,7 +20,7 @@ The estimate of the MSE and its standard error
 Calculate standard error on MSE from nested CV results
 }
 \details{
-The calculation of the standard error of the MSE as proposed by \insertCite{Bates2021}{oosse}
+The calculation of the standard error of the MSE as proposed by \insertCite{Bates2023}{oosse}
 }
 \references{
 \insertAllCited{}
