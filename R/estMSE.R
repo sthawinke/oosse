@@ -4,7 +4,7 @@
 #' @return A vector with MSE estimate and its standard error
 #' @importFrom parallel parLapply
 #' @importFrom stats var
-#' @details The nested cross-validation scheme follows \insertCite{Bates2021}{oosse},
+#' @details The nested cross-validation scheme follows \insertCite{Bates2023}{oosse},
 #' the .632 bootstrap is implemented as in \insertCite{Efron1997}{oosse}
 #' @references
 #'   \insertAllCited{}

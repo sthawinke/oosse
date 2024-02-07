@@ -5,7 +5,7 @@
 #' @param n The sample size
 #'
 #' @return The estimate of the MSE and its standard error
-#' @details The calculation of the standard error of the MSE as proposed by \insertCite{Bates2021}{oosse}
+#' @details The calculation of the standard error of the MSE as proposed by \insertCite{Bates2023}{oosse}
 #' @seealso \link{estMSE}
 #' @references
 #'   \insertAllCited{}
