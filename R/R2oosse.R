@@ -4,7 +4,7 @@
 #' @param x The matrix of predictors
 #' @param fitFun The function for fitting the prediction model
 #' @param predFun The function for evaluating the prediction model
-#' @param methodMSE The method to estimate the MSE, either "CV" for cross-validation or "bootstrap" for .632 bootstrap
+#' @param methodLoss The method to estimate the MSE, either "CV" for cross-validation or "bootstrap" for .632 bootstrap
 #' @param methodCor The method to estimate the correlation between MSE and MST estimators, either "nonparametric" or "jackknife"
 #' @param printTimeEstimate A boolean, should an estimate of the running time be printed?
 #' @param nFolds The number of outer folds for cross-validation
@@ -44,11 +44,11 @@
 #' @seealso \link{buildConfInt}
 #' @references
 #'   \insertAllCited{}
-R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), methodCor = c("nonparametric", "jackknife"), printTimeEstimate = TRUE,
+R2oosse = function(y, x, fitFun, predFun, methodLoss = c("CV", "bootstrap"), methodCor = c("nonparametric", "jackknife"), printTimeEstimate = TRUE,
                        nFolds = 10L, nInnerFolds = nFolds - 1L, cvReps = 200L, nBootstraps = 200L, nBootstrapsCor = 50L,...){
     fitFun = checkFitFun(fitFun) #Version of the fit function for internal use
     predFun = checkPredFun(predFun)
-    methodMSE = match.arg(methodMSE)
+    methodLoss = match.arg(methodLoss)
     methodCor = match.arg(methodCor)
     if(is.data.frame(x)){
         stop("Supplying dataframes as predictors is not supported. Convert to a design matrix using model.matrix.\nSee the vignette for an example.")
@@ -76,27 +76,27 @@ R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), meth
         stop("Prediction model failed with error", fullPred, "\nCheck your predFun")
     } else if(printTimeEstimate){
         #Predict time this will take
-        estMSEreps = switch(methodMSE, "CV" = cvReps*nFolds*(nInnerFolds+1),
+        estModelLossreps = switch(methodLoss, "CV" = cvReps*nFolds*(nInnerFolds+1),
                             "bootstrap" = nBootstraps*2)
         # Number of repeats for estimating the MSE and its SE
         estCorReps = switch(methodCor, "nonparametric" = nBootstrapsCor, "jackknife" = n)*
-            switch(methodMSE, "CV" = nFolds, "bootstrap" = nBootstraps) #Number of repeats for correlation estimation
+            switch(methodLoss, "CV" = nFolds, "bootstrap" = nBootstraps) #Number of repeats for correlation estimation
         message("Fitting and evaluating the model once took ", formatSeconds(singleRunTime), ".\nYou requested ",
-            switch(methodMSE,
+            switch(methodLoss,
                    "CV" = paste0(cvReps, " repeats of ", nFolds, "-fold cross-validation"),
                    "bootstrap" = paste(nBootstraps, ".632 bootstrap instances")),
         " with ", nCores <-  bpnworkers(bpparam()), " cores, which is expected to last for roughly\n",
-        formatSeconds(sec <- (estMSEreps + estCorReps)*singleRunTime/nCores),
+        formatSeconds(sec <- (estModelLossreps + estCorReps)*singleRunTime/nCores),
         if(nCores==1 && (sec >10)) {"\nConsider using multithreading with the 'BiocParallel' package to speed up computations."}, "\n")
     }
-    seVec = estMSE(y, x, fitFun, predFun, methodMSE, nFolds = nFolds, nInnerFolds = nInnerFolds, cvReps = cvReps, nBootstraps = nBootstraps)
-    corMSEMST = estCorMSEMST(y, x, fitFun, predFun, methodMSE, methodCor, nBootstrapsCor, nFolds = nFolds, nBootstraps = nBootstraps)
+    seVec = estModelLoss(y, x, fitFun, predFun, methodLoss, nFolds = nFolds, nInnerFolds = nInnerFolds, cvReps = cvReps, nBootstraps = nBootstraps)
+    corMSEMST = estCorMSEMST(y, x, fitFun, predFun, methodLoss, methodCor, nBootstrapsCor, nFolds = nFolds, nBootstraps = nBootstraps)
     R2est = RsquaredSE(MSE = seVec["MSE"], margVar = margVar <- var(y), n = n, SEMSE = seVec["MSESE"], corMSEMST = corMSEMST)
     MST = margVar*(n+1)/n
     return(list("R2" = R2est, "MSE" = seVec, "MST" = c("MST" = MST, "MSTSE" = sqrt(2/(n-1))*MST), "corMSEMST" = corMSEMST,
-         "params" = c(switch(methodMSE,
+         "params" = c(switch(methodLoss,
                              "CV" = c("nFolds" = nFolds, "nInnerFolds" = nInnerFolds, "cvReps" = cvReps),
-                             "bootstrap" = c("nBootstraps" = nBootstraps)), "methodMSE" = methodMSE,
+                             "bootstrap" = c("nBootstraps" = nBootstraps)), "methodLoss" = methodLoss,
                       "methodCor" = methodCor, "nBootstrapsCor" = if(methodCor=="nonparametric") nBootstrapsCor),
          "fullModel" = fullModel, "n" = n))
 }
