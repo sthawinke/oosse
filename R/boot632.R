@@ -5,7 +5,7 @@
 #'
 #' @details The implementation follows \insertCite{Efron1997}{oosse}
 #' @return The MSE estimate
-#' @seealso \link{estMSE} \link{bootOob}
+#' @seealso \link{estModelLoss} \link{bootOob}
 #' @references
 #'   \insertAllCited{}
 boot632 = function(y, x, id, fitFun, predFun){

@@ -17,6 +17,7 @@ R2oosse(
   cvReps = 200L,
   nBootstraps = 200L,
   nBootstrapsCor = 50L,
+  loss = "squared",
   ...
 )
 }
@@ -44,6 +45,9 @@ R2oosse(
 \item{nBootstraps}{The number of .632 bootstraps}
 
 \item{nBootstrapsCor}{The number of bootstraps to estimate the correlation}
+
+\item{loss}{The type of loss to use to quantify discrepancy between observed and predicted values.
+Can be either "squared" or "binary".}
 
 \item{...}{passed onto fitFun and predFun}
 }

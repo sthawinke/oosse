@@ -9,7 +9,7 @@ estCorMSEMST(
   x,
   fitFun,
   predFun,
-  methodMSE,
+  methodLoss,
   methodCor,
   nBootstrapsCor,
   nFolds,
@@ -24,6 +24,8 @@ estCorMSEMST(
 \item{fitFun}{The function for fitting the prediction model}
 
 \item{predFun}{The function for evaluating the prediction model}
+
+\item{methodLoss}{The method to estimate the MSE, either "CV" for cross-validation or "bootstrap" for .632 bootstrap}
 
 \item{methodCor}{The method to estimate the correlation between MSE and MST estimators, either "nonparametric" or "jackknife"}
 

@@ -26,5 +26,5 @@ The calculation of the standard error of the MSE as proposed by \insertCite{Bate
 \insertAllCited{}
 }
 \seealso{
-\link{estMSE}
+\link{estModelLoss}
 }

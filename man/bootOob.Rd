@@ -30,5 +30,5 @@ The implementation follows \insertCite{Efron1997}{oosse}
 \insertAllCited{}
 }
 \seealso{
-\link{estMSE} \link{boot632}
+\link{estModelLoss} \link{boot632}
 }

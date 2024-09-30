@@ -12,6 +12,8 @@
 #' @param cvReps The number of repeats for the cross-validation
 #' @param nBootstraps The number of .632 bootstraps
 #' @param nBootstrapsCor The number of bootstraps to estimate the correlation
+#' @param loss The type of loss to use to quantify discrepancy between observed and predicted values.
+#' Can be either "squared" or "binary".
 #' @param ... passed onto fitFun and predFun
 #'
 #' @return A list with components
@@ -45,7 +47,7 @@
 #' @references
 #'   \insertAllCited{}
 R2oosse = function(y, x, fitFun, predFun, methodLoss = c("CV", "bootstrap"), methodCor = c("nonparametric", "jackknife"), printTimeEstimate = TRUE,
-                       nFolds = 10L, nInnerFolds = nFolds - 1L, cvReps = 200L, nBootstraps = 200L, nBootstrapsCor = 50L,...){
+                       nFolds = 10L, nInnerFolds = nFolds - 1L, cvReps = 200L, nBootstraps = 200L, nBootstrapsCor = 50L, loss = "squared",...){
     fitFun = checkFitFun(fitFun) #Version of the fit function for internal use
     predFun = checkPredFun(predFun)
     methodLoss = match.arg(methodLoss)

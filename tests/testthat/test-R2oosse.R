@@ -10,9 +10,9 @@ test_that("oosse works as expected when correct input is provided", {
     expect_message(R2objCV <- R2oosse(y = y, x = x[, 1, drop = TRUE], predFun = predFunTest, fitFun = fitFunTest)) # Vector input
     expect_message(R2objCVjn <- R2oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest, methodCor = "jackknife"))
     expect_message(R2objBoot <- R2oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest,
-                                        methodMSE = "bootstrap"))
+                                        methodLoss = "bootstrap"))
     expect_message(R2objBootJn <- R2oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest,
-                                        methodMSE = "bootstrap", methodCor = "jackknife"))
+                                        methodLoss = "bootstrap", methodCor = "jackknife"))
     expect_warning(R2objCV <- R2oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest, cvReps = 20))
     expect_silent(R2oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest, printTimeEstimate = FALSE))
 })
@@ -24,7 +24,7 @@ test_that("oosse throws an error when incorrect input is provided", {
     expect_error(R2oosse(y = y, x = as.data.frame(x), predFun = predFunTest, fitFun = fitFunTest))
     expect_error(R2oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunBroken))
     expect_error(R2oosse(y = y, x = x, predFun = predFunBroken, fitFun = fitFunTest))
-    expect_error(R2oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest, methodMSE = "LOOCV"))
+    expect_error(R2oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest, methodLoss = "LOOCV"))
     expect_error(R2oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest, methodCor = "parametric"))
     expect_error(R2oosse(y = y, x = x, predFun = predFunTest, fitFun = 1))
     expect_error(R2oosse(y = y, x = x, predFun = 1, fitFun = fitFunTest))

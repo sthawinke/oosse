@@ -6,7 +6,7 @@
 #'
 #' @return The estimate of the MSE and its standard error
 #' @details The calculation of the standard error of the MSE as proposed by \insertCite{Bates2023}{oosse}
-#' @seealso \link{estMSE}
+#' @seealso \link{estModelLoss}
 #' @references
 #'   \insertAllCited{}
 getSEsNested = function(cvSplitReps, nOuterFolds, n){
