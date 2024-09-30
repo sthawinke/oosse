@@ -9,7 +9,7 @@ R2oosse(
   x,
   fitFun,
   predFun,
-  methodMSE = c("CV", "bootstrap"),
+  methodLoss = c("CV", "bootstrap"),
   methodCor = c("nonparametric", "jackknife"),
   printTimeEstimate = TRUE,
   nFolds = 10L,
@@ -29,7 +29,7 @@ R2oosse(
 
 \item{predFun}{The function for evaluating the prediction model}
 
-\item{methodMSE}{The method to estimate the MSE, either "CV" for cross-validation or "bootstrap" for .632 bootstrap}
+\item{methodLoss}{The method to estimate the MSE, either "CV" for cross-validation or "bootstrap" for .632 bootstrap}
 
 \item{methodCor}{The method to estimate the correlation between MSE and MST estimators, either "nonparametric" or "jackknife"}
 

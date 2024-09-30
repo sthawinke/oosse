@@ -25,8 +25,6 @@ estCorMSEMST(
 
 \item{predFun}{The function for evaluating the prediction model}
 
-\item{methodMSE}{The method to estimate the MSE, either "CV" for cross-validation or "bootstrap" for .632 bootstrap}
-
 \item{methodCor}{The method to estimate the correlation between MSE and MST estimators, either "nonparametric" or "jackknife"}
 
 \item{nBootstrapsCor}{The number of bootstraps to estimate the correlation}

@@ -103,7 +103,7 @@ By default, cross-validation (CV) is used to estimate the MSE, and nonparametric
 
 ```{r lmBoot}
 R2lm632jn = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:5], 
-                    fitFun = fitFunLM, predFun = predFunLM, methodMSE = "bootstrap",
+                    fitFun = fitFunLM, predFun = predFunLM, methodLoss = "bootstrap",
                     methodCor = "jackknife")
 ```
 
