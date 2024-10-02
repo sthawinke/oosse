@@ -98,14 +98,32 @@ oosse = function(y, x, fitFun, predFun, methodLoss = c("CV", "bootstrap"), metho
         formatSeconds(sec <- (estModelLossreps + estCorReps)*singleRunTime/nCores),
         if(nCores==1 && (sec >10)) {"\nConsider using multithreading with the 'BiocParallel' package to speed up computations."}, "\n")
     }
-    seVec = estModelLoss(y, x, fitFun, predFun, methodLoss, nFolds = nFolds, nInnerFolds = nInnerFolds, cvReps = cvReps, nBootstraps = nBootstraps)
-    corEst = estCorMSEMST(y, x, fitFun, predFun, methodLoss, methodCor, nBootstrapsCor, nFolds = nFolds, nBootstraps = nBootstraps)
-    R2est = skillScoreSE(MSE = seVec["meanLoss"], margVar = margVar <- var(y), n = n, SEMSE = seVec["meanLossSE"], corEst = corEst)
-    MST = margVar*(n+1)/n
-    return(list("R2" = R2est, "MSE" = seVec, "MST" = c("MST" = MST, "MSTSE" = sqrt(2/(n-1))*MST), "corEst" = corEst,
+    modelLoss = estModelLoss(y, x, fitFun, predFun, methodLoss, nFolds = nFolds, nInnerFolds = nInnerFolds, cvReps = cvReps, nBootstraps = nBootstraps)
+    refLoss = estRefLoss(y, x, loss = loss, margVar = margVar <- var(y))
+    corEst = estCorMeanRef(y, x, fitFun, predFun, methodLoss, methodCor, nBootstrapsCor, nFolds = nFolds, nBootstraps = nBootstraps)
+    skillScore = skillScoreSE(meanLoss = seVec["meanLoss"], margVar = margVar, n = n,
+                              seMeanLoss = seVec["meanLossSE"], corEst = corEst, refLoss = refLoss["refLoss"], seRefLoss = refLoss["refLossSE"])
+    estRefLoss = function(y, x, margVar, skillScore){
+        out = if(skillScore == "R2"){
+            MST = margVar*(n+1)/n
+            c(MST, sqrt(2/(n-1))*MST)
+        } else if(skillScore == "Brier"){
+
+        } else if(skillScore == "Heidke"){
+
+        }
+        names(out) = c("refLoss", "refLossSE")
+        return(out)
+    }
+    list0 = list(skillScore, modelLoss, refLoss)
+    names(list0) = switch(skillScore,
+                          "R2" = c("R2", "MSE", "MST"),
+                          "Brier" = c("Brier skill score", "Brier score", "Reference loss"),
+                          "Heidke" = c("Heidke skill score", "Model missclassification rate", "Reference missclassification rate"))
+    return(c(list0, list("corEst" = corEst,
          "params" = c(switch(methodLoss,
                              "CV" = c("nFolds" = nFolds, "nInnerFolds" = nInnerFolds, "cvReps" = cvReps),
                              "bootstrap" = c("nBootstraps" = nBootstraps)), "methodLoss" = methodLoss, "loss" = loss, "skillScore" = skillScore,
                       "methodCor" = methodCor, "nBootstrapsCor" = if(methodCor=="nonparametric") nBootstrapsCor),
-         "fullModel" = fullModel, "n" = n))
+         "fullModel" = fullModel, "n" = n)))
 }

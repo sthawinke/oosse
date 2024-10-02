@@ -4,7 +4,7 @@
 #'
 #' @return the estimated correlation
 #' @importFrom parallel parLapply
-estCorMSEMST = function(y, x, fitFun, predFun, methodLoss, methodCor, nBootstrapsCor, nFolds, nBootstraps, loss){
+estCorMeanRef = function(y, x, fitFun, predFun, methodLoss, methodCor, nBootstrapsCor, nFolds, nBootstraps, loss){
     nReps = switch(methodCor, "nonparametric" = nBootstrapsCor, "jackknife" = length(y))
     matMSEMST = simplify2array(bplapply(seq_len(nReps), function(i){
             id = switch(methodCor, "nonparametric" = sample(length(y), replace = TRUE), "jackknife" = -i)

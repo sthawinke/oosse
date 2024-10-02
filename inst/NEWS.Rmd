@@ -33,3 +33,12 @@ output: github_document
 # 1.0.11
 
 - Update Bates and own publication from preprints to published articles
+
+# 1.1.1
+
+ - Embedding of R2 estimation into the wider framework of skill scores, implying sweeping changes
+ - Namechanges of key functions:
+  + R2oosse => oosse
+  + RsquaredSE => skillScoreSE
+  + estMSE => estModelLoss
+ - Implementation of Brier and Heidke skill scores
