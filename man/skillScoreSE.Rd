@@ -6,8 +6,8 @@
 \usage{
 skillScoreSE(
   meanLoss,
-  margVar,
   seMeanLoss,
+  margVar,
   n,
   corEst,
   refLoss,

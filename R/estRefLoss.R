@@ -1,0 +1,27 @@
+#' Estimate the out-of sample loss for the reference model
+#'
+#'The reference model taken here is the mean of the training data
+#'
+#' @param margVar The observed marginal variance
+#'
+#' @return A vector of length 2: the estimated reference loss and its standard error
+#' @inheritParams oosse
+#' @importFrom stats pbinom
+estRefLoss = function(y, x, margVar, skillScore, nBootstraps){
+    n = length(y)
+    yBar = mean(y)
+    MST = margVar*(n+1)/n
+    out = if(skillScore == "R2"){
+        c(MST, sqrt(2/(n-1))*MST)
+    } else if(skillScore == "Brier"){
+        c(MST, sqrt((1-2*yBar)^2*margVar)*(n+1)/n) #Check these n factors!
+    } else if(skillScore == "Heidke"){
+        lrAna = yBar*pbinom(n/2, size = n, prob = yBar) +
+            (1-yBar)*pbinom(n/2, size = n, prob = yBar, lower.tail = FALSE)
+        lrAnaBC = lrAna - 2*(bootCov <- estCovBoot(y, nBootstraps)) #Bias correction
+        deltaSE = abs(1+prFunDerivFull(yBar,n))*sqrt((yBar*(1-yBar)/n))
+        c(lrAnaBC, deltaSE)
+    }
+    names(out) = c("Estimate", "StandardError")
+    return(out)
+}

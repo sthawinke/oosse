@@ -99,23 +99,11 @@ oosse = function(y, x, fitFun, predFun, methodLoss = c("CV", "bootstrap"), metho
         if(nCores==1 && (sec >10)) {"\nConsider using multithreading with the 'BiocParallel' package to speed up computations."}, "\n")
     }
     modelLoss = estModelLoss(y, x, fitFun, predFun, methodLoss, nFolds = nFolds, nInnerFolds = nInnerFolds, cvReps = cvReps, nBootstraps = nBootstraps)
-    refLoss = estRefLoss(y, x, loss = loss, margVar = margVar <- var(y))
-    corEst = estCorMeanRef(y, x, fitFun, predFun, methodLoss, methodCor, nBootstrapsCor, nFolds = nFolds, nBootstraps = nBootstraps)
-    skillScore = skillScoreSE(meanLoss = seVec["meanLoss"], margVar = margVar, n = n,
-                              seMeanLoss = seVec["meanLossSE"], corEst = corEst, refLoss = refLoss["refLoss"], seRefLoss = refLoss["refLossSE"])
-    estRefLoss = function(y, x, margVar, skillScore){
-        out = if(skillScore == "R2"){
-            MST = margVar*(n+1)/n
-            c(MST, sqrt(2/(n-1))*MST)
-        } else if(skillScore == "Brier"){
-
-        } else if(skillScore == "Heidke"){
-
-        }
-        names(out) = c("refLoss", "refLossSE")
-        return(out)
-    }
-    list0 = list(skillScore, modelLoss, refLoss)
+    refLoss = estRefLoss(y, x, skillScore = skillScore, margVar = margVar <- var(y), nBootstraps = nBootstraps)
+    corEst = estCorMeanRef(y, x, fitFun, predFun, methodLoss, methodCor, nBootstrapsCor, nFolds = nFolds, nBootstraps = nBootstraps, loss = loss)
+    skillScoreRes = skillScoreSE(meanLoss = modelLoss["Estimate"], margVar = margVar, n = n,
+                              seMeanLoss = modelLoss["StandardError"], corEst = corEst, refLoss = refLoss["Estimate"], seRefLoss = refLoss["StandardError"])
+    list0 = list(skillScoreRes, modelLoss, refLoss)
     names(list0) = switch(skillScore,
                           "R2" = c("R2", "MSE", "MST"),
                           "Brier" = c("Brier skill score", "Brier score", "Reference loss"),

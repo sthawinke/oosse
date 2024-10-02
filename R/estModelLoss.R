@@ -50,7 +50,7 @@ estModelLoss = function(y, x, fitFun, predFun, methodLoss, nFolds, nInnerFolds,
                     MSE632est = mean(vapply(FUN.VALUE = double(1), bootReps, function(x) {x$MSE632est}))
                     MSEoob = processOob(bootReps)
                     SEmse = unname(MSE632est/MSEoob["MSEhat"]*MSEoob["SEhat"])
-                    c("meanLoss" = MSE632est, "meanLossSE" = SEmse)
+                    c("Estimate" = MSE632est, "StandardError" = SEmse)
             }
     return(seVec)
 }

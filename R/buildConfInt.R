@@ -34,7 +34,7 @@ buildConfInt = function(oosseObj, what = c("R2", "MSE", "MST", "BrierScore",
                    "BrierSkillScore", "ReferenceMissclassificationLoss", "HeidkeSkillScore")){
         zQuants = qnorm(bounds)
         obj = oosseObj[[what]]
-        ci = with(oosseObj, obj[what] + obj[paste0(what,"SE")]*zQuants)
+        ci = with(oosseObj, obj["Estimate"] + obj["StandardError"]*zQuants)
         if(what %in% c("R2", "BrierSkillScore", "HeidkeSkillScore")){
             ci[2] = min(ci[2], 1)#Truncate at 1
         } else if(what == "MSE"){
