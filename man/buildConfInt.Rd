@@ -4,10 +4,15 @@
 \alias{buildConfInt}
 \title{Calculate a confidence interval for R², MSE and MST}
 \usage{
-buildConfInt(oosseObj, what = c("R2", "MSE", "MST"), conf = 0.95)
+buildConfInt(
+  oosseObj,
+  what = c("R2", "MSE", "MST", "BrierScore", "BrierSkillScore",
+    "ReferenceMissclassificationLoss", "HeidkeSkillScore"),
+  conf = 0.95
+)
 }
 \arguments{
-\item{oosseObj}{The result of the R2oosse call}
+\item{oosseObj}{The result of the oosse call}
 
 \item{what}{For which property should the ci be found: R² (default), MSE or MST}
 
@@ -31,7 +36,7 @@ but with inflation by a factor (n+1)/n. All quantities are out-of-sample.
 data(Brassica)
 fitFunLM = function(y, x){lm.fit(y = y, x = cbind(1, x))}
 predFunLM = function(mod, x) {cbind(1,x) \%*\% mod$coef}
-R2lm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
+R2lm = oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
 fitFun = fitFunLM, predFun = predFunLM, nFolds = 10)
 buildConfInt(R2lm)
 buildConfInt(R2lm, what = "MSE")
@@ -41,5 +46,5 @@ buildConfInt(R2lm, what = "MST")
 \insertAllCited{}
 }
 \seealso{
-\link{R2oosse}
+\link{oosse}
 }

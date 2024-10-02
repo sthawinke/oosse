@@ -1,6 +1,6 @@
 #' Estimate correlation between MSE and MST estimators
 #'
-#' @inheritParams R2oosse
+#' @inheritParams oosse
 #'
 #' @return the estimated correlation
 #' @importFrom parallel parLapply

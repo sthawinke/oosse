@@ -13,7 +13,8 @@ estCorMSEMST(
   methodCor,
   nBootstrapsCor,
   nFolds,
-  nBootstraps
+  nBootstraps,
+  loss
 )
 }
 \arguments{
@@ -34,6 +35,9 @@ estCorMSEMST(
 \item{nFolds}{The number of outer folds for cross-validation}
 
 \item{nBootstraps}{The number of .632 bootstraps}
+
+\item{loss}{The type of loss to use to quantify discrepancy between observed and predicted values.
+Can be either "squared" or "binary".}
 }
 \value{
 the estimated correlation

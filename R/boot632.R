@@ -1,6 +1,6 @@
 #' The .632 bootstrap estimation of the MSE
 #'
-#' @inheritParams R2oosse
+#' @inheritParams oosse
 #' @param id the sample indices resampled with replacement
 #'
 #' @details The implementation follows \insertCite{Efron1997}{oosse}
@@ -19,7 +19,7 @@ boot632 = function(y, x, id, fitFun, predFun){
 }
 #' Repeated .632 bootstrapa
 #'
-#' @inheritParams R2oosse
+#' @inheritParams oosse
 #' @param ... passed onto boot632
 #'
 #' @return The estimated MSE

@@ -41,12 +41,12 @@
 #' fitFunLM = function(y, x){lm.fit(y = y, x = cbind(1, x))}
 #' predFunLM = function(mod, x) {cbind(1,x) %*% mod$coef}
 #' y = Brassica$Pheno$Leaf_8_width
-#' R2lm = skillScore(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
-#' fitFun = fitFunLM, predFun = predFunLM, nFolds = 10, skillScore = "R2)
+#' R2lm = oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
+#' fitFun = fitFunLM, predFun = predFunLM, nFolds = 10, skillScore = "R2")
 #' @seealso \link{buildConfInt}
 #' @references
 #'   \insertAllCited{}
-skillScore = function(y, x, fitFun, predFun, methodLoss = c("CV", "bootstrap"), methodCor = c("nonparametric", "jackknife"), printTimeEstimate = TRUE,
+oosse = function(y, x, fitFun, predFun, methodLoss = c("CV", "bootstrap"), methodCor = c("nonparametric", "jackknife"), printTimeEstimate = TRUE,
                        nFolds = 10L, nInnerFolds = nFolds - 1L, cvReps = 200L, nBootstraps = 200L, nBootstrapsCor = 50L,
                    skillScore = c("R2", "Brier", "Heidke"), ...){
     fitFun = checkFitFun(fitFun) #Version of the fit function for internal use

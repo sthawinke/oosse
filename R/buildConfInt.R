@@ -1,6 +1,6 @@
 #' Calculate a confidence interval for R², MSE and MST
 #'
-#' @param oosseObj The result of the R2oosse call
+#' @param oosseObj The result of the oosse call
 #' @param what For which property should the ci be found: R² (default), MSE or MST
 #' @param conf the confidence level required
 #'
@@ -9,7 +9,7 @@
 #' the lower bound at 0 for the MSE
 #' @importFrom stats qnorm
 #' @export
-#' @seealso \link{R2oosse}
+#' @seealso \link{oosse}
 #' @details The confidence intervals for R² and the MSE are based on standard errors and normal approximations.
 #' The confidence interval for the MST is based on the chi-squared distribution as in equation (16) of \insertCite{Harding2014}{oosse},
 #' but with inflation by a factor (n+1)/n. All quantities are out-of-sample.
@@ -18,7 +18,7 @@
 #' data(Brassica)
 #' fitFunLM = function(y, x){lm.fit(y = y, x = cbind(1, x))}
 #' predFunLM = function(mod, x) {cbind(1,x) %*% mod$coef}
-#' R2lm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
+#' R2lm = oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
 #' fitFun = fitFunLM, predFun = predFunLM, nFolds = 10)
 #' buildConfInt(R2lm)
 #' buildConfInt(R2lm, what = "MSE")

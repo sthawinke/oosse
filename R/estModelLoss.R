@@ -1,6 +1,6 @@
 #' Estimate MSE and its standard error
 #'
-#' @inheritParams R2oosse
+#' @inheritParams oosse
 #' @return A vector with MSE estimate and its standard error
 #' @importFrom parallel parLapply
 #' @importFrom stats var

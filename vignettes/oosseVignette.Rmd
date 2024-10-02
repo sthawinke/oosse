@@ -33,7 +33,7 @@ library(oosse)
 
 # Illustrative examples
 
-The _R2oosse_ function works with any pair of fitting and prediction functions. Here we illustrate a number of them, but any prediction function implemented in R can be used. The built-in dataset _Brassica_ is used, which contains _rlog_-transformed gene expression measurements for the 1,000 most expressed genes in the _Expr_ slot, as well as 5 outcome phenotypes in the _Pheno_ slot.
+The _oosse_ function works with any pair of fitting and prediction functions. Here we illustrate a number of them, but any prediction function implemented in R can be used. The built-in dataset _Brassica_ is used, which contains _rlog_-transformed gene expression measurements for the 1,000 most expressed genes in the _Expr_ slot, as well as 5 outcome phenotypes in the _Pheno_ slot.
 
 ```{r loadBrassica}
 data(Brassica)
@@ -73,7 +73,7 @@ if(.Platform$OS.type == "unix"){
 Now estimate out-of-sample $R^2$, also a rough estimate of the computation time is given. Remember to provide the cluster for multithreading.
 
 ```{r LMpred}
-R2lm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:5], 
+R2lm = oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:5], 
                fitFun = fitFunLM, predFun = predFunLM)
 ```
 
@@ -102,12 +102,12 @@ buildConfInt(R2lm, what = "MST")
 By default, cross-validation (CV) is used to estimate the MSE, and nonparametric bootstrapping is used to estimate the correlation between MSE and MST estimators. Other choices can be supplied though, e.g. for bootstrap .632 estimation of the MSE and jackknife estimation of the correlation:
 
 ```{r lmBoot}
-R2lm632jn = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:5], 
+R2lm632jn = oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:5], 
                     fitFun = fitFunLM, predFun = predFunLM, methodLoss = "bootstrap",
                     methodCor = "jackknife")
 ```
 
-Supplying a dataframe with predictor variables is not allowed. The user is asked to build the design matrix yourself with model.matrix prior to calling _R2oosse_:
+Supplying a dataframe with predictor variables is not allowed. The user is asked to build the design matrix yourself with model.matrix prior to calling _oosse_:
 
 ```{r modelMatrix}
 #We construct a fake data frame also containing genotypes
@@ -115,7 +115,7 @@ fakeDf = data.frame(Brassica$Expr[, 1:5], "genotype" = sample(c("Genotype1", "Ge
 #Build the design matrix. The model.matrix variables automatically constructs dummy variables
 designMatrix = model.matrix(~ .  , data = fakeDf)[, -1] #Include no intercept as fitting function already does this
 #Now run oosse
-R2modMat = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = designMatrix, 
+R2modMat = oosse(y = Brassica$Pheno$Leaf_8_width, x = designMatrix, 
                     fitFun = fitFunLM, predFun = predFunLM)
 ```
 
@@ -137,7 +137,7 @@ if(require(glmnet)){
     if(onWindows <- (.Platform$OS.type == "windows")){
         clusterEvalQ(Clus, require(glmnet))
     }
-    R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(numFeat)], #Subset genes for speed
+    R2pen = oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(numFeat)], #Subset genes for speed
                     nFolds = nFolds, cvReps = cvReps, nBootstrapsCor = nBoots,
                         fitFun = fitFunReg, predFun = predFunReg, alpha = 1)#Lasso model
     R2pen$R2
@@ -155,7 +155,7 @@ if(require(randomForest)){
     }
     fitFunrf = function(y, x, ...){randomForest(y = y, x, ...)}
     predFunrf = function(mod, x, ...){predict(mod, x, ...)}
-    R2rf = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(numFeat)],
+    R2rf = oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(numFeat)],
                      nFolds = nFolds, cvReps = cvReps, nBootstrapsCor = nBoots,
                         fitFun = fitFunrf, predFun = predFunrf)
     R2rf$R2
