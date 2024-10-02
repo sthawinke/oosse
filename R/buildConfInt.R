@@ -42,7 +42,7 @@ buildConfInt = function(oosseObj, what = c("R2", "MSE", "MST", "BrierScore",
         }
     } else if (what == "MST"){
         obj = oosseObj[[what]]
-        ci = with(oosseObj, obj[what]*((n-1)/qchisq(p = bounds[2:1], df = (n-1))))
+        ci = with(oosseObj, obj["Estimate"]*((n-1)/qchisq(p = bounds[2:1], df = (n-1))))
     }
     names(ci) = paste0(bounds*100, "%")
     return(ci)

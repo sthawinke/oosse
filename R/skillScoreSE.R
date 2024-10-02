@@ -38,6 +38,6 @@ skillScoreSE = function(meanLoss, seMeanLoss, margVar, n, corEst, refLoss, seRef
         covMat = nearPD(covMat)$mat #Convert to nearest positive definite matrix
     }
     out = c(unname(1-meanLoss/refLoss), as.vector(sqrt(Grad %*% covMat %*% Grad)))
-    names(out) = c(skillScore, paste0(skillScore, "SE"))
+    names(out) = c("Estimate", "StandardError")
     return(out)
 }
