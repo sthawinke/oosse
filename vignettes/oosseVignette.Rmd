@@ -119,7 +119,6 @@ R2modMat = oosse(y = Brassica$Pheno$Leaf_8_width, x = designMatrix,
                     fitFun = fitFunLM, predFun = predFunLM)
 ```
 
-
 ## Regularised linear model
 
 For high-dimensional problems, such as the Brassica dataset, a regularised linear model is better suited to incorporate information for all genes. We use the _cv.glmnet_ function from the _glmnet_ package, which includes internal cross-validation for tuning the penalty parameter. Following custom function definitions are needed to fit in with the naming convention of the _oosse_ package.

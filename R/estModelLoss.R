@@ -42,9 +42,9 @@ estModelLoss = function(y, x, fitFun, predFun, methodLoss, nFolds, nInnerFolds,
                     bootReps = bplapply(seq_len(nBootstraps), function(br){
                         id = sample(n, replace = TRUE)
                         #.632 bootstrap
-                        MSE632est = boot632(y, x, id, fitFun, predFun)
+                        MSE632est = boot632(y, x, id, fitFun, predFun, loss = loss)
                         #Out of bag bootstrap
-                        oob = bootOob(y, x, id, fitFun, predFun)
+                        oob = bootOob(y, x, id, fitFun, predFun, loss = loss)
                         list("oobObj" = oob, "MSE632est" = MSE632est)
                     })
                     MSE632est = mean(vapply(FUN.VALUE = double(1), bootReps, function(x) {x$MSE632est}))
