@@ -4,14 +4,14 @@
 #'
 #' @return the estimated correlation
 #' @importFrom parallel parLapply
-estCorMSEMST = function(y, x, fitFun, predFun, methodLoss, methodCor, nBootstrapsCor, nFolds, nBootstraps){
+estCorMSEMST = function(y, x, fitFun, predFun, methodLoss, methodCor, nBootstrapsCor, nFolds, nBootstraps, loss){
     nReps = switch(methodCor, "nonparametric" = nBootstrapsCor, "jackknife" = length(y))
     matMSEMST = simplify2array(bplapply(seq_len(nReps), function(i){
             id = switch(methodCor, "nonparametric" = sample(length(y), replace = TRUE), "jackknife" = -i)
-            c("MSEest" = switch(methodLoss,
-                                "bootstrap" = boot632multiple(nBootstraps = nBootstraps, y[id], x[id,,drop = FALSE], fitFun, predFun),
-                                "CV" = simpleCV(y[id], x[id, ,drop = FALSE], fitFun, predFun, nFolds)),
-              "MSTest" = var(y[id]))
+            c("modelLoss" = switch(methodLoss,
+                                "bootstrap" = boot632multiple(nBootstraps = nBootstraps, y[id], x[id,,drop = FALSE], fitFun, predFun, loss = loss),
+                                "CV" = simpleCV(y[id], x[id, ,drop = FALSE], fitFun, predFun, nFolds, loss = loss)),
+              "referenceLoss" = var(y[id]))
         }))
     corMSEMST = cor(matMSEMST[1,], matMSEMST[2,])
     return(corMSEMST)

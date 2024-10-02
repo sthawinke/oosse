@@ -2,12 +2,12 @@
 #'
 #' @inheritParams R2oosse
 #' @return The MSE estimate
-simpleCV = function(y, x, fitFun, predFun, nFolds){
+simpleCV = function(y, x, fitFun, predFun, nFolds, loss){
     folds = sample(rep(unFolds <- seq_len(nFolds), length.out = length(y)))
     mean(unlist(lapply(unFolds, function(uf){
             idTrain = folds!=uf
             predTest = predFun(fitFun(y[idTrain], x[idTrain,,drop = FALSE]),
                                x[!idTrain,,drop = FALSE])
-            (predTest-y[!idTrain])^2
+            estLoss(y[!idTrain], predTest, loss = loss)
     })))
 }

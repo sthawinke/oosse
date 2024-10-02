@@ -8,5 +8,5 @@
 estLoss = function(obs, pred, loss){
     switch(loss,
            "squared" = (obs-pred)^2,
-           "binary" = obs != pred)
+           "binary" = obs != round(pred))
 }

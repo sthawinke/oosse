@@ -41,17 +41,24 @@
 #' fitFunLM = function(y, x){lm.fit(y = y, x = cbind(1, x))}
 #' predFunLM = function(mod, x) {cbind(1,x) %*% mod$coef}
 #' y = Brassica$Pheno$Leaf_8_width
-#' R2lm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
-#' fitFun = fitFunLM, predFun = predFunLM, nFolds = 10)
+#' R2lm = skillScore(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
+#' fitFun = fitFunLM, predFun = predFunLM, nFolds = 10, skillScore = "R2)
 #' @seealso \link{buildConfInt}
 #' @references
 #'   \insertAllCited{}
-R2oosse = function(y, x, fitFun, predFun, methodLoss = c("CV", "bootstrap"), methodCor = c("nonparametric", "jackknife"), printTimeEstimate = TRUE,
-                       nFolds = 10L, nInnerFolds = nFolds - 1L, cvReps = 200L, nBootstraps = 200L, nBootstrapsCor = 50L, loss = "squared",...){
+skillScore = function(y, x, fitFun, predFun, methodLoss = c("CV", "bootstrap"), methodCor = c("nonparametric", "jackknife"), printTimeEstimate = TRUE,
+                       nFolds = 10L, nInnerFolds = nFolds - 1L, cvReps = 200L, nBootstraps = 200L, nBootstrapsCor = 50L,
+                   skillScore = c("R2", "Brier", "Heidke"), ...){
     fitFun = checkFitFun(fitFun) #Version of the fit function for internal use
     predFun = checkPredFun(predFun)
     methodLoss = match.arg(methodLoss)
     methodCor = match.arg(methodCor)
+    skillScore = match.arg(skillScore)
+    loss = if(skillScore %in% c("R2", "Brier")){
+        "squared"
+    } else if(skillScore %in% c("Heidke")){
+        "binary"
+    }
     if(is.data.frame(x)){
         stop("Supplying dataframes as predictors is not supported. Convert to a design matrix using model.matrix.\nSee the vignette for an example.")
     }
@@ -92,13 +99,13 @@ R2oosse = function(y, x, fitFun, predFun, methodLoss = c("CV", "bootstrap"), met
         if(nCores==1 && (sec >10)) {"\nConsider using multithreading with the 'BiocParallel' package to speed up computations."}, "\n")
     }
     seVec = estModelLoss(y, x, fitFun, predFun, methodLoss, nFolds = nFolds, nInnerFolds = nInnerFolds, cvReps = cvReps, nBootstraps = nBootstraps)
-    corMSEMST = estCorMSEMST(y, x, fitFun, predFun, methodLoss, methodCor, nBootstrapsCor, nFolds = nFolds, nBootstraps = nBootstraps)
-    R2est = RsquaredSE(MSE = seVec["MSE"], margVar = margVar <- var(y), n = n, SEMSE = seVec["MSESE"], corMSEMST = corMSEMST)
+    corEst = estCorMSEMST(y, x, fitFun, predFun, methodLoss, methodCor, nBootstrapsCor, nFolds = nFolds, nBootstraps = nBootstraps)
+    R2est = skillScoreSE(MSE = seVec["meanLoss"], margVar = margVar <- var(y), n = n, SEMSE = seVec["meanLossSE"], corEst = corEst)
     MST = margVar*(n+1)/n
-    return(list("R2" = R2est, "MSE" = seVec, "MST" = c("MST" = MST, "MSTSE" = sqrt(2/(n-1))*MST), "corMSEMST" = corMSEMST,
+    return(list("R2" = R2est, "MSE" = seVec, "MST" = c("MST" = MST, "MSTSE" = sqrt(2/(n-1))*MST), "corEst" = corEst,
          "params" = c(switch(methodLoss,
                              "CV" = c("nFolds" = nFolds, "nInnerFolds" = nInnerFolds, "cvReps" = cvReps),
-                             "bootstrap" = c("nBootstraps" = nBootstraps)), "methodLoss" = methodLoss,
+                             "bootstrap" = c("nBootstraps" = nBootstraps)), "methodLoss" = methodLoss, "loss" = loss, "skillScore" = skillScore,
                       "methodCor" = methodCor, "nBootstrapsCor" = if(methodCor=="nonparametric") nBootstrapsCor),
          "fullModel" = fullModel, "n" = n))
 }

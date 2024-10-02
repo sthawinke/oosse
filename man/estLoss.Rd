@@ -10,7 +10,7 @@ estLoss(obs, pred, loss)
 \item{obs, pred}{Observed and predicted observations}
 
 \item{loss}{The loss type. For "squared" this is (obs-pred)^2, for
-"binary" it is I(obs=pred).}
+"binary" it is 1-I(obs=pred).}
 }
 \value{
 A vector of losses of the same length as obs and pred
