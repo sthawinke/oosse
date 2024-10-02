@@ -8,12 +8,12 @@
 #' @seealso \link{estModelLoss} \link{bootOob}
 #' @references
 #'   \insertAllCited{}
-boot632 = function(y, x, id, fitFun, predFun){
+boot632 = function(y, x, id, fitFun, predFun, loss){
             modTrain = fitFun(y, x) #Fit on full model
             eOut = predFun(modTrain, x[-id, , drop = FALSE]) #Out of sample prediction
             eIn = predFun(modTrain, x) #In sample prediction
-            ErrOutOfSample = mean((eOut-y[-id])^2) #Out of sample error
-            ErrInSample = mean((eIn-y)^2)#In sample error
+            ErrOutOfSample = mean(estLoss(y[-id], eOut)) #Out of sample error
+            ErrInSample = mean(estLoss(y, eIn, loss))#In sample error
             expvec = c(exp(-1), 1-exp(-1))
             sum(expvec*c(ErrInSample, ErrOutOfSample))
 }
