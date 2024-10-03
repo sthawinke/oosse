@@ -27,13 +27,13 @@ processOob = function(x){
     Nmat = sapply(x, function(y) y$oobObj[, "Nis"])
     n = nrow(Nmat)
     Imat = Nmat==0
-    rI = rowSums(Imat)
+    rI = rowSums(Imat, na.rm = TRUE)
     IQmat = vapply(FUN.VALUE = double(n), x, function(y){y$oobObj[,"Eis"]})*Imat
-    Eis = rowSums(IQmat)/rI
-    errEst = sum(Eis)
+    Eis = rowSums(IQmat, na.rm = TRUE)/rI
+    errEst = sum(Eis, na.rm = TRUE)
     # Following Efron1997, equation (40)
-    qMat = colMeans(IQmat)
-    Dis = (2+1/(n-1))*(Eis-errEst)/n + ((Nmat-rowMeans(Nmat)) %*% qMat)/rI
-    seEst = sqrt(sum(Dis^2))
+    qMat = colMeans(IQmat, na.rm = TRUE)
+    Dis = (2+1/(n-1))*(Eis-errEst)/n + ((Nmat-rowMeans(Nmat, na.rm = TRUE)) %*% qMat)/rI
+    seEst = sqrt(sum(Dis^2, na.rm = TRUE))
     c("MSEhat" = errEst, "SEhat" = seEst)
 }

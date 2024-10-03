@@ -32,9 +32,9 @@ estModelLoss = function(y, x, fitFun, predFun, methodLoss, nFolds, nInnerFolds,
                             estLoss(y[!idTrainIn], predTest, loss = loss)
                         })
                         #summary statistics
-                        errHatTilde = mean(unlist(eIn))
-                        a = (errHatTilde-mean(eOut))^2
-                        b = var(eOut)/length(eOut)
+                        errHatTilde = mean(unlist(eIn), na.rm = TRUE)
+                        a = (errHatTilde-mean(eOut, na.rm = TRUE))^2
+                        b = var(eOut, na.rm = TRUE)/length(eOut)
                         list("a" = a, "b" = b, "errHatTilde" = errHatTilde, "eOut" = eOut)
                     })
                 })
@@ -48,7 +48,7 @@ estModelLoss = function(y, x, fitFun, predFun, methodLoss, nFolds, nInnerFolds,
                         oob = bootOob(y, x, id, fitFun, predFun, loss = loss)
                         list("oobObj" = oob, "MSE632est" = MSE632est)
                     })
-                    MSE632est = mean(vapply(FUN.VALUE = double(1), bootReps, function(x) {x$MSE632est}))
+                    MSE632est = mean(vapply(FUN.VALUE = double(1), bootReps, function(x) {x$MSE632est}), na.rm = TRUE)
                     MSEoob = processOob(bootReps)
                     SEmse = unname(MSE632est/MSEoob["MSEhat"]*MSEoob["SEhat"])
                     c("Estimate" = MSE632est, "StandardError" = SEmse)
