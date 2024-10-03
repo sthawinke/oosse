@@ -4,7 +4,7 @@ prFun = function(p, n){
 }
 prFunDeriv = function(p, n){
     seqK = 0:floor(.5*n)
-    sum(binomNewton(n, seqK)*(seqK*p^(seqK-1) *(1-p)^(n-seqK) - p^seqK*(n-seqK) * (1-p)^(n-seqK-1)))
+    sum(choose(n, seqK)*(seqK*p^(seqK-1) *(1-p)^(n-seqK) - p^seqK*(n-seqK) * (1-p)^(n-seqK-1)))
 }
 prFunDerivFull = function(p, n){
     seqK = 0:floor(.5*n)

@@ -13,6 +13,8 @@ estRefLoss(y, x, margVar, skillScore, nBootstraps)
 
 \item{margVar}{The observed marginal variance}
 
+\item{skillScore}{The desired skill score. Currently, "R2", "Brier" and "Heidke" are implemented.}
+
 \item{nBootstraps}{The number of .632 bootstraps}
 }
 \value{

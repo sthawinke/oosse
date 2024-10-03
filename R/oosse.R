@@ -14,6 +14,7 @@
 #' @param nBootstrapsCor The number of bootstraps to estimate the correlation
 #' @param loss The type of loss to use to quantify discrepancy between observed and predicted values.
 #' Can be either "squared" or "binary".
+#' @param skillScore The desired skill score. Currently, "R2", "Brier" and "Heidke" are implemented.
 #' @param ... passed onto fitFun and predFun
 #'
 #' @return A list with components
@@ -105,7 +106,7 @@ oosse = function(y, x, fitFun, predFun, methodLoss = c("CV", "bootstrap"), metho
     refLoss = estRefLoss(y, x, skillScore = skillScore, margVar = margVar <- var(y), nBootstraps = nBootstraps)
     corEst = estCorMeanRef(y, x, fitFun, predFun, methodLoss, methodCor, nBootstrapsCor, nFolds = nFolds, nBootstraps = nBootstraps, loss = loss)
     skillScoreRes = skillScoreSE(meanLoss = modelLoss["Estimate"], margVar = margVar, n = n,
-                              seMeanLoss = modelLoss["StandardError"], corEst = corEst, refLoss = refLoss["Estimate"], seRefLoss = refLoss["StandardError"])
+                              meanLossSE = modelLoss["StandardError"], corEst = corEst, refLoss = refLoss["Estimate"], refLossSE = refLoss["StandardError"])
     list0 = list(skillScoreRes, modelLoss, refLoss)
     names(list0) = switch(skillScore,
                           "R2" = c("R2", "MSE", "MST"),

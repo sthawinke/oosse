@@ -4,11 +4,12 @@
 #'
 #' @return The estimated covariance
 #' @inheritParams oosse
-#' @importFrom stats pbinom
+#' @importFrom stats pbinom cov
 estCovBoot = function(y, nBootstraps){
+    n = length(y)
     tmp = vapply(integer(nBootstraps), FUN.VALUE = double(2), function(j){
         ySam = sample(y, replace = TRUE)
-        prob = pbinom(nTrain/2, size = nTrain, prob = piHat <- mean(ySam))
+        prob = pbinom(n/2, size = n, prob = piHat <- mean(ySam))
         c("piHat" = piHat, "prob" = prob)
     })
     cov(tmp[1,], tmp[2,])

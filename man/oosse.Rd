@@ -46,6 +46,8 @@ oosse(
 
 \item{nBootstrapsCor}{The number of bootstraps to estimate the correlation}
 
+\item{skillScore}{The desired skill score. Currently, "R2", "Brier" and "Heidke" are implemented.}
+
 \item{...}{passed onto fitFun and predFun}
 
 \item{loss}{The type of loss to use to quantify discrepancy between observed and predicted values.

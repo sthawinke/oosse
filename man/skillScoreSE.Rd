@@ -11,7 +11,7 @@ skillScoreSE(
   n,
   corEst,
   refLoss,
-  seRefLoss,
+  refLossSE,
   skillScore = c("R2", "Brier", "Heidke")
 )
 }
@@ -25,6 +25,8 @@ skillScoreSE(
 \item{n}{the sample size of the training data}
 
 \item{corEst}{The correlation between model and reference loss estimators}
+
+\item{refLoss, refLossSE}{The reference loss and its standard error. Not required when skillScore is "R2"}
 }
 \value{
 A vector with the R² and standard error estimates
@@ -39,11 +41,14 @@ The marginal variance is scaled by (n+1)/n to the out-of-sample refLoss, so the 
 }
 \examples{
 # The out-of-sample R² calculated using externally provided estimates
-skillScoreSE(meanLoss = 3, margVar = 4, meanLossSE = 0.4, n = 50, corEst = 0.75)
+skillScoreSE(meanLoss = 3, margVar = 4, meanLossSE = 0.4, n = 50,
+corEst = 0.75)
 # The out-of-sample Brier skill score
-skillScoreSE(meanLoss = 3, meanLossSE = 0.4, refLoss = 4, seRefLoss = 0.2, corEst = 0.75, skillScore = "Brier")
+skillScoreSE(meanLoss = 3, meanLossSE = 0.4, refLoss = 4, refLossSE = 0.2,
+corEst = 0.75, skillScore = "Brier")
 # The out-of-sample Heidke skill score
-skillScoreSE(meanLoss = .3, meanLossSE = 0.05, refLoss = .44, seRefLoss = 0.02, corEst = 0.75, skillScore = "Heidke")
+skillScoreSE(meanLoss = .3, meanLossSE = 0.05, refLoss = .44,
+refLossSE = 0.02, corEst = 0.75, skillScore = "Heidke")
 }
 \references{
 \insertRef{Hawinkel2023}{oosse}
