@@ -29,4 +29,5 @@ test_that("oosse throws an error when incorrect input is provided", {
     expect_error(oosse(y = y, x = x, predFun = predFunTest, fitFun = 1))
     expect_error(oosse(y = y, x = x, predFun = 1, fitFun = fitFunTest))
     expect_error(R2objCV <- oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest, nFolds = 1)) #Only one CV fold
+    expect_error(oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest, skillScore = "Brier"))
     })

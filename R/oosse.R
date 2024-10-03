@@ -59,6 +59,9 @@ oosse = function(y, x, fitFun, predFun, methodLoss = c("CV", "bootstrap"), metho
     } else if(skillScore %in% c("Heidke")){
         "binary"
     }
+    if(skillScore %in% c("Brier", "Heidke") && !all(y %in% c(0,1))){
+        stop("For skill score", skillScore, "only binary outcomes y are allowed!")
+    }
     if(is.data.frame(x)){
         stop("Supplying dataframes as predictors is not supported. Convert to a design matrix using model.matrix.\nSee the vignette for an example.")
     }
