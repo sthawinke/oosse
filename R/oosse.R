@@ -100,7 +100,8 @@ oosse = function(y, x, fitFun, predFun, methodLoss = c("CV", "bootstrap"), metho
         formatSeconds(sec <- (estModelLossreps + estCorReps)*singleRunTime/nCores),
         if(nCores==1 && (sec >10)) {"\nConsider using multithreading with the 'BiocParallel' package to speed up computations."}, "\n")
     }
-    modelLoss = estModelLoss(y, x, fitFun, predFun, methodLoss, nFolds = nFolds, nInnerFolds = nInnerFolds, cvReps = cvReps, nBootstraps = nBootstraps)
+    modelLoss = estModelLoss(y, x, fitFun, predFun, methodLoss, nFolds = nFolds,
+                             nInnerFolds = nInnerFolds, cvReps = cvReps, nBootstraps = nBootstraps, loss = loss)
     refLoss = estRefLoss(y, x, skillScore = skillScore, margVar = margVar <- var(y), nBootstraps = nBootstraps)
     corEst = estCorMeanRef(y, x, fitFun, predFun, methodLoss, methodCor, nBootstrapsCor, nFolds = nFolds, nBootstraps = nBootstraps, loss = loss)
     skillScoreRes = skillScoreSE(meanLoss = modelLoss["Estimate"], margVar = margVar, n = n,
