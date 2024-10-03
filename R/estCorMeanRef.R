@@ -14,6 +14,6 @@ estCorMeanRef = function(y, x, fitFun, predFun, methodLoss, methodCor, nBootstra
                                 "CV" = simpleCV(y[id], x[id, ,drop = FALSE], fitFun, predFun, nFolds, loss = loss)),
               "referenceLoss" = var(y[id]))
         }))
-    corMSEMST = cor(matMSEMST[1,], matMSEMST[2,])
+    corMSEMST = cor(matMSEMST[1,], matMSEMST[2,], use = "complete.obs")
     return(corMSEMST)
 }
