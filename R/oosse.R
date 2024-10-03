@@ -12,8 +12,6 @@
 #' @param cvReps The number of repeats for the cross-validation
 #' @param nBootstraps The number of .632 bootstraps
 #' @param nBootstrapsCor The number of bootstraps to estimate the correlation
-#' @param loss The type of loss to use to quantify discrepancy between observed and predicted values.
-#' Can be either "squared" or "binary".
 #' @param skillScore The desired skill score. Currently, "R2", "Brier" and "Heidke" are implemented.
 #' @param ... passed onto fitFun and predFun
 #'

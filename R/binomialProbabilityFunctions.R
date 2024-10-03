@@ -1,4 +1,6 @@
 #'Some auxiliary functions for the Heidke skill score
+#'@param p success probability
+#'@param n the number of trials
 prFun = function(p, n){
     pbinom(floor(n*.5), size = n, prob = p)
 }

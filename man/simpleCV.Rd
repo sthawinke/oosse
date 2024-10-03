@@ -16,9 +16,6 @@ simpleCV(y, x, fitFun, predFun, nFolds, loss)
 \item{predFun}{The function for evaluating the prediction model}
 
 \item{nFolds}{The number of outer folds for cross-validation}
-
-\item{loss}{The type of loss to use to quantify discrepancy between observed and predicted values.
-Can be either "squared" or "binary".}
 }
 \value{
 The MSE estimate

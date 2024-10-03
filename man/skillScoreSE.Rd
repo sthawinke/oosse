@@ -27,6 +27,8 @@ skillScoreSE(
 \item{corEst}{The correlation between model and reference loss estimators}
 
 \item{refLoss, refLossSE}{The reference loss and its standard error. Not required when skillScore is "R2"}
+
+\item{skillScore}{The desired skill score. Currently, "R2", "Brier" and "Heidke" are implemented.}
 }
 \value{
 A vector with the R² and standard error estimates

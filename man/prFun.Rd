@@ -6,6 +6,11 @@
 \usage{
 prFun(p, n)
 }
+\arguments{
+\item{p}{success probability}
+
+\item{n}{the number of trials}
+}
 \description{
 Some auxiliary functions for the Heidke skill score
 }

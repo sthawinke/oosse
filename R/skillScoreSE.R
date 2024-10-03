@@ -6,6 +6,7 @@
 #' @param n the sample size of the training data
 #' @param corEst The correlation between model and reference loss estimators
 #' @param refLoss,refLossSE The reference loss and its standard error. Not required when skillScore is "R2"
+#' @inheritParams oosse
 #'
 #' @details This function is exported to allow the user to estimate the MSE and its standard error
 #' and the correlation between MSE and refLoss estimators himself.
