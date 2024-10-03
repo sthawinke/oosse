@@ -14,12 +14,12 @@ estRefLoss = function(y, x, margVar, skillScore, nBootstraps){
     out = if(skillScore == "R2"){
         c(MST, sqrt(2/(n-1))*MST)
     } else if(skillScore == "Brier"){
-        c(MST, sqrt((1-2*yBar)^2*yBar*(1-yBar))*(n+1)/(n-1)) #Check these n factors!
+        c(MST, sqrt((1-2*yBar)^2*yBar*(1-yBar))*(n+1)/(n-1)^{3/2})
     } else if(skillScore == "Heidke"){
         lrAna = yBar*pbinom(n/2, size = n, prob = yBar) +
             (1-yBar)*pbinom(n/2, size = n, prob = yBar, lower.tail = FALSE)
         lrAnaBC = lrAna - 2*(bootCov <- estCovBoot(y, nBootstraps)) #Bias correction
-        deltaSE = abs(1+prFunDerivFull(yBar,n))*sqrt((yBar*(1-yBar)/n))
+        deltaSE = abs(1+prFunDerivFull(yBar,n))*sqrt((yBar*(1-yBar)/(n-1)))
         c(lrAnaBC, deltaSE)
     }
     names(out) = c("Estimate", "StandardError")
