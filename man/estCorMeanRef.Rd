@@ -35,6 +35,9 @@ estCorMeanRef(
 \item{nFolds}{The number of outer folds for cross-validation}
 
 \item{nBootstraps}{The number of .632 bootstraps}
+
+\item{loss}{The loss type. For "squared" this is (obs-pred)^2, for
+"binary" it is 1-I(obs=pred).}
 }
 \value{
 the estimated correlation

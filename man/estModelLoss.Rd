@@ -14,7 +14,7 @@ estModelLoss(
   nInnerFolds,
   cvReps,
   nBootstraps,
-  loss = "squared"
+  loss
 )
 }
 \arguments{
@@ -35,6 +35,9 @@ estModelLoss(
 \item{cvReps}{The number of repeats for the cross-validation}
 
 \item{nBootstraps}{The number of .632 bootstraps}
+
+\item{loss}{The loss type. For "squared" this is (obs-pred)^2, for
+"binary" it is 1-I(obs=pred).}
 }
 \value{
 A vector with MSE estimate and its standard error

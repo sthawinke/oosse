@@ -1,6 +1,7 @@
 #' Estimate MSE and its standard error
 #'
 #' @inheritParams oosse
+#' @inheritParams estLoss
 #' @return A vector with MSE estimate and its standard error
 #' @importFrom parallel parLapply
 #' @importFrom stats var
@@ -9,7 +10,7 @@
 #' @references
 #'   \insertAllCited{}
 estModelLoss = function(y, x, fitFun, predFun, methodLoss, nFolds, nInnerFolds,
-                  cvReps, nBootstraps, loss = "squared"){
+                  cvReps, nBootstraps, loss){
         n <- length(y)
         seVec = if(methodLoss == "CV"){
                 #Nested cross-validation

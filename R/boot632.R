@@ -1,6 +1,7 @@
 #' The .632 bootstrap estimation of the MSE
 #'
 #' @inheritParams oosse
+#' @inheritParams estLoss
 #' @param id the sample indices resampled with replacement
 #'
 #' @details The implementation follows \insertCite{Efron1997}{oosse}
