@@ -19,7 +19,7 @@
 #' skillScoreSE(meanLoss = 3, margVar = 4, meanLossSE = 0.4, n = 50,
 #' corEst = 0.75)
 #' # The out-of-sample Brier skill score
-#' skillScoreSE(meanLoss = 3, meanLossSE = 0.4, refLoss = 4, refLossSE = 0.2,
+#' skillScoreSE(meanLoss = .3, meanLossSE = 0.4, refLoss = .4, refLossSE = 0.2,
 #' corEst = 0.75, skillScore = "Brier")
 #' # The out-of-sample Heidke skill score
 #' skillScoreSE(meanLoss = .3, meanLossSE = 0.05, refLoss = .44,
@@ -28,9 +28,10 @@
 #' @references
 #'     \insertRef{Hawinkel2023}{oosse}
 skillScoreSE = function(meanLoss, meanLossSE, margVar, n, corEst, refLoss, refLossSE, skillScore = c("R2", "Brier", "Heidke")){
-    stopifnot(corEst >= -1, corEst <=1, meanLoss > 0, missing(margVar) || margVar > 0,
-              missing(n) || n > 1, meanLossSE > 0, skillScore == "R2" || (meanLoss < 1 && refLoss < 1))
     skillScore = match.arg(skillScore)
+    stopifnot(corEst >= -1, corEst <=1, meanLoss > 0, missing(margVar) || margVar > 0,
+              missing(n) || n > 1, meanLossSE > 0, length(meanLOss) == 1, length(refLoss) == 1,
+              length(refLossSE) == 1, length(meanLossSE)  == 1, skillScore == "R2" || (meanLoss < 1 && refLoss < 1))
     if(skillScore == "R2"){
         refLoss = margVar*(n+1)/n #Inflate marginal variance to out-of-sample MST
         refLossSE = sqrt(2/(n-1))*refLoss #The standard error on the MST

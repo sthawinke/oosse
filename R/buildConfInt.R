@@ -1,7 +1,7 @@
 #' Calculate a confidence interval for R², MSE and MST
 #'
 #' @param oosseObj The result of the oosse call
-#' @param what For which property should the ci be found: R² (default), MSE or MST
+#' @param what For which property should the ci be found. See details for options
 #' @param conf the confidence level required
 #'
 #' @return A vector of length 2 with lower and upper bound of the confidence interval
@@ -13,6 +13,9 @@
 #' @details The confidence intervals for R² and the MSE are based on standard errors and normal approximations.
 #' The confidence interval for the MST is based on the chi-squared distribution as in equation (16) of \insertCite{Harding2014}{oosse},
 #' but with inflation by a factor (n+1)/n. All quantities are out-of-sample.
+#' Possible options for "what" are 'R2', 'MSE', 'MST', 'BrierScore', 'BrierSkillScore', 'ReferenceLoss',
+#' 'ModelMissclassRate', 'RefMissclassRate' and 'HeidkeSkillScore'. For all but the MST,
+#' normal distributions are used to construct the confidence intervals; for the MST the chi-squared distribution is used.
 #'
 #' @examples
 #' data(Brassica)
@@ -25,13 +28,13 @@
 #' buildConfInt(R2lm, what = "MST")
 #' @references
 #'    \insertAllCited{}
-buildConfInt = function(oosseObj, what = c("R2", "MSE", "MST", "BrierScore", "BrierSkillScore",
+buildConfInt = function(oosseObj, what = c("R2", "MSE", "MST", "BrierScore", "BrierSkillScore", "ReferenceLoss",
                                            "ModelMissclassRate", "RefMissclassRate","HeidkeSkillScore"), conf = 0.95){
     stopifnot(conf >0, conf <1)
     what = match.arg(what)
     bounds <- c((1-conf)/2, conf + (1-conf)/2)
     if(what %in% c("R2", "MSE", "BrierScore",
-                   "BrierSkillScore", "ModelMissclassRate", "RefMissclassRate", "HeidkeSkillScore")){
+                   "BrierSkillScore", "ModelMissclassRate", "RefMissclassRate", "HeidkeSkillScore", "ReferenceLoss")){
         zQuants = qnorm(bounds)
         obj = oosseObj[[what]]
         ci = with(oosseObj, obj["Estimate"] + obj["StandardError"]*zQuants)
