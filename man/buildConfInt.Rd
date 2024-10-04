@@ -6,8 +6,8 @@
 \usage{
 buildConfInt(
   oosseObj,
-  what = c("R2", "MSE", "MST", "BrierScore", "BrierSkillScore",
-    "ReferenceMissclassificationLoss", "HeidkeSkillScore"),
+  what = c("R2", "MSE", "MST", "BrierScore", "BrierSkillScore", "ModelMissclassRate",
+    "RefMissclassRate", "HeidkeSkillScore"),
   conf = 0.95
 )
 }

@@ -25,13 +25,13 @@
 #' buildConfInt(R2lm, what = "MST")
 #' @references
 #'    \insertAllCited{}
-buildConfInt = function(oosseObj, what = c("R2", "MSE", "MST", "BrierScore",
-                                           "BrierSkillScore", "ReferenceMissclassificationLoss", "HeidkeSkillScore"), conf = 0.95){
+buildConfInt = function(oosseObj, what = c("R2", "MSE", "MST", "BrierScore", "BrierSkillScore",
+                                           "ModelMissclassRate", "RefMissclassRate","HeidkeSkillScore"), conf = 0.95){
     stopifnot(conf >0, conf <1)
     what = match.arg(what)
     bounds <- c((1-conf)/2, conf + (1-conf)/2)
     if(what %in% c("R2", "MSE", "BrierScore",
-                   "BrierSkillScore", "ReferenceMissclassificationLoss", "HeidkeSkillScore")){
+                   "BrierSkillScore", "ModelMissclassRate", "RefMissclassRate", "HeidkeSkillScore")){
         zQuants = qnorm(bounds)
         obj = oosseObj[[what]]
         ci = with(oosseObj, obj["Estimate"] + obj["StandardError"]*zQuants)

@@ -1,16 +1,23 @@
 context("Confidence interval construction")
-n = 50;p=3
+n = 50; p = 3
 x = matrix(rnorm(n*p),n,p)
 y = rnorm(n, x %*% rnorm(p), sd = 0.5)
-fitFunTest = function(y, x){lm.fit(y = y, x = cbind(1, x))}
-predFunTest = function(mod, x) {cbind(1,x) %*% mod$coef}
+beta = 2
+yBin = rbinom(n, size = 1, prob = expit(x*beta))
 R2objCV <- oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest, printTimeEstimate = FALSE)
+Brierobj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, printTimeEstimate = FALSE, skillScore = "Brier")
+Heidkeobj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, printTimeEstimate = FALSE, skillScore = "Heidke")
 test_that("confidence intervals are built with correct boundaries", {
     expect_silent(confIntR2 <- buildConfInt(R2objCV))
     expect_silent(confIntMSE <- buildConfInt(R2objCV, what = "MSE"))
     expect_silent(confIntMST <- buildConfInt(R2objCV, what = "MST", conf = 0.94))
     expect_true(all(confIntMSE > 0))
     expect_true(all(confIntMST > 0))
+    expect_silent(confIntBrier <- buildConfInt(Brierobj))
+    expect_silent(confIntModel <- buildConfInt(Brierobj, what = "BrierScore"))
+    expect_silent(confIntRef <- buildConfInt(Brierobj, what = "RefMissclassRate", conf = 0.94))
+    expect_true(all(confIntModel > 0))
+    expect_true(all(confIntRef > 0))
 })
 test_that("buildConfInt throws an error when incorrect input is provided", {
     expect_error(buildConfInt(R2objCV, what = "variance"))
