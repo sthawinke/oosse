@@ -9,6 +9,7 @@ oosse(
   x,
   fitFun,
   predFun,
+  skillScore = c("R2", "Brier", "Heidke"),
   methodLoss = c("CV", "bootstrap"),
   methodCor = c("nonparametric", "jackknife"),
   printTimeEstimate = TRUE,
@@ -17,7 +18,7 @@ oosse(
   cvReps = 200L,
   nBootstraps = 200L,
   nBootstrapsCor = 50L,
-  skillScore = c("R2", "Brier", "Heidke"),
+  estCovMethod = c("analytical", "bootstrap"),
   ...
 )
 }
@@ -29,6 +30,8 @@ oosse(
 \item{fitFun}{The function for fitting the prediction model}
 
 \item{predFun}{The function for evaluating the prediction model}
+
+\item{skillScore}{The desired skill score. Currently, "R2", "Brier" and "Heidke" are implemented.}
 
 \item{methodLoss}{The method to estimate the MSE, either "CV" for cross-validation or "bootstrap" for .632 bootstrap}
 
@@ -46,7 +49,8 @@ oosse(
 
 \item{nBootstrapsCor}{The number of bootstraps to estimate the correlation}
 
-\item{skillScore}{The desired skill score. Currently, "R2", "Brier" and "Heidke" are implemented.}
+\item{estCovMethod}{The method to estimate the covariance between estimators of success probability and
+the chance of this probability falling below 0.5}
 
 \item{...}{passed onto fitFun and predFun}
 }

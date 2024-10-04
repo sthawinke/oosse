@@ -7,7 +7,7 @@
 #' @return A vector of length 2: the estimated reference loss and its standard error
 #' @inheritParams oosse
 #' @importFrom stats pbinom
-estRefLoss = function(y, x, margVar, skillScore, nBootstraps){
+estRefLoss = function(y, x, margVar, skillScore, estCovMethod, nBootstraps){
     n = length(y)
     yBar = mean(y)
     MST = margVar*(n+1)/n
@@ -18,7 +18,7 @@ estRefLoss = function(y, x, margVar, skillScore, nBootstraps){
     } else if(skillScore == "Heidke"){
         lrAna = yBar*pbinom(n/2, size = n, prob = yBar) +
             (1-yBar)*pbinom(n/2, size = n, prob = yBar, lower.tail = FALSE)
-        lrAnaBC = lrAna - 2*(bootCov <- estCovBoot(y, nBootstraps)) #Bias correction
+        lrAnaBC = lrAna - 2*estCov(y, estCovMethod = estCovMethod, nBootstraps) #Bias correction
         deltaSE = abs(1+prFunDerivFull(yBar,n))*sqrt((yBar*(1-yBar)/(n-1)))
         c(lrAnaBC, deltaSE)
     }

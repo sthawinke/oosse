@@ -13,6 +13,8 @@
 #' @param nBootstraps The number of .632 bootstraps
 #' @param nBootstrapsCor The number of bootstraps to estimate the correlation
 #' @param skillScore The desired skill score. Currently, "R2", "Brier" and "Heidke" are implemented.
+#' @param estCovMethod The method to estimate the covariance between estimators of success probability and
+#' the chance of this probability falling below 0.5
 #' @param ... passed onto fitFun and predFun
 #'
 #' @return A list with components
@@ -45,14 +47,15 @@
 #' @seealso \link{buildConfInt}
 #' @references
 #'   \insertAllCited{}
-oosse = function(y, x, fitFun, predFun, methodLoss = c("CV", "bootstrap"), methodCor = c("nonparametric", "jackknife"), printTimeEstimate = TRUE,
+oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Heidke"), methodLoss = c("CV", "bootstrap"), methodCor = c("nonparametric", "jackknife"), printTimeEstimate = TRUE,
                        nFolds = 10L, nInnerFolds = nFolds - 1L, cvReps = 200L, nBootstraps = 200L, nBootstrapsCor = 50L,
-                   skillScore = c("R2", "Brier", "Heidke"), ...){
+                  estCovMethod = c("analytical", "bootstrap"), ...){
     fitFun = checkFitFun(fitFun) #Version of the fit function for internal use
     predFun = checkPredFun(predFun)
     methodLoss = match.arg(methodLoss)
     methodCor = match.arg(methodCor)
     skillScore = match.arg(skillScore)
+    estCovMethod = match.arg(estCovMethod)
     loss = if(skillScore %in% c("R2", "Brier")){
         "squared"
     } else if(skillScore %in% c("Heidke")){
@@ -102,7 +105,7 @@ oosse = function(y, x, fitFun, predFun, methodLoss = c("CV", "bootstrap"), metho
     }
     modelLoss = estModelLoss(y, x, fitFun, predFun, methodLoss, nFolds = nFolds,
                              nInnerFolds = nInnerFolds, cvReps = cvReps, nBootstraps = nBootstraps, loss = loss)
-    refLoss = estRefLoss(y, x, skillScore = skillScore, margVar = margVar <- var(y), nBootstraps = nBootstraps)
+    refLoss = estRefLoss(y, x, skillScore = skillScore, margVar = margVar <- var(y), nBootstraps = nBootstraps, estCovMethod = estCovMethod)
     corEst = estCorMeanRef(y, x, fitFun, predFun, methodLoss, methodCor, nBootstrapsCor, nFolds = nFolds, nBootstraps = nBootstraps, loss = loss)
     skillScoreRes = skillScoreSE(meanLoss = modelLoss["Estimate"], margVar = margVar, n = n,
                               meanLossSE = modelLoss["StandardError"], corEst = corEst, refLoss = refLoss["Estimate"], refLossSE = refLoss["StandardError"])
