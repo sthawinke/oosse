@@ -15,7 +15,7 @@ test_that("confidence intervals are built with correct boundaries", {
     expect_true(all(confIntMST > 0))
     expect_silent(confIntBrier <- buildConfInt(Brierobj))
     expect_silent(confIntModel <- buildConfInt(Brierobj, what = "BrierScore"))
-    expect_silent(confIntRef <- buildConfInt(Brierobj, what = "RefMissclassRate", conf = 0.94))
+    expect_silent(confIntRef <- buildConfInt(Brierobj, what = "ReferenceLoss", conf = 0.94))
     expect_true(all(confIntModel > 0))
     expect_true(all(confIntRef > 0))
 })

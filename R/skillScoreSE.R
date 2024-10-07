@@ -30,8 +30,8 @@
 skillScoreSE = function(meanLoss, meanLossSE, margVar, n, corEst, refLoss, refLossSE, skillScore = c("R2", "Brier", "Heidke")){
     skillScore = match.arg(skillScore)
     stopifnot(corEst >= -1, corEst <=1, meanLoss > 0, missing(margVar) || margVar > 0,
-              missing(n) || n > 1, meanLossSE > 0, length(meanLOss) == 1, length(refLoss) == 1,
-              length(refLossSE) == 1, length(meanLossSE)  == 1, skillScore == "R2" || (meanLoss < 1 && refLoss < 1))
+              missing(n) || n > 1, meanLossSE > 0, length(meanLoss) == 1, missing(refLoss) || length(refLoss) == 1,
+              missing(refLossSE) || length(refLossSE) == 1, length(meanLossSE)  == 1, skillScore == "R2" || (meanLoss < 1 && refLoss < 1))
     if(skillScore == "R2"){
         refLoss = margVar*(n+1)/n #Inflate marginal variance to out-of-sample MST
         refLossSE = sqrt(2/(n-1))*refLoss #The standard error on the MST

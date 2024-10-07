@@ -46,7 +46,7 @@ The marginal variance is scaled by (n+1)/n to the out-of-sample refLoss, so the 
 skillScoreSE(meanLoss = 3, margVar = 4, meanLossSE = 0.4, n = 50,
 corEst = 0.75)
 # The out-of-sample Brier skill score
-skillScoreSE(meanLoss = 3, meanLossSE = 0.4, refLoss = 4, refLossSE = 0.2,
+skillScoreSE(meanLoss = .3, meanLossSE = 0.4, refLoss = .4, refLossSE = 0.2,
 corEst = 0.75, skillScore = "Brier")
 # The out-of-sample Heidke skill score
 skillScoreSE(meanLoss = .3, meanLossSE = 0.05, refLoss = .44,
