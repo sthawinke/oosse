@@ -4,12 +4,7 @@
 \alias{buildConfInt}
 \title{Calculate a confidence interval for R², MSE and MST}
 \usage{
-buildConfInt(
-  oosseObj,
-  what = c("R2", "MSE", "MST", "BrierScore", "BrierSkillScore", "ReferenceLoss",
-    "ModelMissclassRate", "RefMissclassRate", "HeidkeSkillScore"),
-  conf = 0.95
-)
+buildConfInt(oosseObj, what = names(oosseObj)[1], conf = 0.95)
 }
 \arguments{
 \item{oosseObj}{The result of the oosse call}

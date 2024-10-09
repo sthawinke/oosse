@@ -28,10 +28,10 @@
 #' buildConfInt(R2lm, what = "MST")
 #' @references
 #'    \insertAllCited{}
-buildConfInt = function(oosseObj, what = c("R2", "MSE", "MST", "BrierScore", "BrierSkillScore", "ReferenceLoss",
-                                           "ModelMissclassRate", "RefMissclassRate","HeidkeSkillScore"), conf = 0.95){
+buildConfInt = function(oosseObj, what = names(oosseObj)[1], conf = 0.95){
     stopifnot(conf >0, conf <1)
-    what = match.arg(what)
+    what = match.arg(what, choices = c("R2", "MSE", "MST", "BrierScore", "BrierSkillScore", "ReferenceLoss",
+                                       "ModelMissclassRate", "ReferenceMissclassRate","HeidkeSkillScore"))
     bounds <- c((1-conf)/2, conf + (1-conf)/2)
     if(what %in% c("R2", "MSE", "BrierScore",
                    "BrierSkillScore", "ModelMissclassRate", "RefMissclassRate", "HeidkeSkillScore", "ReferenceLoss")){
