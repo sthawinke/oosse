@@ -10,14 +10,14 @@
 #' @references
 #'   \insertAllCited{}
 getSEsNested = function(cvSplitReps, nOuterFolds, n){
-    ErrNCV = mean(vapply(cvSplitReps, FUN.VALUE = double(nOuterFolds),
+    ErrNCV = mean(na.rm = TRUE, vapply(cvSplitReps, FUN.VALUE = double(nOuterFolds),
                          function(y) vapply(y, FUN.VALUE = double(1), function(x) x[["errHatTilde"]])))
-    MSEhat = mean(vapply(cvSplitReps, FUN.VALUE = double(nOuterFolds), function(y) vapply(y, FUN.VALUE = double(1),function(x) x[["a"]]-x[["b"]])))
+    MSEhat = mean(na.rm = TRUE, vapply(cvSplitReps, FUN.VALUE = double(nOuterFolds), function(y) vapply(y, FUN.VALUE = double(1),function(x) x[["a"]]-x[["b"]])))
     errOuter0 = lapply(cvSplitReps, function(y) lapply(y, function(x) x[["eOut"]]))
-    mseOuter = vapply(FUN.VALUE = double(nOuterFolds), errOuter0, function(w) vapply(FUN.VALUE = double(1), w, mean))
+    mseOuter = vapply(FUN.VALUE = double(nOuterFolds), errOuter0, function(w) vapply(FUN.VALUE = double(1), w, mean, na.rm = TRUE))
     errOuter = unlist(errOuter0)
     SEest = sqrt(max(0, nOuterFolds/(nOuterFolds-1)*MSEhat))
-    naiveRMSE = sd(errOuter)/sqrt(n)
+    naiveRMSE = sd(errOuter, na.rm = TRUE)/sqrt(n)
     maxMSE = naiveRMSE * sqrt(nOuterFolds)
     if(is.na(SEest) || (SEest < naiveRMSE)){ #See below equation (17), prevent implausible values
         SEest = naiveRMSE
