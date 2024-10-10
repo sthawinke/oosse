@@ -34,7 +34,7 @@ buildConfInt = function(oosseObj, what = names(oosseObj)[1], conf = 0.95){
                                        "ModelMissclassRate", "ReferenceMissclassRate","HeidkeSkillScore"))
     bounds <- c((1-conf)/2, conf + (1-conf)/2)
     if(what %in% c("R2", "MSE", "BrierScore",
-                   "BrierSkillScore", "ModelMissclassRate", "RefMissclassRate", "HeidkeSkillScore", "ReferenceLoss")){
+                   "BrierSkillScore", "ModelMissclassRate", "ReferenceMissclassRate", "HeidkeSkillScore", "ReferenceLoss")){
         zQuants = qnorm(bounds)
         obj = oosseObj[[what]]
         ci = with(oosseObj, obj["Estimate"] + obj["StandardError"]*zQuants)
