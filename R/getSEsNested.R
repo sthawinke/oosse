@@ -12,7 +12,8 @@
 getSEsNested = function(cvSplitReps, nOuterFolds, n){
     ErrNCV = mean(na.rm = TRUE, vapply(cvSplitReps, FUN.VALUE = double(nOuterFolds),
                          function(y) vapply(y, FUN.VALUE = double(1), function(x) x[["errHatTilde"]])))
-    MSEhat = mean(na.rm = TRUE, vapply(cvSplitReps, FUN.VALUE = double(nOuterFolds), function(y) vapply(y, FUN.VALUE = double(1),function(x) x[["a"]]-x[["b"]])))
+    MSEhat = mean(na.rm = TRUE, vapply(cvSplitReps, FUN.VALUE = double(nOuterFolds),
+                                       function(y) vapply(y, FUN.VALUE = double(1),function(x) x[["a"]]-x[["b"]])))
     errOuter0 = lapply(cvSplitReps, function(y) lapply(y, function(x) x[["eOut"]]))
     mseOuter = vapply(FUN.VALUE = double(nOuterFolds), errOuter0, function(w) vapply(FUN.VALUE = double(1), w, mean, na.rm = TRUE))
     errOuter = unlist(errOuter0)
@@ -25,7 +26,7 @@ getSEsNested = function(cvSplitReps, nOuterFolds, n){
         SEest = maxMSE
     }
     #Correct the bias
-    ErrCV = mean(errOuter)
+    ErrCV = mean(errOuter, na,rm = TRUE)
     Bias = (1+(nOuterFolds-2)/nOuterFolds)*(ErrNCV-ErrCV)
     ErrNCVBC = ErrNCV - Bias#Bias correction
     c("Estimate" = ErrNCVBC, "StandardError" = SEest)
