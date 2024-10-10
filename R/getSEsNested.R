@@ -26,7 +26,7 @@ getSEsNested = function(cvSplitReps, nOuterFolds, n){
         SEest = maxMSE
     }
     #Correct the bias
-    ErrCV = mean(errOuter, na,rm = TRUE)
+    ErrCV = mean(errOuter, na.rm = TRUE)
     Bias = (1+(nOuterFolds-2)/nOuterFolds)*(ErrNCV-ErrCV)
     ErrNCVBC = ErrNCV - Bias#Bias correction
     c("Estimate" = ErrNCVBC, "StandardError" = SEest)
