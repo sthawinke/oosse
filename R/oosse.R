@@ -107,7 +107,7 @@ oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Heidke")
                              nInnerFolds = nInnerFolds, cvReps = cvReps, nBootstraps = nBootstraps, loss = loss)
     refLoss = estRefLoss(y, x, skillScore = skillScore, margVar = margVar <- var(y), nBootstraps = nBootstraps, estCovMethod = estCovMethod)
     corEst = estCorMeanRef(y, x, fitFun, predFun, methodLoss, methodCor, nBootstrapsCor, nFolds = nFolds, nBootstraps = nBootstraps, loss = loss)
-    skillScoreRes = skillScoreSE(meanLoss = modelLoss["Estimate"], margVar = margVar, n = n,
+    skillScoreRes = skillScoreSE(meanLoss = modelLoss["Estimate"], margVar = margVar, n = n, skillScore = skillScore,
                               meanLossSE = modelLoss["StandardError"], corEst = corEst, refLoss = refLoss["Estimate"], refLossSE = refLoss["StandardError"])
     list0 = list(skillScoreRes, modelLoss, refLoss)
     names(list0) = switch(skillScore,
