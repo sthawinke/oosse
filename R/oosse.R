@@ -114,7 +114,7 @@ oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Heidke")
     list0 = list(skillScoreRes, modelLoss, refLoss)
     names(list0) = switch(skillScore,
                           "R2" = c("R2", "MSE", "MST"),
-                          "Brier" = c("BrierSkillScore", "BrierScore", "ReferenceLoss"),
+                          "Brier" = c("BrierSkillScore", "BrierScore", "ReferenceBrierScore"),
                           "Heidke" = c("HeidkeSkillScore", "ModelMissclassRate", "ReferenceMissclassRate"))
     return(c(list0, list("corEst" = corEst,
          "params" = c(switch(methodLoss,
