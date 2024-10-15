@@ -15,6 +15,8 @@ test_that("oosse works as expected when correct input is provided", {
     expect_warning(R2objCV <- oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest, cvReps = 20))
     expect_silent(oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest, printTimeEstimate = FALSE))
     expect_message(brierObj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, skillScore = "Brier"))
+    expect_message(brierObj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin,
+                                     skillScore = "Brier", methodLoss = "bootstrap"))
     expect_message(heidkeObj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, skillScore = "Heidke"))
 })
 fitFunBroken = function(y, x){lm.fit(y = y, x = rbind(1, x))}
@@ -32,4 +34,5 @@ test_that("oosse throws an error when incorrect input is provided", {
     expect_error(R2objCV <- oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest, nFolds = 1)) #Only one CV fold
     expect_error(oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest, skillScore = "Brier"))
     expect_error(oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, skillScore = "bogusSkillScore"))
+    expect_error(oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest, skillScore = "Brier"))
     })

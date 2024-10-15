@@ -86,8 +86,10 @@ oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Heidke")
     singleRunTime = system.time(fullPred <- try(predFun(fullModel <- try(fitFun(y, x, ...), silent = TRUE), x), silent = TRUE))["elapsed"]
     if(inherits(fullModel, "try-error")){
         stop("Fitting model failed with error", fullModel, "\nCheck your fitFun")
-    } else if (inherits(fullPred, "try-error")){
+    } else if(inherits(fullPred, "try-error")){
         stop("Prediction model failed with error", fullPred, "\nCheck your predFun")
+    } else if(skillScore %in% c("Brier", "Heidke") && any(fullPred < 0 | fullPred > 1)){
+        stop("Prediction model must return values in [0,1] range for ", skillScore, "skill score!")
     } else if(printTimeEstimate){
         #Predict time this will take
         estModelLossreps = switch(methodLoss, "CV" = cvReps*nFolds*(nInnerFolds+1),
