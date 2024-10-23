@@ -30,16 +30,16 @@
 #'    \insertAllCited{}
 buildConfInt = function(oosseObj, what = names(oosseObj)[1], conf = 0.95){
     stopifnot(conf >0, conf <1)
-    what = match.arg(what, choices = c("R2", "MSE", "MST", "BrierScore", "BrierSkillScore", "ReferenceBrierScore",
-                                       "ModelMissclassRate", "ReferenceMissclassRate","HeidkeSkillScore"))
+    what = match.arg(what, choices = choices <- c("R2", "MSE", "MST", "BrierScore", "BrierSkillScore", "ReferenceBrierScore",
+                                       "ModelMissclassRate", "ReferenceMissclassRate","HeidkeSkillScore", "MissclassifcationSkillScore",
+                                       "ReferenceLogLoss", "ModelLogLoss", "McFaddenSkillScore"))
     bounds <- c((1-conf)/2, conf + (1-conf)/2)
-    if(what %in% c("R2", "MSE", "BrierScore",
-                   "BrierSkillScore", "ModelMissclassRate", "ReferenceMissclassRate", "HeidkeSkillScore", "ReferenceBrierScore")){
+    if(what %in% setdiff(choices, "MST")){
         zQuants = qnorm(bounds)
         obj = oosseObj[[what]]
         ci = with(oosseObj, obj["Estimate"] + obj["StandardError"]*zQuants)
         if(what %in% c("R2", "BrierSkillScore", "HeidkeSkillScore", "ModelMissclassRate",
-                       "ReferenceMissclassRate", "BrierScore", "ReferenceBrierScore")){
+                       "ReferenceMissclassRate", "BrierScore", "ReferenceBrierScore", "McFaddenSkillScore")){
             ci[2] = min(ci[2], 1) #Truncate at 1
         } else if(what %in% c("MSE", "ModelMissclassRate", "ReferenceMissclassRate", "BrierScore", "ReferenceBrierScore")){
             ci[1] = max(ci[1], 0) #Truncate at 0

@@ -5,4 +5,5 @@ test_that("estLoss works as expected", {
     expect_identical(estLoss(0, 0.3, "binary"), FALSE)
     expect_identical(estLoss(1, .7, "binary"), FALSE)
     expect_identical(estLoss(1, .7, "logistic"), -log(.7))
+    expect_identical(estLoss(0, .7, "logistic"), -log(1-.7))
 })
