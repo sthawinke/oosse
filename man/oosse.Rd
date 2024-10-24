@@ -18,7 +18,6 @@ oosse(
   cvReps = 200L,
   nBootstraps = 200L,
   nBootstrapsCor = 50L,
-  estCovMethod = c("analytical", "bootstrap"),
   ...
 )
 }
@@ -48,9 +47,6 @@ oosse(
 \item{nBootstraps}{The number of .632 bootstraps}
 
 \item{nBootstrapsCor}{The number of bootstraps to estimate the correlation}
-
-\item{estCovMethod}{The method to estimate the covariance between estimators of success probability and
-the chance of this probability falling below 0.5}
 
 \item{...}{passed onto fitFun and predFun}
 }

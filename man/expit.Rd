@@ -6,6 +6,9 @@
 \usage{
 expit(x)
 }
+\arguments{
+\item{x}{The input to be converted to a probability}
+}
 \value{
 expit(x)
 }

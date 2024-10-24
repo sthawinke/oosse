@@ -8,7 +8,7 @@ R2objCV <- oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest, print
 Brierobj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, printTimeEstimate = FALSE, skillScore = "Brier")
 Heidkeobj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, printTimeEstimate = FALSE, skillScore = "Heidke")
 MSSobj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, printTimeEstimate = FALSE, skillScore = "Misclassification")
-McFaddenobj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, printTimeEstimate = FALSE, skillScore = "McFadden")
+McFaddenobj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, printTimeEstimate = FALSE, skillScore = "McFadden", nFolds = 3)
 test_that("confidence intervals are built with correct boundaries", {
     expect_silent(confIntR2 <- buildConfInt(R2objCV))
     expect_silent(confIntMSE <- buildConfInt(R2objCV, what = "MSE"))

@@ -4,15 +4,7 @@
 \alias{estCov}
 \title{Estimate covariance between proportion and binomial probability}
 \usage{
-estCov(y, estCovMethod = "analytical", nBootstraps)
-}
-\arguments{
-\item{y}{The vector of outcome values}
-
-\item{estCovMethod}{The method to estimate the covariance between estimators of success probability and
-the chance of this probability falling below 0.5}
-
-\item{nBootstraps}{The number of .632 bootstraps}
+estCov(n, p, what = c("probability", "logLoss", "logLossMin"))
 }
 \value{
 The estimated covariance

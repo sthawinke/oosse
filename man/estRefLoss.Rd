@@ -4,7 +4,7 @@
 \alias{estRefLoss}
 \title{Estimate the out-of sample loss for the reference model}
 \usage{
-estRefLoss(y, x, margVar, skillScore, estCovMethod, nBootstraps)
+estRefLoss(y, x, margVar, skillScore)
 }
 \arguments{
 \item{y}{The vector of outcome values}
@@ -14,11 +14,6 @@ estRefLoss(y, x, margVar, skillScore, estCovMethod, nBootstraps)
 \item{margVar}{The observed marginal variance}
 
 \item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Heidke", "Misclassification" and "McFadden" are implemented.}
-
-\item{estCovMethod}{The method to estimate the covariance between estimators of success probability and
-the chance of this probability falling below 0.5}
-
-\item{nBootstraps}{The number of .632 bootstraps}
 }
 \value{
 A vector of length 2: the estimated reference loss and its standard error
