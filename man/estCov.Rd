@@ -6,9 +6,20 @@
 \usage{
 estCov(n, p, what = c("probability", "logLoss", "logLossMin"))
 }
+\arguments{
+\item{n}{the sample size}
+
+\item{p}{the success probability}
+
+\item{what}{Which correlation should be calculated. See details}
+}
 \value{
 The estimated covariance
 }
 \description{
 Estimate covariance between pihat and Pr(pihat>0.5) analytically or through the bootstrap
+}
+\details{
+The correlation can be calculated between \hat{p} and \widehat{Pr}(\hat{p}>0.5) ("probability"),
+or between \hat{p} and {\log(\hat{p})} or \hat{1-p} and {\log(\hat{1-p})} ("logLoss" and "logLossMin" respectively)
 }

@@ -2,9 +2,13 @@
 #'
 #'Estimate covariance between pihat and Pr(pihat>0.5) analytically or through the bootstrap
 #'
+#' @param n the sample size
+#' @param p the success probability
+#' @param what Which correlation should be calculated. See details
 #' @return The estimated covariance
-#' @inheritParams oosse
 #' @importFrom stats pbinom cov dbinom
+#' @details The correlation can be calculated between \hat{p} and \widehat{Pr}(\hat{p}>0.5) ("probability"),
+#' or between \hat{p} and {\log(\hat{p})} or \hat{1-p} and {\log(\hat{1-p})} ("logLoss" and "logLossMin" respectively)
 estCov = function(n, p, what = c("probability", "logLoss", "logLossMin")){
     what = match.arg(what)
     seqK = switch(what, "probability" = 0:n,  1:(n-1))
