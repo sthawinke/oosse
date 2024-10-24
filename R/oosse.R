@@ -53,7 +53,6 @@ oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Heidke",
     methodLoss = match.arg(methodLoss)
     methodCor = match.arg(methodCor)
     skillScore = match.arg(skillScore)
-    estCovMethod = match.arg(estCovMethod)
     loss = if(skillScore %in% c("R2", "Brier")){
         "squared"
     } else if(skillScore %in% c("Heidke", "Misclassification")){

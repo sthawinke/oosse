@@ -1,14 +1,14 @@
 context("Confidence interval construction")
-n = 30; p = 3
+n = 100; p = 3
 x = matrix(rnorm(n*p),n,p)
 y = rnorm(n, x %*% rnorm(p), sd = 0.5)
-beta = 2
-yBin = rbinom(n, size = 1, prob = expit(x*beta))
+beta = c(1.2, 1.5, 2)
+yBin = rbinom(n, size = 1, prob = expit(x %*% beta))
 R2objCV <- oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest, printTimeEstimate = FALSE)
 Brierobj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, printTimeEstimate = FALSE, skillScore = "Brier")
 Heidkeobj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, printTimeEstimate = FALSE, skillScore = "Heidke")
 MSSobj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, printTimeEstimate = FALSE, skillScore = "Misclassification")
-McFaddenobj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, printTimeEstimate = FALSE, skillScore = "McFadden", nFolds = 3)
+McFaddenobj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, printTimeEstimate = FALSE, skillScore = "McFadden")
 test_that("confidence intervals are built with correct boundaries", {
     expect_silent(confIntR2 <- buildConfInt(R2objCV))
     expect_silent(confIntMSE <- buildConfInt(R2objCV, what = "MSE"))

@@ -25,7 +25,7 @@ estModelLoss = function(y, x, fitFun, predFun, methodLoss, nFolds, nInnerFolds,
                         eOut = estLoss(y[!idTrain], predTest, loss = loss)
                         #Inner loop
                         inFolds = sample(rep(unFoldsIn, length.out = sum(idTrain)))
-                        eIn =  lapply(unFoldsIn, function(inf){
+                        eIn = lapply(unFoldsIn, function(inf){
                             idTrainIn = inFolds!=inf
                             modTrain = fitFun(y[idTrainIn], x[idTrainIn,,drop = FALSE])
                             predTest = predFun(modTrain, x[!idTrainIn, , drop = FALSE])
