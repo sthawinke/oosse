@@ -27,7 +27,7 @@ The confidence intervals for R² and the MSE are based on standard errors and no
 The confidence interval for the MST is based on the chi-squared distribution as in equation (16) of \insertCite{Harding2014}{oosse},
 but with inflation by a factor (n+1)/n. All quantities are out-of-sample.
 Possible options for "what" are 'R2', 'MSE', 'MST', 'BrierScore', 'BrierSkillScore', 'ReferenceBrierScore',
-'ModelMissclassRate', 'ReferenceMissclassRate' and 'HeidkeSkillScore'. For all but the MST,
+'ModelMisclassRate', 'ReferenceMisclassRate' and 'HeidkeSkillScore'. For all but the MST,
 normal distributions are used to construct the confidence intervals; for the MST the chi-squared distribution is used.
 }
 \examples{

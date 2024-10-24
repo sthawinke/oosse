@@ -36,8 +36,7 @@ estCorMeanRef(
 
 \item{nBootstraps}{The number of .632 bootstraps}
 
-\item{loss}{The loss type. For "squared" this is (obs-pred)^2, for
-"binary" it is 1-I(obs=pred).}
+\item{loss}{The loss type, see details}
 }
 \value{
 the estimated correlation

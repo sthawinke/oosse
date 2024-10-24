@@ -17,8 +17,7 @@ bootOob(y, x, id, fitFun, predFun, loss)
 
 \item{predFun}{The function for evaluating the prediction model}
 
-\item{loss}{The loss type. For "squared" this is (obs-pred)^2, for
-"binary" it is 1-I(obs=pred).}
+\item{loss}{The loss type, see details}
 }
 \value{
 matrix of errors and inclusion times

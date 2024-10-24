@@ -9,12 +9,16 @@ estLoss(obs, pred, loss)
 \arguments{
 \item{obs, pred}{Observed and predicted observations}
 
-\item{loss}{The loss type. For "squared" this is (obs-pred)^2, for
-"binary" it is 1-I(obs=pred).}
+\item{loss}{The loss type, see details}
 }
 \value{
 A vector of losses of the same length as obs and pred
 }
 \description{
 Estimate the loss between observed and predicted values
+}
+\details{
+The loss function quantifies discrepancy between observed and predicted values.
+The lower the loss, the better the prediction. The output for "squared" is (obs-pred)^2, for
+"binary" it is 1-I(obs=pred), for "logistic" it is -(obs*log(pred)+(1-obs)log(1-pred))
 }

@@ -27,7 +27,8 @@
 #' @seealso \link{oosse}
 #' @references
 #'     \insertRef{Hawinkel2023}{oosse}
-skillScoreSE = function(meanLoss, meanLossSE, margVar, n, corEst, refLoss, refLossSE, skillScore = c("R2", "Brier", "Heidke")){
+skillScoreSE = function(meanLoss, meanLossSE, margVar, n, corEst, refLoss, refLossSE,
+                        skillScore = c("R2", "Brier", "Heidke", "Misclassification", "McFadden")){
     skillScore = match.arg(skillScore)
     stopifnot(corEst >= -1, corEst <=1, meanLoss > 0, missing(margVar) || margVar > 0,
               missing(n) || n > 1, meanLossSE > 0, length(meanLoss) == 1, missing(refLoss) || length(refLoss) == 1,

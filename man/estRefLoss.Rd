@@ -13,7 +13,7 @@ estRefLoss(y, x, margVar, skillScore, estCovMethod, nBootstraps)
 
 \item{margVar}{The observed marginal variance}
 
-\item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Heidke", "Missclassification" and "McFadden" are implemented.}
+\item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Heidke", "Misclassification" and "McFadden" are implemented.}
 
 \item{estCovMethod}{The method to estimate the covariance between estimators of success probability and
 the chance of this probability falling below 0.5}
