@@ -20,6 +20,6 @@ The estimated covariance
 Estimate covariance between pihat and Pr(pihat>0.5) analytically or through the bootstrap
 }
 \details{
-The correlation can be calculated between \eqn{\hat{p}} and \deqn{\widehat{Pr}(\hat{p}>0.5)} ("probability"),
-or between \hat{p} and {\log(\hat{p})} or \hat{1-p} and {\log(\hat{1-p})} ("logLoss" and "logLossMin" respectively)
+The correlation can be calculated between \eqn{\hat{p}} and \eqn{\widehat{Pr}(\hat{p}>0.5)} ("probability"),
+or between \eqn{\hat{p}} and \eqn{\log(\hat{p})} or \eqn{1-\hat{p}} and \eqn{\log(1-\hat{p})} ("logLoss" and "logLossMin" respectively)
 }

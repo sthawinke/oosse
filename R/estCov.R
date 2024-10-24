@@ -8,7 +8,7 @@
 #' @return The estimated covariance
 #' @importFrom stats pbinom cov dbinom
 #' @details The correlation can be calculated between \eqn{\hat{p}} and \eqn{\widehat{Pr}(\hat{p}>0.5)} ("probability"),
-#' or between \eqn{\hat{p}} and \eqn{\log(\hat{p})} or \eqn{\hat{1-p}} and \eqn{\log(\hat{1-p})} ("logLoss" and "logLossMin" respectively)
+#' or between \eqn{\hat{p}} and \eqn{\log(\hat{p})} or \eqn{1-\hat{p}} and \eqn{\log(1-\hat{p})} ("logLoss" and "logLossMin" respectively)
 estCov = function(n, p, what = c("probability", "logLoss", "logLossMin")){
     what = match.arg(what)
     seqK = switch(what, "probability" = 0:n,  1:(n-1))
