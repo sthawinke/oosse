@@ -9,7 +9,7 @@ oosse(
   x,
   fitFun,
   predFun,
-  skillScore = c("R2", "Brier", "Heidke", "Misclassification", "McFadden"),
+  skillScore = c("R2", "Brier", "Peirce", "Misclassification", "McFadden"),
   methodLoss = c("CV", "bootstrap"),
   methodCor = c("nonparametric", "jackknife"),
   printTimeEstimate = TRUE,
@@ -30,7 +30,7 @@ oosse(
 
 \item{predFun}{The function for evaluating the prediction model}
 
-\item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Heidke", "Misclassification" and "McFadden" are implemented.}
+\item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Peirce", "Misclassification" and "McFadden" are implemented.}
 
 \item{methodLoss}{The method to estimate the MSE, either "CV" for cross-validation or "bootstrap" for .632 bootstrap}
 

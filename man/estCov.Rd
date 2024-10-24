@@ -21,5 +21,5 @@ Estimate covariance between pihat and Pr(pihat>0.5) analytically or through the 
 }
 \details{
 The correlation can be calculated between \eqn{\hat{p}} and \eqn{\widehat{Pr}(\hat{p}>0.5)} ("probability"),
-or between \eqn{\hat{p}} and \eqn{\log(\hat{p})} or \eqn{1-\hat{p}} and \eqn{\log(1-\hat{p})} ("logLoss" and "logLossMin" respectively)
+or between \eqn{\hat{p}} and \eqn{\log(\hat{p})} or \eqn{1-\hat{p}} and \eqn{\log(1-\hat{p})} ("logLoss" and "logLossMin" respectively).
 }

@@ -12,7 +12,7 @@
 #' @param cvReps The number of repeats for the cross-validation
 #' @param nBootstraps The number of .632 bootstraps
 #' @param nBootstrapsCor The number of bootstraps to estimate the correlation
-#' @param skillScore The desired skill score. Currently, "R2", "Brier", "Heidke", "Misclassification" and "McFadden" are implemented.
+#' @param skillScore The desired skill score. Currently, "R2", "Brier", "Peirce", "Misclassification" and "McFadden" are implemented.
 #' @param ... passed onto fitFun and predFun
 #'
 #' @return A list with components
@@ -45,7 +45,7 @@
 #' @seealso \link{buildConfInt}
 #' @references
 #'   \insertAllCited{}
-oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Heidke", "Misclassification", "McFadden"),
+oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Peirce", "Misclassification", "McFadden"),
                  methodLoss = c("CV", "bootstrap"), methodCor = c("nonparametric", "jackknife"), printTimeEstimate = TRUE,
                        nFolds = 10L, nInnerFolds = nFolds - 1L, cvReps = 200L, nBootstraps = 200L, nBootstrapsCor = 50L, ...){
     fitFun = checkFitFun(fitFun) #Version of the fit function for internal use
@@ -55,12 +55,12 @@ oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Heidke",
     skillScore = match.arg(skillScore)
     loss = if(skillScore %in% c("R2", "Brier")){
         "squared"
-    } else if(skillScore %in% c("Heidke", "Misclassification")){
+    } else if(skillScore %in% c("Peirce", "Misclassification")){
         "binary"
     } else if(skillScore %in% c("McFadden")){
         "logistic"
     }
-    if(skillScore %in% c("Brier", "Heidke", "Misclassification", "McFadden") && !all(y %in% c(0,1))){
+    if(skillScore %in% c("Brier", "Peirce", "Misclassification", "McFadden") && !all(y %in% c(0,1))){
         stop("For skill score", skillScore, "only binary outcomes y are allowed!")
     }
     if(is.data.frame(x)){
@@ -87,7 +87,7 @@ oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Heidke",
         stop("Fitting model failed with error", fullModel, "\nCheck your fitFun")
     } else if(inherits(fullPred, "try-error")){
         stop("Prediction model failed with error", fullPred, "\nCheck your predFun")
-    } else if(skillScore %in% c("Brier", "Heidke", "Misclassification", "McFadden") && any(fullPred < 0 | fullPred > 1)){
+    } else if(skillScore %in% c("Brier", "Peirce", "Misclassification", "McFadden") && any(fullPred < 0 | fullPred > 1)){
         stop("Prediction model must return values in [0,1] range for ", skillScore, "skill score!")
     } else if(printTimeEstimate){
         #Predict time this will take
@@ -114,8 +114,8 @@ oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Heidke",
     names(list0) = switch(skillScore,
                           "R2" = c("R2", "MSE", "MST"),
                           "Brier" = c("BrierSkillScore", "BrierScore", "ReferenceBrierScore"),
-                          "Heidke" = c("HeidkeSkillScore", "ModelMisclassRate", "ReferenceMisclassRate"),
-                          "Misclassification" = c("HeidkeSkillScore", "ModelMisclassRate", "ReferenceMisclassRate"),
+                          "Peirce" = c("PeirceSkillScore", "ModelMisclassRate", "ReferenceMisclassRate"),
+                          "Misclassification" = c("PeirceSkillScore", "ModelMisclassRate", "ReferenceMisclassRate"),
                           "McFadden" = c("McFaddenSkillScore", "ModelLogLoss", "ReferenceLogLoss"))
     return(c(list0, list("corEst" = corEst,
          "params" = c(switch(methodLoss,

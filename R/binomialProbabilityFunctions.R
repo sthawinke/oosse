@@ -1,4 +1,4 @@
-#'Some auxiliary functions for the Heidke skill score
+#'Some auxiliary functions for the Peirce skill score
 #'@param p success probability
 #'@param n the number of trials
 prFun = function(p, n){

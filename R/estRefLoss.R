@@ -15,7 +15,7 @@ estRefLoss = function(y, x, margVar, skillScore){
         c(MST, sqrt(2/(n-1))*MST)
     } else if(skillScore == "Brier"){
         c(MST, sqrt((1-2*yBar)^2*yBar*(1-yBar))*(n+1)/(n-1)^{3/2})
-    } else if(skillScore == "Heidke"){
+    } else if(skillScore == "Peirce"){
         lrAna = 2*yBar*(1-yBar)*(n)/(n-1)
         deltaSE = sqrt(4*(1-2*yBar)^2*yBar*(1-yBar)*n^2/(n-1)^3)
         c(lrAna, deltaSE)

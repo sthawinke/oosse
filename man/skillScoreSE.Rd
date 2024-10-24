@@ -12,7 +12,7 @@ skillScoreSE(
   corEst,
   refLoss,
   refLossSE,
-  skillScore = c("R2", "Brier", "Heidke", "Misclassification", "McFadden")
+  skillScore = c("R2", "Brier", "Peirce", "Misclassification", "McFadden")
 )
 }
 \arguments{
@@ -28,7 +28,7 @@ skillScoreSE(
 
 \item{refLoss, refLossSE}{The reference loss and its standard error. Not required when skillScore is "R2"}
 
-\item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Heidke", "Misclassification" and "McFadden" are implemented.}
+\item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Peirce", "Misclassification" and "McFadden" are implemented.}
 }
 \value{
 A vector with the R² and standard error estimates
@@ -48,9 +48,9 @@ corEst = 0.75)
 # The out-of-sample Brier skill score
 skillScoreSE(meanLoss = .3, meanLossSE = 0.4, refLoss = .4, refLossSE = 0.2,
 corEst = 0.75, skillScore = "Brier")
-# The out-of-sample Heidke skill score
+# The out-of-sample Peirce skill score
 skillScoreSE(meanLoss = .3, meanLossSE = 0.05, refLoss = .44,
-refLossSE = 0.02, corEst = 0.75, skillScore = "Heidke")
+refLossSE = 0.02, corEst = 0.75, skillScore = "Peirce")
 }
 \references{
 \insertRef{Hawinkel2023}{oosse}

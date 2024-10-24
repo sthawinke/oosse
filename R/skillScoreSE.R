@@ -21,14 +21,14 @@
 #' # The out-of-sample Brier skill score
 #' skillScoreSE(meanLoss = .3, meanLossSE = 0.4, refLoss = .4, refLossSE = 0.2,
 #' corEst = 0.75, skillScore = "Brier")
-#' # The out-of-sample Heidke skill score
+#' # The out-of-sample Peirce skill score
 #' skillScoreSE(meanLoss = .3, meanLossSE = 0.05, refLoss = .44,
-#' refLossSE = 0.02, corEst = 0.75, skillScore = "Heidke")
+#' refLossSE = 0.02, corEst = 0.75, skillScore = "Peirce")
 #' @seealso \link{oosse}
 #' @references
 #'     \insertRef{Hawinkel2023}{oosse}
 skillScoreSE = function(meanLoss, meanLossSE, margVar, n, corEst, refLoss, refLossSE,
-                        skillScore = c("R2", "Brier", "Heidke", "Misclassification", "McFadden")){
+                        skillScore = c("R2", "Brier", "Peirce", "Misclassification", "McFadden")){
     skillScore = match.arg(skillScore)
     stopifnot(corEst >= -1, corEst <=1, meanLoss > 0 || skillScore == "McFadden", missing(margVar) || margVar > 0,
               missing(n) || n > 1, meanLossSE > 0, length(meanLoss) == 1, missing(refLoss) || length(refLoss) == 1,

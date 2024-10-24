@@ -13,7 +13,7 @@ estRefLoss(y, x, margVar, skillScore)
 
 \item{margVar}{The observed marginal variance}
 
-\item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Heidke", "Misclassification" and "McFadden" are implemented.}
+\item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Peirce", "Misclassification" and "McFadden" are implemented.}
 }
 \value{
 A vector of length 2: the estimated reference loss and its standard error

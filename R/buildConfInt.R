@@ -14,7 +14,7 @@
 #' The confidence interval for the MST is based on the chi-squared distribution as in equation (16) of \insertCite{Harding2014}{oosse},
 #' but with inflation by a factor (n+1)/n. All quantities are out-of-sample.
 #' Possible options for "what" are 'R2', 'MSE', 'MST', 'BrierScore', 'BrierSkillScore', 'ReferenceBrierScore',
-#' 'ModelMisclassRate', 'ReferenceMisclassRate' and 'HeidkeSkillScore'. For all but the MST,
+#' 'ModelMisclassRate', 'ReferenceMisclassRate' and 'PeirceSkillScore'. For all but the MST,
 #' normal distributions are used to construct the confidence intervals; for the MST the chi-squared distribution is used.
 #'
 #' @examples
@@ -31,14 +31,14 @@
 buildConfInt = function(oosseObj, what = names(oosseObj)[1], conf = 0.95){
     stopifnot(conf >0, conf <1)
     what = match.arg(what, choices = choices <- c("R2", "MSE", "MST", "BrierScore", "BrierSkillScore", "ReferenceBrierScore",
-                                       "ModelMisclassRate", "ReferenceMisclassRate","HeidkeSkillScore", "MisclassifcationSkillScore",
+                                       "ModelMisclassRate", "ReferenceMisclassRate","PeirceSkillScore", "MisclassifcationSkillScore",
                                        "ReferenceLogLoss", "ModelLogLoss", "McFaddenSkillScore"))
     bounds <- c((1-conf)/2, conf + (1-conf)/2)
     if(what %in% setdiff(choices, "MST")){
         zQuants = qnorm(bounds)
         obj = oosseObj[[what]]
         ci = with(oosseObj, obj["Estimate"] + obj["StandardError"]*zQuants)
-        if(what %in% c("R2", "BrierSkillScore", "HeidkeSkillScore", "MisclassifcationSkillScore", "McFaddenSkillScore",
+        if(what %in% c("R2", "BrierSkillScore", "PeirceSkillScore", "MisclassifcationSkillScore", "McFaddenSkillScore",
                        "ModelMisclassRate", "ReferenceMisclassRate", "BrierScore", "ReferenceBrierScore")){
             ci[2] = min(ci[2], 1) #Truncate at 1
         } else if(what %in% c("MSE", "ModelMisclassRate", "ReferenceMisclassRate", "BrierScore",

@@ -2,7 +2,7 @@
 % Please edit documentation in R/binomialProbabilityFunctions.R
 \name{prFun}
 \alias{prFun}
-\title{Some auxiliary functions for the Heidke skill score}
+\title{Some auxiliary functions for the Peirce skill score}
 \usage{
 prFun(p, n)
 }
@@ -12,5 +12,5 @@ prFun(p, n)
 \item{n}{the number of trials}
 }
 \description{
-Some auxiliary functions for the Heidke skill score
+Some auxiliary functions for the Peirce skill score
 }
