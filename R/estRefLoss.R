@@ -27,7 +27,7 @@ estRefLoss = function(y, x, margVar, skillScore, estCovMethod, nBootstraps){
         c(lrAnaBC, deltaSE)
     } else if(skillScore == "McFadden"){
         lrAna = -(yBar*log(yBar) + (1-yBar)*log(1-yBar))
-        lrAnaBC = lrAna + estCovAna(n, yBar, "logLoss") + estCovAna(n, yBar, "logLossMin") #Bias correction
+        lrAnaBC = lrAna + estCov(n, yBar, "logLoss") + estCov(n, yBar, "logLossMin") #Bias correction
         deltaSE = abs(log(yBar/(1-yBar))*sqrt(yBar*(1-yBar)/(n-1)))
         c(lrAnaBC, deltaSE)
     }
