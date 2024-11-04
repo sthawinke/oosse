@@ -5,6 +5,7 @@
 #'
 #' @return the estimated correlation
 #' @importFrom BiocParallel bplapply
+#' @importFrom stats cor
 estCorMeanRef = function(y, x, fitFun, predFun, methodLoss, methodCor, nBootstrapsCor, nFolds, nBootstraps, loss){
     nReps = switch(methodCor, "nonparametric" = nBootstrapsCor, "jackknife" = length(y))
     matMSEMST = simplify2array(bplapply(seq_len(nReps), function(i){
