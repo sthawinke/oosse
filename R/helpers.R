@@ -49,7 +49,8 @@ determineNames = function(skillScore){
 #' @importFrom BiocParallel bpnworkers bpparam
 #' @inheritParams oosse
 #' @return Prints a message to the console
-timeEstimate = function(methodLoss, cvReps, nFolds, nInnerFolds, nBootstraps, nBootstrapsCor, singleRunTime, n, nCores){
+timeEstimate = function(methodLoss, cvReps, nFolds, nInnerFolds, nBootstraps,
+                        nBootstrapsCor, singleRunTime, n, methodCor){
     #Predict time this will take
     estModelLossreps = switch(methodLoss, "CV" = cvReps*nFolds*(nInnerFolds+1),
                               "bootstrap" = nBootstraps*2)

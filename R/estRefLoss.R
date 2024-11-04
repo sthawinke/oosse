@@ -19,6 +19,10 @@ estRefLoss = function(y, x, margVar, skillScore){
         lrAna = 2*yBar*(1-yBar)*(n)/(n-1)
         deltaSE = sqrt(4*(1-2*yBar)^2*yBar*(1-yBar)*n^2/(n-1)^3)
         c(lrAna, deltaSE)
+    } else if(skillScore == "Heidke"){
+        lrAna = 2*yBar*(1-yBar)*(n)/(n-1)
+        deltaSE = sqrt(4*(1-2*yBar)^2*yBar*(1-yBar)*n^2/(n-1)^3)
+        c(lrAna, deltaSE)
     } else if(skillScore == "Misclassification"){
         lrAna = yBar*pbinom(n/2, size = n, prob = yBar) +
             (1-yBar)*pbinom(n/2, size = n, prob = yBar, lower.tail = FALSE)
@@ -30,6 +34,10 @@ estRefLoss = function(y, x, margVar, skillScore){
         lrAnaBC = lrAna + estCov(n, yBar, "logLoss") + estCov(n, yBar, "logLossMin") #Bias correction
         deltaSE = abs(log(yBar/(1-yBar))*sqrt(yBar*(1-yBar)/(n-1)))
         c(lrAnaBC, deltaSE)
+    } else if(skillScore == "RankedProbability"){
+        lrAna = 2*yBar*(1-yBar)*(n)/(n-1)
+        deltaSE = sqrt(4*(1-2*yBar)^2*yBar*(1-yBar)*n^2/(n-1)^3)
+        c(lrAna, deltaSE)
     }
     names(out) = c("Estimate", "StandardError")
     return(out)

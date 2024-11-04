@@ -13,7 +13,7 @@ timeEstimate(
   nBootstrapsCor,
   singleRunTime,
   n,
-  nCores
+  methodCor
 )
 }
 \arguments{
@@ -32,6 +32,8 @@ timeEstimate(
 \item{singleRunTime}{The time needed to fit and evaluate the prediction model once}
 
 \item{n}{The sample size}
+
+\item{methodCor}{The method to estimate the correlation between MSE and MST estimators, either "nonparametric" or "jackknife"}
 }
 \value{
 Prints a message to the console

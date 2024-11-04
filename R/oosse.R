@@ -25,9 +25,6 @@
 #' \item{n}{The sample size of the training data}
 #' @export
 #' @import BiocParallel
-#' @importFrom methods formalArgs
-#' @importFrom stats cor sd var
-#' @importFrom doParallel registerDoParallel
 #' @importFrom Rdpack reprompt
 #'
 #' @details Implements the calculation of the R² and its standard error by \insertCite{Hawinkel2023}{oosse}.
@@ -54,7 +51,7 @@ oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Peirce",
     methodCor = match.arg(methodCor)
     skillScore = match.arg(skillScore)
     loss = determineLoss(skillScore)
-    if(skillScore %in% binSS <- c("Brier", "Peirce", "Misclassification", "McFadden", "Heidke") && !all(y %in% c(0,1))){
+    if((skillScore %in% (binSS <- c("Brier", "Peirce", "Misclassification", "McFadden", "Heidke"))) && !all(y %in% c(0,1))){
         stop("For skill score", skillScore, "only binary outcomes y are allowed!")
     }
     if(is.data.frame(x)){
@@ -84,7 +81,7 @@ oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Peirce",
     } else if(skillScore %in% binSS && any(fullPred < 0 | fullPred > 1)){
         stop("Prediction model must return values in [0,1] range for ", skillScore, "skill score!")
     } else if(printTimeEstimate){
-       timeEstimate(methodLoss, cvReps, nFolds, nInnerFolds, nBootstraps, nBootstrapsCor, singleRunTime, n, nCores)
+       timeEstimate(methodLoss, cvReps, nFolds, nInnerFolds, nBootstraps, nBootstrapsCor, singleRunTime, n, methodCor)
     }
     modelLoss = estModelLoss(y, x, fitFun, predFun, methodLoss, nFolds = nFolds,
                              nInnerFolds = nInnerFolds, cvReps = cvReps, nBootstraps = nBootstraps, loss = loss)

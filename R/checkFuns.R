@@ -4,6 +4,7 @@
 #' @param reqArgs The vector of required arguments
 #'
 #' @return Throws an error when requirements not met, otherwise returns the function
+#' @importFrom methods formalArgs
 checkFitFun = function(fitFun, reqArgs = c("y", "x")){
     fitFun = match.fun(fitFun)
     if(!all(id <- (reqArgs %in%  (args <- formalArgs(fitFun))))){
