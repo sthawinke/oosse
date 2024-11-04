@@ -45,7 +45,7 @@
 #' @seealso \link{buildConfInt}
 #' @references
 #'   \insertAllCited{}
-oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Peirce", "Misclassification", "McFadden"),
+oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Peirce", "Heidke", "Misclassification", "McFadden", "RankedProbability"),
                  methodLoss = c("CV", "bootstrap"), methodCor = c("nonparametric", "jackknife"), printTimeEstimate = TRUE,
                        nFolds = 10L, nInnerFolds = nFolds - 1L, cvReps = 200L, nBootstraps = 200L, nBootstrapsCor = 50L, ...){
     fitFun = checkFitFun(fitFun) #Version of the fit function for internal use
@@ -53,14 +53,8 @@ oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Peirce",
     methodLoss = match.arg(methodLoss)
     methodCor = match.arg(methodCor)
     skillScore = match.arg(skillScore)
-    loss = if(skillScore %in% c("R2", "Brier")){
-        "squared"
-    } else if(skillScore %in% c("Peirce", "Misclassification")){
-        "binary"
-    } else if(skillScore %in% c("McFadden")){
-        "logistic"
-    }
-    if(skillScore %in% c("Brier", "Peirce", "Misclassification", "McFadden") && !all(y %in% c(0,1))){
+    loss = determineLoss(skillScore)
+    if(skillScore %in% binSS <- c("Brier", "Peirce", "Misclassification", "McFadden", "Heidke") && !all(y %in% c(0,1))){
         stop("For skill score", skillScore, "only binary outcomes y are allowed!")
     }
     if(is.data.frame(x)){
@@ -87,22 +81,10 @@ oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Peirce",
         stop("Fitting model failed with error", fullModel, "\nCheck your fitFun")
     } else if(inherits(fullPred, "try-error")){
         stop("Prediction model failed with error", fullPred, "\nCheck your predFun")
-    } else if(skillScore %in% c("Brier", "Peirce", "Misclassification", "McFadden") && any(fullPred < 0 | fullPred > 1)){
+    } else if(skillScore %in% binSS && any(fullPred < 0 | fullPred > 1)){
         stop("Prediction model must return values in [0,1] range for ", skillScore, "skill score!")
     } else if(printTimeEstimate){
-        #Predict time this will take
-        estModelLossreps = switch(methodLoss, "CV" = cvReps*nFolds*(nInnerFolds+1),
-                            "bootstrap" = nBootstraps*2)
-        # Number of repeats for estimating the MSE and its SE
-        estCorReps = switch(methodCor, "nonparametric" = nBootstrapsCor, "jackknife" = n)*
-            switch(methodLoss, "CV" = nFolds, "bootstrap" = nBootstraps) #Number of repeats for correlation estimation
-        message("Fitting and evaluating the model once took ", formatSeconds(singleRunTime), ".\nYou requested ",
-            switch(methodLoss,
-                   "CV" = paste0(cvReps, " repeats of ", nFolds, "-fold cross-validation"),
-                   "bootstrap" = paste(nBootstraps, ".632 bootstrap instances")),
-        " with ", nCores <-  bpnworkers(bpparam()), " cores, which is expected to last for roughly\n",
-        formatSeconds(sec <- (estModelLossreps + estCorReps)*singleRunTime/nCores),
-        if(nCores==1 && (sec >10)) {"\nConsider using multithreading with the 'BiocParallel' package to speed up computations."}, "\n")
+       timeEstimate(methodLoss, cvReps, nFolds, nInnerFolds, nBootstraps, nBootstrapsCor, singleRunTime, n, nCores)
     }
     modelLoss = estModelLoss(y, x, fitFun, predFun, methodLoss, nFolds = nFolds,
                              nInnerFolds = nInnerFolds, cvReps = cvReps, nBootstraps = nBootstraps, loss = loss)
@@ -111,12 +93,7 @@ oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Peirce",
     skillScoreRes = skillScoreSE(meanLoss = modelLoss["Estimate"], margVar = margVar, n = n, skillScore = skillScore,
                               meanLossSE = modelLoss["StandardError"], corEst = corEst, refLoss = refLoss["Estimate"], refLossSE = refLoss["StandardError"])
     list0 = list(skillScoreRes, modelLoss, refLoss)
-    names(list0) = switch(skillScore,
-                          "R2" = c("R2", "MSE", "MST"),
-                          "Brier" = c("BrierSkillScore", "BrierScore", "ReferenceBrierScore"),
-                          "Peirce" = c("PeirceSkillScore", "ModelMisclassRate", "ReferenceMisclassRate"),
-                          "Misclassification" = c("PeirceSkillScore", "ModelMisclassRate", "ReferenceMisclassRate"),
-                          "McFadden" = c("McFaddenSkillScore", "ModelLogLoss", "ReferenceLogLoss"))
+    names(list0) = determineNames(skillScore)
     return(c(list0, list("corEst" = corEst,
          "params" = c(switch(methodLoss,
                              "CV" = c("nFolds" = nFolds, "nInnerFolds" = nInnerFolds, "cvReps" = cvReps),

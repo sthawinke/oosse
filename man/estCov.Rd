@@ -2,7 +2,7 @@
 % Please edit documentation in R/estCov.R
 \name{estCov}
 \alias{estCov}
-\title{Estimate covariance between proportion and binomial probability}
+\title{Estimate covariance between proportion and binomial probability or log probability}
 \usage{
 estCov(n, p, what = c("probability", "logLoss", "logLossMin"))
 }
@@ -17,7 +17,7 @@ estCov(n, p, what = c("probability", "logLoss", "logLossMin"))
 The estimated covariance
 }
 \description{
-Estimate covariance between pihat and Pr(pihat>0.5) analytically or through the bootstrap
+Estimate covariance between pihat and Pr(pihat>0.5) analytically
 }
 \details{
 The correlation can be calculated between \eqn{\hat{p}} and \eqn{\widehat{Pr}(\hat{p}>0.5)} ("probability"),

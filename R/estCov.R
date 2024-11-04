@@ -1,6 +1,6 @@
-#' Estimate covariance between proportion and binomial probability
+#' Estimate covariance between proportion and binomial probability or log probability
 #'
-#'Estimate covariance between pihat and Pr(pihat>0.5) analytically or through the bootstrap
+#'Estimate covariance between pihat and Pr(pihat>0.5) analytically
 #'
 #' @param n the sample size
 #' @param p the success probability
@@ -11,7 +11,7 @@
 #' or between \eqn{\hat{p}} and \eqn{\log(\hat{p})} or \eqn{1-\hat{p}} and \eqn{\log(1-\hat{p})} ("logLoss" and "logLossMin" respectively).
 estCov = function(n, p, what = c("probability", "logLoss", "logLossMin")){
     what = match.arg(what)
-    seqK = switch(what, "probability" = 0:n,  1:(n-1))
+    seqK = switch(what, "probability" = 0:n, seq_len(n-1))
     xx <- seqK/n
     yy <- switch(what,
                  "probability" = pbinom(n/2, size = n, prob = xx, lower.tail = TRUE),
