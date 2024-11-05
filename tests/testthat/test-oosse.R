@@ -18,7 +18,7 @@ test_that("oosse works as expected when correct input is provided", {
     expect_message(brierObj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin,
                                      skillScore = "Brier", methodLoss = "bootstrap"))
     expect_message(heidkeObj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, skillScore = "Peirce"))
-    expect_message(missObj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, skillScore = "Misclassification"))
+    expect_message(missObj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, skillScore = "Appleman"))
     expect_message(McFaddenObj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, skillScore = "McFadden"))
 })
 fitFunBroken = function(y, x){lm.fit(y = y, x = rbind(1, x))}

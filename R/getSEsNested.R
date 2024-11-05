@@ -9,7 +9,7 @@
 #' @seealso \link{estModelLoss}
 #' @references
 #'   \insertAllCited{}
-#' @importFrom stats cor
+#' @importFrom stats cor sd
 getSEsNested = function(cvSplitReps, nOuterFolds, n){
     ErrNCV = mean(na.rm = TRUE, vapply(cvSplitReps, FUN.VALUE = double(nOuterFolds),
                          function(y) vapply(y, FUN.VALUE = double(1), function(x) x[["errHatTilde"]])))

@@ -23,7 +23,7 @@ estRefLoss = function(y, x, margVar, skillScore){
         lrAna = 2*yBar*(1-yBar)*(n)/(n-1)
         deltaSE = sqrt(4*(1-2*yBar)^2*yBar*(1-yBar)*n^2/(n-1)^3)
         c(lrAna, deltaSE)
-    } else if(skillScore == "Misclassification"){
+    } else if(skillScore == "Appleman"){
         lrAna = yBar*pbinom(n/2, size = n, prob = yBar) +
             (1-yBar)*pbinom(n/2, size = n, prob = yBar, lower.tail = FALSE)
         lrAnaBC = lrAna - 2*estCov(n , yBar) #Bias correction

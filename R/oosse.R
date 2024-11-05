@@ -12,7 +12,7 @@
 #' @param cvReps The number of repeats for the cross-validation
 #' @param nBootstraps The number of .632 bootstraps
 #' @param nBootstrapsCor The number of bootstraps to estimate the correlation
-#' @param skillScore The desired skill score. Currently, "R2", "Brier", "Peirce", "Misclassification" and "McFadden" are implemented.
+#' @param skillScore The desired skill score. Currently, "R2", "Brier", "Peirce", "Appleman" and "McFadden" are implemented.
 #' @param ... passed onto fitFun and predFun
 #'
 #' @return A list with components
@@ -42,7 +42,7 @@
 #' @seealso \link{buildConfInt}
 #' @references
 #'   \insertAllCited{}
-oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Peirce", "Heidke", "Misclassification", "McFadden", "RankedProbability"),
+oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Peirce", "Heidke", "Appleman", "McFadden", "RankedProbability"),
                  methodLoss = c("CV", "bootstrap"), methodCor = c("nonparametric", "jackknife"), printTimeEstimate = TRUE,
                        nFolds = 10L, nInnerFolds = nFolds - 1L, cvReps = 200L, nBootstraps = 200L, nBootstrapsCor = 50L, ...){
     fitFun = checkFitFun(fitFun) #Version of the fit function for internal use
@@ -51,7 +51,7 @@ oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Peirce",
     methodCor = match.arg(methodCor)
     skillScore = match.arg(skillScore)
     loss = determineLoss(skillScore)
-    if((skillScore %in% (binSS <- c("Brier", "Peirce", "Misclassification", "McFadden", "Heidke"))) && !all(y %in% c(0,1))){
+    if((skillScore %in% (binSS <- c("Brier", "Peirce", "Appleman", "McFadden", "Heidke"))) && !all(y %in% c(0,1))){
         stop("For skill score", skillScore, "only binary outcomes y are allowed!")
     }
     if(is.data.frame(x)){

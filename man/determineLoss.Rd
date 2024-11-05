@@ -7,7 +7,7 @@
 determineLoss(skillScore)
 }
 \arguments{
-\item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Peirce", "Misclassification" and "McFadden" are implemented.}
+\item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Peirce", "Appleman" and "McFadden" are implemented.}
 }
 \value{
 The name of the loss
