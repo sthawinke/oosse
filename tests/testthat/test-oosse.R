@@ -37,4 +37,5 @@ test_that("oosse throws an error when incorrect input is provided", {
     expect_error(oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest, skillScore = "Brier"))
     expect_error(oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, skillScore = "bogusSkillScore"))
     expect_error(oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest, skillScore = "Brier"))
+    expect_error(R2objCV <- oosse(y = yBin, x = x, predFun = predFunTest, fitFun = fitFunTest, skillScore = "RankedProbability"))
     })

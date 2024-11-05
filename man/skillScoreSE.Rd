@@ -28,7 +28,7 @@ skillScoreSE(
 
 \item{refLoss, refLossSE}{The reference loss and its standard error. Not required when skillScore is "R2"}
 
-\item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Peirce", "Appleman" and "McFadden" are implemented.}
+\item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Heidke", "Appleman" and "McFadden", "RankedProbability" are implemented.}
 }
 \value{
 A vector with the R² and standard error estimates

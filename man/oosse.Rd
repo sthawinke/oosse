@@ -31,7 +31,7 @@ oosse(
 
 \item{predFun}{The function for evaluating the prediction model}
 
-\item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Peirce", "Appleman" and "McFadden" are implemented.}
+\item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Heidke", "Appleman" and "McFadden", "RankedProbability" are implemented.}
 
 \item{methodLoss}{The method to estimate the MSE, either "CV" for cross-validation or "bootstrap" for .632 bootstrap}
 

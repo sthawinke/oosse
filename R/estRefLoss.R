@@ -4,17 +4,25 @@
 #'
 #' @param margVar The observed marginal variance
 #'
-#' @return A vector of length 2: the estimated reference loss and its standard error
+#' @return A vector of length 3: the estimated reference loss, its standard error and the marginal variance where applicable
 #' @inheritParams oosse
 #' @importFrom stats pbinom
-estRefLoss = function(y, x, margVar, skillScore){
+estRefLoss = function(y, x, skillScore){
     n = length(y)
-    yBar = mean(y)
-    MST = margVar*(n+1)/n
+    yBar = switch(skillScore,
+                  "RankedProbability" = rowMeans(y),
+                  mean(y))
+    margVar = if(skillScore %in% c("R2", "Brier")){
+        var(y)
+    } else if(skillScore == "RankedProbability"){
+        rowMeans(y)
+    } else {
+        NA
+    }
     out = if(skillScore == "R2"){
-        c(MST, sqrt(2/(n-1))*MST)
+        c(margVar*(n+1)/n, sqrt(2/(n-1))*MST)
     } else if(skillScore == "Brier"){
-        c(MST, sqrt((1-2*yBar)^2*yBar*(1-yBar))*(n+1)/(n-1)^{3/2})
+        c(margVar*(n+1)/n, sqrt((1-2*yBar)^2*yBar*(1-yBar))*(n+1)/(n-1)^{3/2})
     } else if(skillScore == "Peirce"){
         lrAna = 2*yBar*(1-yBar)*(n)/(n-1)
         deltaSE = sqrt(4*(1-2*yBar)^2*yBar*(1-yBar)*n^2/(n-1)^3)
@@ -39,6 +47,7 @@ estRefLoss = function(y, x, margVar, skillScore){
         deltaSE = sqrt(4*(1-2*yBar)^2*yBar*(1-yBar)*n^2/(n-1)^3)
         c(lrAna, deltaSE)
     }
-    names(out) = c("Estimate", "StandardError")
+    out = c(out, margVar)
+    names(out) = c("Estimate", "StandardError", "margVar")
     return(out)
 }

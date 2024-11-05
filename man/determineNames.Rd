@@ -7,7 +7,7 @@
 determineNames(skillScore)
 }
 \arguments{
-\item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Peirce", "Appleman" and "McFadden" are implemented.}
+\item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Heidke", "Appleman" and "McFadden", "RankedProbability" are implemented.}
 }
 \value{
 A character vector of length 3

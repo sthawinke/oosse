@@ -65,3 +65,12 @@ timeEstimate = function(methodLoss, cvReps, nFolds, nInnerFolds, nBootstraps,
             formatSeconds(sec <- (estModelLossreps + estCorReps)*singleRunTime/nCores),
             if(nCores==1 && (sec >10)) {"\nConsider using multithreading with the 'BiocParallel' package to speed up computations."}, "\n")
 }
+#' Construct matrix form of multivariate outcome
+#'
+#' @param y The vector with more than 2 unique values
+#'
+#' @return A matrix with categories in the rows and columns equal to the length of y
+#' @importFrom stats model.matrix
+makeYMatrix = function(y){
+    t(model.matrix(~factor(y)-1))
+}

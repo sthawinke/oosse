@@ -12,7 +12,7 @@
 #' @param cvReps The number of repeats for the cross-validation
 #' @param nBootstraps The number of .632 bootstraps
 #' @param nBootstrapsCor The number of bootstraps to estimate the correlation
-#' @param skillScore The desired skill score. Currently, "R2", "Brier", "Peirce", "Appleman" and "McFadden" are implemented.
+#' @param skillScore The desired skill score. Currently, "R2", "Brier", "Heidke", "Appleman" and "McFadden", "RankedProbability" are implemented.
 #' @param ... passed onto fitFun and predFun
 #'
 #' @return A list with components
@@ -54,6 +54,9 @@ oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Peirce",
     if((skillScore %in% (binSS <- c("Brier", "Peirce", "Appleman", "McFadden", "Heidke"))) && !all(y %in% c(0,1))){
         stop("For skill score", skillScore, "only binary outcomes y are allowed!")
     }
+    if((skillScore %in% c("RankedProbability")) && length(unique(y)) <= 2){
+        stop("For skill score", skillScore, "more than two different outcome values are needed")
+    }
     if(is.data.frame(x)){
         stop("Supplying dataframes as predictors is not supported. Convert to a design matrix using model.matrix.\nSee the vignette for an example.")
     }
@@ -80,14 +83,19 @@ oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Peirce",
         stop("Prediction model failed with error", fullPred, "\nCheck your predFun")
     } else if(skillScore %in% binSS && any(fullPred < 0 | fullPred > 1)){
         stop("Prediction model must return values in [0,1] range for ", skillScore, "skill score!")
+    } else if(multId && NCOL(fullPred) != n){
+        stop("Matrix predictions with categories in rows needed for multivariate outcomes!")
     } else if(printTimeEstimate){
        timeEstimate(methodLoss, cvReps, nFolds, nInnerFolds, nBootstraps, nBootstrapsCor, singleRunTime, n, methodCor)
     }
+    if(multId){
+        y = makeYMatrix(y)
+    }
     modelLoss = estModelLoss(y, x, fitFun, predFun, methodLoss, nFolds = nFolds,
                              nInnerFolds = nInnerFolds, cvReps = cvReps, nBootstraps = nBootstraps, loss = loss)
-    refLoss = estRefLoss(y, x, skillScore = skillScore, margVar = margVar <- var(y))
+    refLoss = estRefLoss(y, x, skillScore = skillScore)
     corEst = estCorMeanRef(y, x, fitFun, predFun, methodLoss, methodCor, nBootstrapsCor, nFolds = nFolds, nBootstraps = nBootstraps, loss = loss)
-    skillScoreRes = skillScoreSE(meanLoss = modelLoss["Estimate"], margVar = margVar, n = n, skillScore = skillScore,
+    skillScoreRes = skillScoreSE(meanLoss = modelLoss["Estimate"], margVar = modelLoss["margVar"], n = n, skillScore = skillScore,
                               meanLossSE = modelLoss["StandardError"], corEst = corEst, refLoss = refLoss["Estimate"], refLossSE = refLoss["StandardError"])
     list0 = list(skillScoreRes, modelLoss, refLoss)
     names(list0) = determineNames(skillScore)
