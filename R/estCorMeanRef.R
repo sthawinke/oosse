@@ -13,7 +13,7 @@ estCorMeanRef = function(y, x, fitFun, predFun, methodLoss, methodCor, nBootstra
             c("modelLoss" = switch(methodLoss,
                                 "bootstrap" = boot632multiple(nBootstraps = nBootstraps, y[id], x[id,,drop = FALSE], fitFun, predFun, loss = loss),
                                 "CV" = simpleCV(y[id], x[id, ,drop = FALSE], fitFun, predFun, nFolds, loss = loss)),
-              "referenceLoss" = estRefLoss(y[id], x[id, ,drop = FALSE], skillScore))
+              "referenceLoss" = estRefLoss(y[id], x[id, ,drop = FALSE], skillScore)["Estimate"])
         }))
     corMSEMST = cor(matMSEMST[1,], matMSEMST[2,], use = "complete.obs")
     return(corMSEMST)
