@@ -41,6 +41,8 @@ estCorMeanRef(
 \item{loss}{The loss type, see details}
 
 \item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Heidke", "Appleman" and "McFadden", "RankedProbability" are implemented.}
+
+\item{yMat}{A dummy outcome matrix for multivariate outcomes}
 }
 \value{
 the estimated correlation

@@ -2,6 +2,7 @@
 #'
 #' @inheritParams oosse
 #' @inheritParams estLoss
+#' @inheritParams estModelLoss
 #' @param id sample indices sampled with replacement
 #' @details The implementation follows \insertCite{Efron1997}{oosse}
 #' @return matrix of errors and inclusion times

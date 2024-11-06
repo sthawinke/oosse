@@ -12,8 +12,6 @@ estRefLoss(y, x, skillScore)
 \item{x}{The matrix of predictors}
 
 \item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Heidke", "Appleman" and "McFadden", "RankedProbability" are implemented.}
-
-\item{margVar}{The observed marginal variance}
 }
 \value{
 A vector of length 3: the estimated reference loss, its standard error and the marginal variance where applicable

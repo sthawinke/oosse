@@ -40,6 +40,8 @@ estModelLoss(
 
 \item{loss}{The loss type, see details}
 
+\item{yMat}{A dummy outcome matrix for multivariate outcomes}
+
 \item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Heidke", "Appleman" and "McFadden", "RankedProbability" are implemented.}
 }
 \value{

@@ -2,8 +2,6 @@
 #'
 #'The reference model taken here is the mean of the training data
 #'
-#' @param margVar The observed marginal variance
-#'
 #' @return A vector of length 3: the estimated reference loss, its standard error and the marginal variance where applicable
 #' @inheritParams oosse
 #' @importFrom stats pbinom

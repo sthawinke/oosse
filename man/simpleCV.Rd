@@ -4,7 +4,7 @@
 \alias{simpleCV}
 \title{Perform simple CV, and return the MSE estimate}
 \usage{
-simpleCV(y, x, fitFun, predFun, nFolds, loss)
+simpleCV(y, x, fitFun, predFun, nFolds, loss, skillScore, yMat)
 }
 \arguments{
 \item{y}{The vector of outcome values}
@@ -18,6 +18,10 @@ simpleCV(y, x, fitFun, predFun, nFolds, loss)
 \item{nFolds}{The number of outer folds for cross-validation}
 
 \item{loss}{The loss type, see details}
+
+\item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Heidke", "Appleman" and "McFadden", "RankedProbability" are implemented.}
+
+\item{yMat}{A dummy outcome matrix for multivariate outcomes}
 }
 \value{
 The MSE estimate

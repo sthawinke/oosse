@@ -2,6 +2,7 @@
 #'
 #' @inheritParams oosse
 #' @inheritParams estLoss
+#' @param yMat A dummy outcome matrix for multivariate outcomes
 #' @return A vector with MSE estimate and its standard error
 #' @importFrom parallel parLapply
 #' @importFrom stats var

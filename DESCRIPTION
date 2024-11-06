@@ -14,7 +14,7 @@ RoxygenNote: 7.3.2
 Imports: stats, BiocParallel, Matrix, methods, Rdpack
 RdMacros: Rdpack
 Suggests:
-    knitr,rmarkdown,testthat,randomForest,glmnet,doParallel
+    knitr,rmarkdown,testthat,randomForest,glmnet,doParallel,nnet
 LazyData: true
 VignetteBuilder: knitr
 Depends: R (>= 4.2.0)

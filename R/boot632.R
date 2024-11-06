@@ -2,6 +2,7 @@
 #'
 #' @inheritParams oosse
 #' @inheritParams estLoss
+#' @inheritParams estModelLoss
 #' @param id the sample indices resampled with replacement
 #'
 #' @details The implementation follows \insertCite{Efron1997}{oosse}
@@ -13,7 +14,7 @@ boot632 = function(y, x, id, fitFun, predFun, loss, yMat, skillScore){
             modTrain = fitFun(y, x) #Fit on full model
             eOut = predFun(modTrain, x[-id, , drop = FALSE]) #Out of sample prediction
             eIn = predFun(modTrain, x) #In sample prediction
-            ErrOutOfSample = mean(estLoss(subSetY(y, yMat, skillScore, -id), eOut, loss)) #Out of sample error
+            ErrOutOfSample = mean(estLoss(subsetY(y, yMat, skillScore, -id), eOut, loss)) #Out of sample error
             ErrInSample = mean(estLoss(if(skillScore == "RankedProbability") yMat else y, eIn, loss))#In sample error
             expvec = c(exp(-1), 1-exp(-1))
             sum(expvec*c(ErrInSample, ErrOutOfSample))
