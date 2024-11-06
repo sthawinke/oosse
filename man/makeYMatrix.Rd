@@ -4,7 +4,7 @@
 \alias{makeYMatrix}
 \title{Construct matrix form of multivariate outcome}
 \usage{
-makeYMatrix(y, skillScore)
+makeYMatrix(y)
 }
 \arguments{
 \item{y}{The vector with more than 2 unique values}

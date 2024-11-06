@@ -72,8 +72,6 @@ timeEstimate = function(methodLoss, cvReps, nFolds, nInnerFolds, nBootstraps,
 #'
 #' @return A matrix with categories in the columns and number of rows equal to the length of y
 #' @importFrom stats model.matrix
-makeYMatrix = function(y, skillScore){
-    switch(skillScore,
-           "RankedProbability" = model.matrix(~factor(y)-1),
-           y)
+makeYMatrix = function(y){
+     model.matrix(~y-1)
 }
