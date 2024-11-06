@@ -4,6 +4,7 @@ y = rnorm(n)
 x = matrix(rnorm(n*p),n,p)
 colnames(x) = paste0("Var", seq_len(p))
 yBin = rbinom(n, size = 1, prob = prob <- 0.55)
+yMult = apply(rmultinom(n, size = 1, prob = probMult <- c(0.45, 0.35, .2)), 2, function(x) which(x==1))
 test_that("oosse works as expected when correct input is provided", {
     expect_message(R2objCV <- oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest))
     expect_message(R2objCV <- oosse(y = y, x = x[, 1, drop = TRUE], predFun = predFunTest, fitFun = fitFunTest)) # Vector input
@@ -20,6 +21,7 @@ test_that("oosse works as expected when correct input is provided", {
     expect_message(heidkeObj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, skillScore = "Peirce"))
     expect_message(missObj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, skillScore = "Appleman"))
     expect_message(McFaddenObj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, skillScore = "McFadden"))
+    expect_message(RankedProbObj <- oosse(y = yMult, x = x, predFun = predFunMult, fitFun = fitFunMult, skillScore = "RankedProbability"))
 })
 fitFunBroken = function(y, x){lm.fit(y = y, x = rbind(1, x))}
 predFunBroken = function(mod, x) {rbind(1,x) %*% mod$coef}

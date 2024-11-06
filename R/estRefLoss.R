@@ -43,8 +43,8 @@ estRefLoss = function(y, x, skillScore){
         deltaSE = abs(log(yBar/(1-yBar))*sqrt(yBar*(1-yBar)/(n-1)))
         c(lrAnaBC, deltaSE)
     } else if(skillScore == "RankedProbability"){
-        lrAna = 2*yBar*(1-yBar)*(n)/(n-1)
-        deltaSE = sqrt(4*(1-2*yBar)^2*yBar*(1-yBar)*n^2/(n-1)^3)
+        lrAna = margVar*(n+1)/n
+        deltaSE = NA
         c(lrAna, deltaSE)
     }
     out = c(out, margVar)
