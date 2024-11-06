@@ -83,20 +83,21 @@ oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Peirce",
         stop("Prediction model failed with error", fullPred, "\nCheck your predFun")
     } else if(skillScore %in% binSS && any(fullPred < 0 | fullPred > 1)){
         stop("Prediction model must return values in [0,1] range for ", skillScore, "skill score!")
-    } else if(multId && NCOL(fullPred) != n){
-        stop("Matrix predictions with categories in rows needed for multivariate outcomes!")
+    } else if(multId && NROW(fullPred) != n){
+        stop("Matrix predictions with categories in colums needed for multivariate outcomes!")
     } else if(printTimeEstimate){
        timeEstimate(methodLoss, cvReps, nFolds, nInnerFolds, nBootstraps, nBootstrapsCor, singleRunTime, n, methodCor)
     }
-    if(multId){
-        y = makeYMatrix(y)
+    if(skillScore == "RankedProbability"){
+        y = factor(y)
     }
     modelLoss = estModelLoss(y, x, fitFun, predFun, methodLoss, nFolds = nFolds,
                              nInnerFolds = nInnerFolds, cvReps = cvReps, nBootstraps = nBootstraps, loss = loss)
     refLoss = estRefLoss(y, x, skillScore = skillScore)
     corEst = estCorMeanRef(y, x, fitFun, predFun, methodLoss, methodCor, nBootstrapsCor, nFolds = nFolds, nBootstraps = nBootstraps, loss = loss)
     skillScoreRes = skillScoreSE(meanLoss = modelLoss["Estimate"], margVar = modelLoss["margVar"], n = n, skillScore = skillScore,
-                              meanLossSE = modelLoss["StandardError"], corEst = corEst, refLoss = refLoss["Estimate"], refLossSE = refLoss["StandardError"])
+                              meanLossSE = modelLoss["StandardError"], corEst = corEst,
+                              refLoss = refLoss["Estimate"], refLossSE = refLoss["StandardError"])
     list0 = list(skillScoreRes, modelLoss, refLoss)
     names(list0) = determineNames(skillScore)
     return(c(list0, list("corEst" = corEst,

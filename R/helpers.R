@@ -70,8 +70,10 @@ timeEstimate = function(methodLoss, cvReps, nFolds, nInnerFolds, nBootstraps,
 #'
 #' @param y The vector with more than 2 unique values
 #'
-#' @return A matrix with categories in the rows and columns equal to the length of y
+#' @return A matrix with categories in the columns and number of rows equal to the length of y
 #' @importFrom stats model.matrix
-makeYMatrix = function(y){
-    t(model.matrix(~factor(y)-1))
+makeYMatrix = function(y, skillScore){
+    switch(skillScore,
+           "RankedProbability" = model.matrix(~factor(y)-1),
+           y)
 }

@@ -4,19 +4,19 @@
 \alias{estRefLoss}
 \title{Estimate the out-of sample loss for the reference model}
 \usage{
-estRefLoss(y, x, margVar, skillScore)
+estRefLoss(y, x, skillScore)
 }
 \arguments{
 \item{y}{The vector of outcome values}
 
 \item{x}{The matrix of predictors}
 
-\item{margVar}{The observed marginal variance}
-
 \item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Heidke", "Appleman" and "McFadden", "RankedProbability" are implemented.}
+
+\item{margVar}{The observed marginal variance}
 }
 \value{
-A vector of length 2: the estimated reference loss and its standard error
+A vector of length 3: the estimated reference loss, its standard error and the marginal variance where applicable
 }
 \description{
 The reference model taken here is the mean of the training data

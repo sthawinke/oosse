@@ -15,7 +15,7 @@ estRefLoss = function(y, x, skillScore){
     margVar = if(skillScore %in% c("R2", "Brier")){
         var(y)
     } else if(skillScore == "RankedProbability"){
-        rowMeans(y)
+        colMeans(y)
     } else {
         NA
     }
