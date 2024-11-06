@@ -14,7 +14,8 @@ estModelLoss(
   nInnerFolds,
   cvReps,
   nBootstraps,
-  loss
+  loss,
+  yMat
 )
 }
 \arguments{

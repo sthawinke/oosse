@@ -10,17 +10,16 @@
 estRefLoss = function(y, x, skillScore){
     n = length(y)
     yBar = switch(skillScore,
-                  "RankedProbability" = rowMeans(y),
+                  "RankedProbability" = table(y)/n,
                   mean(y))
     margVar = if(skillScore %in% c("R2", "Brier")){
         var(y)
-    } else if(skillScore == "RankedProbability"){
-        colMeans(y)
     } else {
         NA
     }
     out = if(skillScore == "R2"){
-        c(margVar*(n+1)/n, sqrt(2/(n-1))*MST)
+        MST <- margVar*(n+1)/n
+        c(MST, sqrt(2/(n-1))*MST)
     } else if(skillScore == "Brier"){
         c(margVar*(n+1)/n, sqrt((1-2*yBar)^2*yBar*(1-yBar))*(n+1)/(n-1)^{3/2})
     } else if(skillScore == "Peirce"){
@@ -43,7 +42,7 @@ estRefLoss = function(y, x, skillScore){
         deltaSE = abs(log(yBar/(1-yBar))*sqrt(yBar*(1-yBar)/(n-1)))
         c(lrAnaBC, deltaSE)
     } else if(skillScore == "RankedProbability"){
-        lrAna = margVar*(n+1)/n
+        lrAna = yBar*(1-yBar)*(n+1)/n
         deltaSE = NA
         c(lrAna, deltaSE)
     }

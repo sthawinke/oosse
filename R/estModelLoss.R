@@ -10,7 +10,7 @@
 #' @references
 #'   \insertAllCited{}
 estModelLoss = function(y, x, fitFun, predFun, methodLoss, nFolds, nInnerFolds,
-                  cvReps, nBootstraps, loss){
+                  cvReps, nBootstraps, loss, yMat){
         n <- length(y)
         seVec = if(methodLoss == "CV"){
                 #Nested cross-validation

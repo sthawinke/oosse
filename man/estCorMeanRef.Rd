@@ -14,7 +14,8 @@ estCorMeanRef(
   nBootstrapsCor,
   nFolds,
   nBootstraps,
-  loss
+  loss,
+  skillScore
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ estCorMeanRef(
 \item{nBootstraps}{The number of .632 bootstraps}
 
 \item{loss}{The loss type, see details}
+
+\item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Heidke", "Appleman" and "McFadden", "RankedProbability" are implemented.}
 }
 \value{
 the estimated correlation
