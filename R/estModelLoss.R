@@ -10,8 +10,9 @@
 #' @references
 #'   \insertAllCited{}
 estModelLoss = function(y, x, fitFun, predFun, methodLoss, nFolds, nInnerFolds,
-                  cvReps, nBootstraps, loss, yMat){
+                  cvReps, nBootstraps, loss, yMat, skillScore){
         n <- length(y)
+        matY = skillScore == "RankedProbability"
         seVec = if(methodLoss == "CV"){
                 #Nested cross-validation
                 unFolds <- seq_len(nFolds);unFoldsIn <- seq_len(nInnerFolds) #Prepare the folds
@@ -22,14 +23,14 @@ estModelLoss = function(y, x, fitFun, predFun, methodLoss, nFolds, nInnerFolds,
                         idTrain = folds!=uf
                         modTrain = fitFun(y[idTrain], x[idTrain,,drop = FALSE])
                         predTest = predFun(modTrain, x[!idTrain, , drop = FALSE])
-                        eOut = estLoss(y[!idTrain], predTest, loss = loss)
+                        eOut = estLoss(subsetY(y, yMat, skillScore, !idTrain), predTest, loss = loss)
                         #Inner loop
                         inFolds = sample(rep(unFoldsIn, length.out = sum(idTrain)))
                         eIn = lapply(unFoldsIn, function(inf){
                             idTrainIn = inFolds!=inf
                             modTrain = fitFun(y[idTrainIn], x[idTrainIn,,drop = FALSE])
                             predTest = predFun(modTrain, x[!idTrainIn, , drop = FALSE])
-                            estLoss(y[!idTrainIn], predTest, loss = loss)
+                            estLoss(subsetY(y, yMat, skillScore, !idTrainIn), predTest, loss = loss)
                         })
                         #summary statistics
                         errHatTilde = mean(unlist(eIn), na.rm = TRUE)
@@ -43,9 +44,9 @@ estModelLoss = function(y, x, fitFun, predFun, methodLoss, nFolds, nInnerFolds,
                     bootReps = bplapply(seq_len(nBootstraps), function(br){
                         id = sample(n, replace = TRUE)
                         #.632 bootstrap
-                        MSE632est = boot632(y, x, id, fitFun, predFun, loss = loss)
+                        MSE632est = boot632(y, x, id, fitFun, predFun, loss = loss, yMat = yMat, skillScore = skillScore)
                         #Out of bag bootstrap
-                        oob = bootOob(y, x, id, fitFun, predFun, loss = loss)
+                        oob = bootOob(y, x, id, fitFun, predFun, loss = loss, yMat = yMat, skillScore = skillScore)
                         list("oobObj" = oob, "MSE632est" = MSE632est)
                     })
                     MSE632est = mean(vapply(FUN.VALUE = double(1), bootReps, function(x) {x$MSE632est}), na.rm = TRUE)

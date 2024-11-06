@@ -8,14 +8,11 @@
 #'
 #' @return A vector of losses of the same length as obs and pred
 estLoss = function(obs, pred, loss){
-    if(ism <- is.matrix(pred)){#For multivariate predictions
-        obs = makeYMatrix(obs)
-    }
     out <- switch(loss,
            "squared" = (obs-pred)^2,
            "binary" = obs != round(pred),
            "logistic" = -(obs*log(pred) + (1-obs)*log(1-pred)))
-    if(ism){#For multivariate predictions
+    if(is.matrix(pred)){#For multivariate predictions
         out <- rowSums(out)
     }
     return(out)

@@ -4,7 +4,7 @@
 \alias{boot632}
 \title{The .632 bootstrap estimation of the MSE}
 \usage{
-boot632(y, x, id, fitFun, predFun, loss)
+boot632(y, x, id, fitFun, predFun, loss, yMat, skillScore)
 }
 \arguments{
 \item{y}{The vector of outcome values}
@@ -18,6 +18,8 @@ boot632(y, x, id, fitFun, predFun, loss)
 \item{predFun}{The function for evaluating the prediction model}
 
 \item{loss}{The loss type, see details}
+
+\item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Heidke", "Appleman" and "McFadden", "RankedProbability" are implemented.}
 }
 \value{
 The MSE estimate

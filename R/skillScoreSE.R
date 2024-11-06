@@ -23,7 +23,7 @@
 #' corEst = 0.75, skillScore = "Brier")
 #' # The out-of-sample Peirce skill score
 #' skillScoreSE(meanLoss = .3, meanLossSE = 0.05, refLoss = .44,
-#' refLossSE = 0.02, corEst = 0.75, skillScore = "Peirce")
+#' refLossSE = 0.02, corEst = 0.75, skillScore = "Heidke")
 #' @seealso \link{oosse}
 #' @references
 #'     \insertRef{Hawinkel2023}{oosse}

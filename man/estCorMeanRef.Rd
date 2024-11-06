@@ -15,7 +15,8 @@ estCorMeanRef(
   nFolds,
   nBootstraps,
   loss,
-  skillScore
+  skillScore,
+  yMat
 )
 }
 \arguments{

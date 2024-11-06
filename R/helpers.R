@@ -75,3 +75,18 @@ timeEstimate = function(methodLoss, cvReps, nFolds, nInnerFolds, nBootstraps,
 makeYMatrix = function(y){
      model.matrix(~y-1)
 }
+#' Subset y regardless of whether it is a vector or matrix
+#'
+#' @param y The vector
+#' @param yMat The matrix
+#' @param id The subsetting index
+#' @inheritParams oosse
+#'
+#' @return The subset vector or matrix
+subsetY = function(y, yMat, skillScore, id){
+    if(skillScore == "RankedProbability"){
+        yMat[id,, drop = FALSE]
+    } else {
+        y[id]
+    }
+}

@@ -90,13 +90,14 @@ oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Peirce",
     }
     if(skillScore == "RankedProbability"){
         y = factor(y)
+        yMat = makeYMatrix(y)
     }
-    modelLoss = estModelLoss(y, x, fitFun, predFun, methodLoss, nFolds = nFolds,
+    modelLoss = estModelLoss(y, x, fitFun, predFun, methodLoss, nFolds = nFolds, skillScore = skillScore, yMat = yMat,
                              nInnerFolds = nInnerFolds, cvReps = cvReps, nBootstraps = nBootstraps, loss = loss)
     refLoss = estRefLoss(y, x, skillScore = skillScore)
-    corEst = estCorMeanRef(y, x, fitFun, predFun, methodLoss, methodCor, nBootstrapsCor,
+    corEst = estCorMeanRef(y, x, fitFun, predFun, methodLoss, methodCor, nBootstrapsCor, yMat = yMat,
                            nFolds = nFolds, nBootstraps = nBootstraps, loss = loss, skillScore = skillScore)
-    skillScoreRes = skillScoreSE(meanLoss = modelLoss["Estimate"], margVar = modelLoss["margVar"], n = n, skillScore = skillScore,
+    skillScoreRes = skillScoreSE(meanLoss = modelLoss["Estimate"], margVar = refLoss["margVar"], n = n, skillScore = skillScore,
                               meanLossSE = modelLoss["StandardError"], corEst = corEst,
                               refLoss = refLoss["Estimate"], refLossSE = refLoss["StandardError"])
     list0 = list(skillScoreRes, modelLoss, refLoss)

@@ -15,7 +15,8 @@ estModelLoss(
   cvReps,
   nBootstraps,
   loss,
-  yMat
+  yMat,
+  skillScore
 )
 }
 \arguments{
@@ -38,6 +39,8 @@ estModelLoss(
 \item{nBootstraps}{The number of .632 bootstraps}
 
 \item{loss}{The loss type, see details}
+
+\item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Heidke", "Appleman" and "McFadden", "RankedProbability" are implemented.}
 }
 \value{
 A vector with MSE estimate and its standard error

@@ -4,7 +4,7 @@
 \alias{bootOob}
 \title{The oob bootstrap (smooths leave-one-out CV)}
 \usage{
-bootOob(y, x, id, fitFun, predFun, loss)
+bootOob(y, x, id, fitFun, predFun, loss, yMat, skillScore)
 }
 \arguments{
 \item{y}{The vector of outcome values}
@@ -18,6 +18,8 @@ bootOob(y, x, id, fitFun, predFun, loss)
 \item{predFun}{The function for evaluating the prediction model}
 
 \item{loss}{The loss type, see details}
+
+\item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Heidke", "Appleman" and "McFadden", "RankedProbability" are implemented.}
 }
 \value{
 matrix of errors and inclusion times

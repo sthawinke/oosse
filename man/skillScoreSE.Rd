@@ -12,7 +12,7 @@ skillScoreSE(
   corEst,
   refLoss,
   refLossSE,
-  skillScore = c("R2", "Brier", "Peirce", "Appleman", "McFadden")
+  skillScore = c("R2", "Brier", "Heidke", "Appleman", "McFadden", "RankedProbability")
 )
 }
 \arguments{
@@ -50,7 +50,7 @@ skillScoreSE(meanLoss = .3, meanLossSE = 0.4, refLoss = .4, refLossSE = 0.2,
 corEst = 0.75, skillScore = "Brier")
 # The out-of-sample Peirce skill score
 skillScoreSE(meanLoss = .3, meanLossSE = 0.05, refLoss = .44,
-refLossSE = 0.02, corEst = 0.75, skillScore = "Peirce")
+refLossSE = 0.02, corEst = 0.75, skillScore = "Heidke")
 }
 \references{
 \insertRef{Hawinkel2023}{oosse}
