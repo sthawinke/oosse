@@ -31,7 +31,7 @@
 buildConfInt = function(oosseObj, what = names(oosseObj)[1], conf = 0.95){
     stopifnot(conf >0, conf <1)
     what = match.arg(what, choices = choices <- c("R2", "MSE", "MST", "BrierScore", "BrierSkillScore", "ReferenceBrierScore",
-                                       "ModelMisclassRate", "ReferenceMisclassRate","PeirceSkillScore", "MisclassifcationSkillScore",
+                                       "ModelMisclassRate", "ReferenceMisclassRate","HeidkeSkillScore", "ApplemanSkillScore",
                                        "ReferenceLogLoss", "ModelLogLoss", "McFaddenSkillScore"))
     bounds <- c((1-conf)/2, conf + (1-conf)/2)
     if(what %in% setdiff(choices, "MST")){

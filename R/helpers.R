@@ -39,7 +39,7 @@ determineNames = function(skillScore){
            "Brier" = c("BrierSkillScore", "BrierScore", "ReferenceBrierScore"),
            "Peirce" = c("PeirceSkillScore", "ModelMisclassRate", "ReferenceMisclassRate"),
            "Heidke" = c("HeidkeSkillScore", "ModelMisclassRate", "ReferenceMisclassRate"),
-           "Appleman" = c("PeirceSkillScore", "ModelMisclassRate", "ReferenceMisclassRate"),
+           "Appleman" = c("ApplemanSkillScore", "ModelMisclassRate", "ReferenceMisclassRate"),
            "McFadden" = c("McFaddenSkillScore", "ModelLogLoss", "ReferenceLogLoss"),
            "RankedProbability" = c("RankedProbabilitySkillScore", "ModelSquaredLoss", "ReferenceSquaredLoss"))
 }
