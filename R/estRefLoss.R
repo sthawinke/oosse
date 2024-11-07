@@ -2,7 +2,8 @@
 #'
 #'The reference model taken here is the mean of the training data
 #'
-#' @return A vector of length 2: the estimated reference loss and its standard error
+#' @return A vector of length 2: the estimated reference loss and its standard error.
+#' For the Peirce skill score, a vector of length 4: the reference loss of two different reference models, and their standard error
 #' @inheritParams oosse
 #' @importFrom stats pbinom
 estRefLoss = function(y, x, skillScore){
@@ -19,13 +20,25 @@ estRefLoss = function(y, x, skillScore){
     } else if(skillScore == "Brier"){
         c(margVar*(n+1)/n, sqrt((1-2*yBar)^2*yBar*(1-yBar))*(n+1)/(n-1)^{3/2})
     } else if(skillScore == "Peirce"){
-        lrAna = 2*yBar*(1-yBar)*(n)/(n-1)
-        deltaSE = sqrt(4*(1-2*yBar)^2*yBar*(1-yBar)*n^2/(n-1)^3)
+        lrAnaObs = 2*yBar*(1-yBar)*(n)/(n-1)
+        deltaSEObs = sqrt(4*(1-2*yBar)^2*yBar*(1-yBar)*n^2/(n-1)^3)
+        lrAnaPred = lrAnaMod
+        lrAnaMod = function(yBar, kappaHat, n){
+            yBar*(1-kappaHat) + (1-yBar)*kappaHat + 2 covEst
+        }
+        lrAnaObs = function(yBar, n){
+            lrAna = 2*yBar*(1-yBar)*(n)/(n-1)
+            deltaSE = sqrt(4*(1-2*yBar)^2*yBar*(1-yBar)*n^2/(n-1)^3)
+            c(lrAna, deltaSE)
+        }
+        deltaSEpred
         c(lrAna, deltaSE)
     } else if(skillScore == "Heidke"){
-        lrAna = 2*yBar*(1-yBar)*(n)/(n-1)
+        lrAna =  lrAnaMod()
         deltaSE = sqrt(4*(1-2*yBar)^2*yBar*(1-yBar)*n^2/(n-1)^3)
         c(lrAna, deltaSE)
+    } else if(skillScore == "AgnosticHeidkeHeidke"){
+        lrAnaObs(yBar, n)
     } else if(skillScore == "Appleman"){
         lrAna = yBar*pbinom(n/2, size = n, prob = yBar) +
             (1-yBar)*pbinom(n/2, size = n, prob = yBar, lower.tail = FALSE)
