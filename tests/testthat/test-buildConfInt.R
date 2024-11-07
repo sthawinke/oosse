@@ -6,7 +6,7 @@ beta = c(1.2, 1.5, 2)
 yBin = rbinom(n, size = 1, prob = expit(x %*% beta))
 R2objCV <- oosse(y = y, x = x, predFun = predFunTest, fitFun = fitFunTest, printTimeEstimate = FALSE)
 Brierobj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, printTimeEstimate = FALSE, skillScore = "Brier")
-Peirceobj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, printTimeEstimate = FALSE, skillScore = "Peirce")
+Peirceobj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, printTimeEstimate = FALSE, skillScore = "Heidke")
 MSSobj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, printTimeEstimate = FALSE, skillScore = "Appleman")
 McFaddenobj <- oosse(y = yBin, x = x, predFun = predFunBin, fitFun = fitFunBin, printTimeEstimate = FALSE, skillScore = "McFadden")
 test_that("confidence intervals are built with correct boundaries", {
