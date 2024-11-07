@@ -42,7 +42,7 @@
 #' @seealso \link{buildConfInt}
 #' @references
 #'   \insertAllCited{}
-oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Peirce", "Heidke", "Appleman", "McFadden", "RankedProbability"),
+oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Peirce", "Heidke", "AgnosticHeidke", "Appleman", "McFadden", "RankedProbability"),
                  methodLoss = c("CV", "bootstrap"), methodCor = c("nonparametric", "jackknife"), printTimeEstimate = TRUE,
                        nFolds = 10L, nInnerFolds = nFolds - 1L, cvReps = 200L, nBootstraps = 200L, nBootstrapsCor = 50L, ...){
     fitFun = checkFitFun(fitFun) #Version of the fit function for internal use
@@ -97,7 +97,7 @@ oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Peirce",
     refLoss = estRefLoss(y, x, skillScore = skillScore)
     corEst = estCorMeanRef(y, x, fitFun, predFun, methodLoss, methodCor, nBootstrapsCor, yMat = yMat,
                            nFolds = nFolds, nBootstraps = nBootstraps, loss = loss, skillScore = skillScore)
-    skillScoreRes = skillScoreSE(meanLoss = modelLoss["Estimate"], margVar = refLoss["margVar"], n = n, skillScore = skillScore,
+    skillScoreRes = skillScoreSE(meanLoss = modelLoss["Estimate"], margVar = var(y), n = n, skillScore = skillScore,
                               meanLossSE = modelLoss["StandardError"], corEst = corEst,
                               refLoss = refLoss["Estimate"], refLossSE = refLoss["StandardError"])
     list0 = list(skillScoreRes, modelLoss, refLoss)

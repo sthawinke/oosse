@@ -14,7 +14,7 @@ estRefLoss(y, x, skillScore)
 \item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Heidke", "Appleman" and "McFadden", "RankedProbability" are implemented.}
 }
 \value{
-A vector of length 3: the estimated reference loss, its standard error and the marginal variance where applicable
+A vector of length 2: the estimated reference loss and its standard error
 }
 \description{
 The reference model taken here is the mean of the training data

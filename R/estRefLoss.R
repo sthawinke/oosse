@@ -2,7 +2,7 @@
 #'
 #'The reference model taken here is the mean of the training data
 #'
-#' @return A vector of length 3: the estimated reference loss, its standard error and the marginal variance where applicable
+#' @return A vector of length 2: the estimated reference loss and its standard error
 #' @inheritParams oosse
 #' @importFrom stats pbinom
 estRefLoss = function(y, x, skillScore){
@@ -12,8 +12,6 @@ estRefLoss = function(y, x, skillScore){
                   mean(y))
     margVar = if(skillScore %in% c("R2", "Brier")){
         var(y)
-    } else {
-        NA
     }
     out = if(skillScore == "R2"){
         MST <- margVar*(n+1)/n
@@ -40,11 +38,12 @@ estRefLoss = function(y, x, skillScore){
         deltaSE = abs(log(yBar/(1-yBar))*sqrt(yBar*(1-yBar)/(n-1)))
         c(lrAnaBC, deltaSE)
     } else if(skillScore == "RankedProbability"){
-        lrAna = yBar*(1-yBar)*(n+1)/n
-        deltaSE = NA
+        lrAna = sum(yBar*(1-yBar))*(n+1)/n
+        vcovar = buildVarCovarMult(yBar, n)
+        gradient = ((n+1)/(n-1))^2*(1-2*yBar)^2*yBar*(1-yBar)
+        deltaSE = sqrt(crossprod(gradient, vcovar) %*% gradient)
         c(lrAna, deltaSE)
     }
-    out = c(out, margVar)
-    names(out) = c("Estimate", "StandardError", "margVar")
+    names(out) = c("Estimate", "StandardError")
     return(out)
 }

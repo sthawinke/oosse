@@ -90,3 +90,14 @@ subsetY = function(y, yMat, skillScore, id){
         y[id]
     }
 }
+#' Build the multinomial variance covariance matrix
+#'
+#' @param pi The vector of probabilities
+#' @param n The sample size
+#'
+#' @return The variance covariance matrix
+buildVarCovarMult = function(pi, n){
+    tmp = tcrossprod(pi)/(1-n)
+    diag(tmp) = pi*(1-pi)/(n-1)
+    tmp
+}

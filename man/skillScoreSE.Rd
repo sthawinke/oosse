@@ -12,7 +12,7 @@ skillScoreSE(
   corEst,
   refLoss,
   refLossSE,
-  skillScore = c("R2", "Brier", "Heidke", "Appleman", "McFadden", "RankedProbability")
+  skillScore
 )
 }
 \arguments{
@@ -44,7 +44,7 @@ The marginal variance is scaled by (n+1)/n to the out-of-sample refLoss, so the 
 \examples{
 # The out-of-sample R² calculated using externally provided estimates
 skillScoreSE(meanLoss = 3, margVar = 4, meanLossSE = 0.4, n = 50,
-corEst = 0.75)
+corEst = 0.75, skillScore = "R2")
 # The out-of-sample Brier skill score
 skillScoreSE(meanLoss = .3, meanLossSE = 0.4, refLoss = .4, refLossSE = 0.2,
 corEst = 0.75, skillScore = "Brier")
