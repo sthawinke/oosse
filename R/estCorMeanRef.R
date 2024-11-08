@@ -21,4 +21,5 @@ estCorMeanRef = function(y, x, fitFun, predFun, methodLoss, methodCor, nBootstra
         }))
     corMSEMST = cor(matMSEMST[1,], matMSEMST[2,], use = "complete.obs")
     return(corMSEMST)
+    #Add: 3x3 covariance matrix needed for Peirce
 }

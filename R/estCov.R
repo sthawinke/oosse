@@ -23,3 +23,18 @@ estCov = function(n, p, what = c("probability", "logLoss", "logLossMin")){
     }
     sum(dp*(xx -sum(xx*dp))*(yy - sum(yy*dp)))*n/(n-1)
 }
+
+#' Estimate covariance between the average prediction (\eqn{\hat{\kappa}}) and
+#' the average outcome (\eqn{\bar{y}}) through the bootstrap.
+#'
+#' @inheritParams oosse
+#'
+#' @return The estimated covariance
+estCovKappaY = function(y, x, fitFun, predFun, nBootstraps){
+    n = NROW(y)
+    booIns = vapply(integer(nBootstraps), FUN.VALUE = double(2), function(bb){
+        id = sample(n, replace = TRUE)
+        c(yBar = mean(y[id]), kappaHat = mean(predFun(fitFun(y[id], x[id,,drop = FALSE]), x[id,,drop = FALSE])))
+    })
+    cov(booIns[1, ], booIns[2,], use = "pairwise.complete.obs")
+}

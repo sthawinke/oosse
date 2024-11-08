@@ -4,7 +4,7 @@
 \alias{estRefLoss}
 \title{Estimate the out-of sample loss for the reference model}
 \usage{
-estRefLoss(y, x, skillScore)
+estRefLoss(y, x, skillScore, fitFun, predFun, kappaHat, nBootstraps)
 }
 \arguments{
 \item{y}{The vector of outcome values}
@@ -12,9 +12,18 @@ estRefLoss(y, x, skillScore)
 \item{x}{The matrix of predictors}
 
 \item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Heidke", "Appleman" and "McFadden", "RankedProbability" are implemented.}
+
+\item{fitFun}{The function for fitting the prediction model}
+
+\item{predFun}{The function for evaluating the prediction model}
+
+\item{kappaHat}{The mean prediction}
+
+\item{nBootstraps}{The number of .632 bootstraps}
 }
 \value{
-A vector of length 2: the estimated reference loss and its standard error
+A vector of length 2: the estimated reference loss and its standard error.
+For the Peirce skill score, a vector of length 4: the reference loss of two different reference models, and their standard error
 }
 \description{
 The reference model taken here is the mean of the training data

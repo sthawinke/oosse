@@ -94,7 +94,8 @@ oosse = function(y, x, fitFun, predFun,  skillScore = c("R2", "Brier", "Peirce",
     }
     modelLoss = estModelLoss(y, x, fitFun, predFun, methodLoss, nFolds = nFolds, skillScore = skillScore, yMat = yMat,
                              nInnerFolds = nInnerFolds, cvReps = cvReps, nBootstraps = nBootstraps, loss = loss)
-    refLoss = estRefLoss(y, x, skillScore = skillScore)
+    refLoss = estRefLoss(y, x, skillScore = skillScore, fitFun = fitFun, predFun = predFun,
+                         kappaHat = mean(fullPred), nBootstraps = nBootstraps)
     corEst = estCorMeanRef(y, x, fitFun, predFun, methodLoss, methodCor, nBootstrapsCor, yMat = yMat,
                            nFolds = nFolds, nBootstraps = nBootstraps, loss = loss, skillScore = skillScore)
     skillScoreRes = skillScoreSE(meanLoss = modelLoss["Estimate"], margVar = var(y), n = n, skillScore = skillScore,
