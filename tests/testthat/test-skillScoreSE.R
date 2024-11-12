@@ -9,7 +9,7 @@ test_that("skillScoreSE throws errors when incorrect input is provided", {
     expect_error(skillScoreSE(meanLoss = .3, refLoss = 4, refLossSE = .03, meanLossSE = 0.04, skillScore = "Heidke", corEst = 0.75))
     })
 test_that("skillScoreSE works as expected with correct input", {
-    expect_length(skillScoreSE(meanLoss = 3, margVar = 4, meanLossSE = 0.4, n = 50, corEst = 0.75, skillScore = "R2"), 2)
+    expect_length(skillScoreSE(meanLoss = 3, margVar = 4, meanLossSE = 0.4, corEst = 0.75, skillScore = "R2"), 2)
     expect_length(skillScoreSE(meanLoss = .3, refLoss = .4, refLossSE = .03, meanLossSE = 0.04, skillScore = "Brier", corEst = 0.75), 2)
     expect_length(skillScoreSE(meanLoss = .3, refLoss = .4, refLossSE = .03, meanLossSE = 0.04, skillScore = "Heidke", corEst = 0.75), 2)
     expect_length(skillScoreSE(meanLoss = .3, refLoss = .4, refLossSE = .03, meanLossSE = 0.04, skillScore = "Appleman", corEst = 0.75), 2)
