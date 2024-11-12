@@ -1,7 +1,6 @@
 #' Calculate out-of-sample R² and its standard error based on MSE estimates
 #'
 #' @param meanLoss An estimate of the mean squared error (MSE)
-#' @param margVar The marginal variance of the outcome, not scaled by (n+1)/n
 #' @param meanLossSE The standard error on the MSE estimate
 #' @param n the sample size of the training data
 #' @param corEst The correlation between model and reference loss estimators
@@ -27,25 +26,24 @@
 #' @seealso \link{oosse}
 #' @references
 #'     \insertRef{Hawinkel2023}{oosse}
-skillScoreSE = function(meanLoss, meanLossSE, margVar, n, corEst, refLoss, refLossSE,
-                        skillScore){
+skillScoreSE = function(meanLoss, meanLossSE, margVar, n, corEst, refLoss,
+                        refLossSE, skillScore){
     skillScore = match.arg(skillScore, choices = as.character(formals(oosse)$skillScore)[-1])
-    stopifnot(corEst >= -1, corEst <=1, meanLoss > 0 || skillScore == "McFadden", missing(margVar) || skillScore != "R2" || margVar > 0,
-              missing(n) || n > 1, meanLossSE > 0, length(meanLoss) == 1, missing(refLoss) || length(refLoss) == 1,
-              missing(refLossSE) || length(refLossSE) == 1, length(meanLossSE)  == 1, skillScore == "R2" || (meanLoss < 1 && refLoss < 1))
-    if(skillScore == "R2"){
-        refLoss = margVar*(n+1)/n #Inflate marginal variance to out-of-sample MST
-        refLossSE = sqrt(2/(n-1))*refLoss #The standard error on the MST
-    } else if(missing(refLoss) || missing(refLossSE)){
-        stop("Reference loss and its variance must be provided when skill score is not R2!")
+    stopifnot(all(corEst >= -1), all(corEst <=1), meanLoss > 0 || skillScore == "McFadden",
+              missing(n) || n > 1, meanLossSE > 0, all(refLoss > 1)|| skillScore == "McFadden")
+    ss = unname(1-meanLoss/refLoss) #The skill score estimate
+    if(skillScore == "Peirce"){
+        Grad = c(-1/refLoss["Estimate"], 1/refLoss["Estimate"], (meanLoss-refLoss["EstimateModel"])/refLoss["Estimate"]^2) #The gradient
+        covMat = tcrossprod(c(meanLossSE, refLossSE["Estimate"], refLossSE["EstimateModel"]))*corEst
+    } else {
+        Grad = c(-1/refLoss, meanLoss/refLoss^2) #The gradient
+        covSSEmarg = corEst*meanLossSE*refLossSE #Covariance between meanLoss and refLoss estimates
+        covMat = matrix(c(meanLossSE^2, covSSEmarg, covSSEmarg, refLossSE^2), 2, 2) #The covariance matrix
     }
-    Grad = c(-1/refLoss, meanLoss/refLoss^2) #The gradient
-    covSSEmarg = corEst*meanLossSE*refLossSE #Covariance between meanLoss and refLoss estimates
-    covMat = matrix(c(meanLossSE^2, covSSEmarg, covSSEmarg, refLossSE^2), 2, 2) #The covariance matrix
     if(!isPD(covMat)){
         covMat = nearPD(covMat)$mat #Convert to nearest positive definite matrix
     }
-    out = c(unname(1-meanLoss/refLoss), as.vector(sqrt(Grad %*% covMat %*% Grad)))
+    out = c(ss, as.vector(sqrt(Grad %*% covMat %*% Grad)))
     names(out) = c("Estimate", "StandardError")
     return(out)
 }

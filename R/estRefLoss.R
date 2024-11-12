@@ -22,7 +22,7 @@ estRefLoss = function(y, x, skillScore, fitFun, predFun, kappaHat, nBootstraps){
         sigma2 = yBar*(1-yBar)
         varBradley = (n+1)^2/((n-1)*n^3)*((n-1) + sigma2*(6-4*n))*sigma2
         c(margVar*(n+1)/n, sqrt(varBradley))
-        #(1-2*yBar)^2*yBar*(1-yBar))*(n+1)/(n-1)^{3/2}
+        #(1-2*yBar)^2*yBar*(1-yBar))*(n+1)/(n-1)^{3/2} #Delta method
     } else if(skillScore == "Peirce"){
         lrObs = lrAnaBinObs(yBar, n)
         lrMod = lrAnaBinMod(yBar, kappaHat, n, covEst = estCovKappaY(y, x, fitFun, predFun, nBootstraps))
@@ -49,6 +49,10 @@ estRefLoss = function(y, x, skillScore, fitFun, predFun, kappaHat, nBootstraps){
         deltaSE = sqrt(crossprod(gradient, vcovar) %*% gradient)
         c(lrAna, deltaSE)
     }
-    names(out) = c("Estimate", "StandardError")
+    names(out) = if(skillScore == "Peirce"){
+        c("Estimate", "StandardError", "EstimateModel", "StandardErrorModel")
+    } else {
+        c("Estimate", "StandardError")
+    }
     return(out)
 }

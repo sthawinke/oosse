@@ -20,8 +20,6 @@ skillScoreSE(
 
 \item{meanLossSE}{The standard error on the MSE estimate}
 
-\item{margVar}{The marginal variance of the outcome, not scaled by (n+1)/n}
-
 \item{n}{the sample size of the training data}
 
 \item{corEst}{The correlation between model and reference loss estimators}
