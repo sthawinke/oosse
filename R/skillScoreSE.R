@@ -16,7 +16,7 @@
 #' @export
 #' @examples
 #' # The out-of-sample R² calculated using externally provided estimates
-#' skillScoreSE(meanLoss = 3, refLoss = 4, meanLossSE = 0.4,
+#' skillScoreSE(meanLoss = 3, margVar = 4, `n = 40, meanLossSE = 0.4,
 #' corEst = 0.75, skillScore = "R2")
 #' # The out-of-sample Brier skill score
 #' skillScoreSE(meanLoss = .3, meanLossSE = 0.4, refLoss = .4, refLossSE = 0.2,
