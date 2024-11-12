@@ -24,7 +24,7 @@ boot632(y, x, id, fitFun, predFun, loss, yMat, skillScore)
 \item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Heidke", "Appleman" and "McFadden", "RankedProbability" are implemented.}
 }
 \value{
-The MSE estimate
+A vector of length 2: the MSE estimate, and the average prediction
 }
 \description{
 The .632 bootstrap estimation of the MSE

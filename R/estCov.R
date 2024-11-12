@@ -52,19 +52,19 @@ estCorMeanRef = function(y, x, fitFun, predFun, methodLoss, methodCor, nBootstra
     nReps = switch(methodCor, "nonparametric" = nBootstrapsCor, "jackknife" = length(y))
     matMSEMST = simplify2array(bplapply(seq_len(nReps), function(i){
         id = switch(methodCor, "nonparametric" = sample(length(y), replace = TRUE), "jackknife" = -i)
-        refLoss = estRefLoss(y[id], x[id, ,drop = FALSE], skillScore)[
-            if(skillScore == "Peirce") c("Estimate", "EstimateModel") else "Estimate"]
         modelLoss = switch(methodLoss,
                            "bootstrap" = boot632multiple(nBootstraps = nBootstraps, y[id], x[id,,drop = FALSE], yMat = yMat[id,,drop = FALSE],
                                                          fitFun, predFun, loss = loss, skillScore = skillScore),
                            "CV" = simpleCV(y[id], x[id, ,drop = FALSE], yMat = yMat[id,,drop = FALSE],
                                            fitFun, predFun, nFolds, loss = loss, skillScore = skillScore))
-        c("modelLoss" = modelLoss, "referenceLoss" = refLoss)
+        refLoss = estRefLoss(y[id], x[id, ,drop = FALSE], skillScore, kappaHat = modelLoss["kappaHat"])[
+            if(skillScore == "Peirce") c("Estimate", "EstimateModel") else "Estimate"]
+        c("modelLoss" = unname(modelLoss["loss"]), "referenceLoss" = unname(refLoss))
     }))
     corMSEMST = if(skillScore == "Peirce"){
         cor(t(matMSEMST), use = "complete.obs")
     } else {
-        cor(matMSEMST[1,], matMSEMST[2,], use = "complete.obs")
+        cor(matMSEMST["modelLoss",], matMSEMST["referenceLoss",], use = "complete.obs")
     }
     return(corMSEMST)
 }

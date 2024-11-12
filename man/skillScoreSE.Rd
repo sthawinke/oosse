@@ -4,27 +4,16 @@
 \alias{skillScoreSE}
 \title{Calculate out-of-sample R² and its standard error based on MSE estimates}
 \usage{
-skillScoreSE(
-  meanLoss,
-  meanLossSE,
-  margVar,
-  n,
-  corEst,
-  refLoss,
-  refLossSE,
-  skillScore
-)
+skillScoreSE(meanLoss, meanLossSE, corEst, refLoss, refLossSE, skillScore)
 }
 \arguments{
 \item{meanLoss}{An estimate of the mean squared error (MSE)}
 
 \item{meanLossSE}{The standard error on the MSE estimate}
 
-\item{n}{the sample size of the training data}
+\item{corEst}{The correlation between model and reference loss estimators, or a 3x3 correlation matrix for the Peirce skill score}
 
-\item{corEst}{The correlation between model and reference loss estimators}
-
-\item{refLoss, refLossSE}{The reference loss and its standard error. Not required when skillScore is "R2"}
+\item{refLoss, refLossSE}{The reference loss and its standard error.}
 
 \item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Heidke", "Appleman" and "McFadden", "RankedProbability" are implemented.}
 }
@@ -41,7 +30,7 @@ The marginal variance is scaled by (n+1)/n to the out-of-sample refLoss, so the 
 }
 \examples{
 # The out-of-sample R² calculated using externally provided estimates
-skillScoreSE(meanLoss = 3, margVar = 4, meanLossSE = 0.4, n = 50,
+skillScoreSE(meanLoss = 3, refLoss = 4, meanLossSE = 0.4,
 corEst = 0.75, skillScore = "R2")
 # The out-of-sample Brier skill score
 skillScoreSE(meanLoss = .3, meanLossSE = 0.4, refLoss = .4, refLossSE = 0.2,

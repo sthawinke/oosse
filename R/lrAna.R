@@ -8,7 +8,9 @@
 #'
 #' @return The
 lrAnaBinMod = function(yBar, kappaHat, n, covEst){
-    yBar*(1-kappaHat) + (1-yBar)*kappaHat + 2 *covEst
+    lrAna = yBar*(1-kappaHat) + (1-yBar)*kappaHat + 2 *covEst
+    deltaSE = NA # Fix me
+    c(lrAna, deltaSE)
     #ADD: standard error, see Hogan 2009
 }
 lrAnaBinObs = function(yBar, n){

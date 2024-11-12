@@ -24,7 +24,7 @@ simpleCV(y, x, fitFun, predFun, nFolds, loss, skillScore, yMat)
 \item{yMat}{A dummy outcome matrix for multivariate outcomes}
 }
 \value{
-The MSE estimate
+A vector of length 2: The MSE estimate, and mean prediction
 }
 \description{
 Perform simple CV, and return the MSE estimate

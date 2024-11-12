@@ -2,9 +2,8 @@
 #'
 #' @param meanLoss An estimate of the mean squared error (MSE)
 #' @param meanLossSE The standard error on the MSE estimate
-#' @param n the sample size of the training data
-#' @param corEst The correlation between model and reference loss estimators
-#' @param refLoss,refLossSE The reference loss and its standard error. Not required when skillScore is "R2"
+#' @param corEst The correlation between model and reference loss estimators, or a 3x3 correlation matrix for the Peirce skill score
+#' @param refLoss,refLossSE The reference loss and its standard error.
 #' @inheritParams oosse
 #'
 #' @details This function is exported to allow the user to estimate the MSE and its standard error
@@ -15,7 +14,7 @@
 #' @export
 #' @examples
 #' # The out-of-sample R² calculated using externally provided estimates
-#' skillScoreSE(meanLoss = 3, margVar = 4, meanLossSE = 0.4, n = 50,
+#' skillScoreSE(meanLoss = 3, refLoss = 4, meanLossSE = 0.4,
 #' corEst = 0.75, skillScore = "R2")
 #' # The out-of-sample Brier skill score
 #' skillScoreSE(meanLoss = .3, meanLossSE = 0.4, refLoss = .4, refLossSE = 0.2,
@@ -26,11 +25,12 @@
 #' @seealso \link{oosse}
 #' @references
 #'     \insertRef{Hawinkel2023}{oosse}
-skillScoreSE = function(meanLoss, meanLossSE, margVar, n, corEst, refLoss,
+skillScoreSE = function(meanLoss, meanLossSE, corEst, refLoss,
                         refLossSE, skillScore){
     skillScore = match.arg(skillScore, choices = as.character(formals(oosse)$skillScore)[-1])
     stopifnot(all(corEst >= -1), all(corEst <=1), meanLoss > 0 || skillScore == "McFadden",
-              missing(n) || n > 1, meanLossSE > 0, all(refLoss > 1)|| skillScore == "McFadden")
+        meanLossSE > 0, all(refLoss > 0)|| skillScore == "McFadden",
+              length(corEst) == 1 || skillScore == "Peirce")
     ss = unname(1-meanLoss/refLoss) #The skill score estimate
     if(skillScore == "Peirce"){
         Grad = c(-1/refLoss["Estimate"], 1/refLoss["Estimate"], (meanLoss-refLoss["EstimateModel"])/refLoss["Estimate"]^2) #The gradient

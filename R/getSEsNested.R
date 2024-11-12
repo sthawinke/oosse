@@ -29,6 +29,9 @@ getSEsNested = function(cvSplitReps, nOuterFolds, n){
     #Correct the bias
     ErrCV = mean(errOuter, na.rm = TRUE)
     Bias = (1+(nOuterFolds-2)/nOuterFolds)*(ErrNCV-ErrCV)
-    ErrNCVBC = ErrNCV - Bias#Bias correction
-    c("Estimate" = ErrNCVBC, "StandardError" = SEest)
+    ErrNCVBC = ErrNCV - Bias #Bias correction
+    kappaHat = mean(na.rm = TRUE, unlist(lapply(cvSplitReps,
+                                         function(y) lapply(y, function(x) x[["predTest"]]))))
+    #Mean out-of-sample prediction
+    c("Estimate" = ErrNCVBC, "StandardError" = SEest, "kappaHat" = kappaHat)
 }

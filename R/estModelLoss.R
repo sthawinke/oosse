@@ -37,7 +37,8 @@ estModelLoss = function(y, x, fitFun, predFun, methodLoss, nFolds, nInnerFolds,
                         errHatTilde = mean(unlist(eIn), na.rm = TRUE)
                         a = (errHatTilde-mean(eOut, na.rm = TRUE))^2
                         b = var(eOut, na.rm = TRUE)/length(eOut)
-                        list("a" = a, "b" = b, "errHatTilde" = errHatTilde, "eOut" = eOut)
+                        list("a" = a, "b" = b, "errHatTilde" = errHatTilde, "eOut" = eOut,
+                             "predTest" = predTest)
                     })
                 })
                 getSEsNested(cvSplitReps, nFolds, n = n)
@@ -45,7 +46,7 @@ estModelLoss = function(y, x, fitFun, predFun, methodLoss, nFolds, nInnerFolds,
                     bootReps = bplapply(seq_len(nBootstraps), function(br){
                         id = sample(n, replace = TRUE)
                         #.632 bootstrap
-                        MSE632est = boot632(y, x, id, fitFun, predFun, loss = loss, yMat = yMat, skillScore = skillScore)
+                        MSE632est = boot632(y, x, id, fitFun, predFun, loss = loss, yMat = yMat, skillScore = skillScore)["loss"]
                         #Out of bag bootstrap
                         oob = bootOob(y, x, id, fitFun, predFun, loss = loss, yMat = yMat, skillScore = skillScore)
                         list("oobObj" = oob, "MSE632est" = MSE632est)
