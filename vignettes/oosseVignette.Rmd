@@ -30,7 +30,6 @@ install.packages("oosse")
 library(oosse)
 ```
 
-
 # Illustrative examples
 
 The _oosse_ function works with any pair of fitting and prediction functions. Here we illustrate a number of them, but any prediction function implemented in R can be used. The built-in dataset _Brassica_ is used, which contains _rlog_-transformed gene expression measurements for the 1,000 most expressed genes in the _Expr_ slot, as well as 5 outcome phenotypes in the _Pheno_ slot.
