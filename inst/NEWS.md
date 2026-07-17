@@ -31,3 +31,8 @@
 # 1.0.11
 
 - Update Bates and own publication from preprints to published articles
+
+# 1.0.12
+
+ - Correct BugReports url
+ - Change Brassica reference to published version

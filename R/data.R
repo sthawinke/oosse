@@ -1,6 +1,6 @@
 #' Gene expression and phenotypes of Brassica napus (rapeseed) plants
 #'
-#' RNA-sequencing data of genetically identical Brassica napus plants in autumn, with 5 phenotypes next spring, as published by \insertRef{DeMeyer2022}{oosse}.
+#' RNA-sequencing data of genetically identical Brassica napus plants in autumn, with 5 phenotypes next spring, as published by \insertRef{DeMeyer2023}{oosse}.
 #'
 #' @format A list with two components Expr and Pheno
 #' \describe{
@@ -9,5 +9,5 @@
 #' }
 #' @source \doi{10.1101/2022.10.21.513275}
 #' @references
-#'   \insertCite{DeMeyer2022}{oosse}
+#'   \insertCite{DeMeyer2023}{oosse}
 "Brassica"
