@@ -8,6 +8,3 @@ jobs:
   build:
     name: R-universe testing
     uses: r-universe-org/workflows/.github/workflows/build.yml@v3
-    with:
-      universe: bioc
-      organization: bioconductor # for BiocCheck checks
