@@ -9,5 +9,5 @@
 #' }
 #' @source \doi{10.1101/2022.10.21.513275}
 #' @references
-#'   \insertCite{DeMeyer2022}{oosse}
+#'   \insertCite{DeMeyer2023}{oosse}
 "Brassica"
