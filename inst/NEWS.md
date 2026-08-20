@@ -41,3 +41,7 @@
 - RsquaredSE =\> skillScoreSE
 - estMSE =\> estModelLoss
 - Implementation of Brier and Heidke skill scores
+
+# 1.2.1
+
+ - With bootstrap estimation of HSS reference loss

@@ -1,7 +1,7 @@
 Package: oosse
 Type: Package
-Title: Out-of-Sample skill scores with Standard Error Estimation
-Version: 1.1.1
+Title: Out-of-Sample Skill Scores with Standard Error Estimation
+Version: 1.1.2
 Authors@R: 
     c(person(given = "Stijn", family = "Hawinkel", 
     email = "stijn.hawinkel@psb.ugent.be", 
@@ -17,5 +17,5 @@ Suggests:
 LazyData: true
 VignetteBuilder: knitr
 Depends: R (>= 4.2.0)
-BugReports: https://github.com/sthawinke/oosse
+BugReports: https://github.com/sthawinke/oosse/issues
 Config/roxygen2/version: 8.0.0
