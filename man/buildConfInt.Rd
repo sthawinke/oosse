@@ -32,10 +32,16 @@ normal distributions are used to construct the confidence intervals; for the MST
 }
 \examples{
 data(Brassica)
-fitFunLM = function(y, x){lm.fit(y = y, x = cbind(1, x))}
-predFunLM = function(mod, x) {cbind(1,x) \%*\% mod$coef}
-R2lm = oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
-fitFun = fitFunLM, predFun = predFunLM, nFolds = 10)
+fitFunLM <- function(y, x) {
+  lm.fit(y = y, x = cbind(1, x))
+}
+predFunLM <- function(mod, x) {
+  cbind(1, x) \%*\% mod$coef
+}
+R2lm <- oosse(
+  y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
+  fitFun = fitFunLM, predFun = predFunLM, nFolds = 10
+)
 buildConfInt(R2lm)
 buildConfInt(R2lm, what = "MSE")
 buildConfInt(R2lm, what = "MST")

@@ -7,13 +7,14 @@
 #' "binary" it is 1-I(obs=pred), for "logistic" it is -(obs*log(pred)+(1-obs)log(1-pred))
 #'
 #' @return A vector of losses of the same length as obs and pred
-estLoss = function(obs, pred, loss){
-    out <- switch(loss,
-           "squared" = (obs-pred)^2,
-           "binary" = obs != round(pred),
-           "logistic" = -(obs*log(pred) + (1-obs)*log(1-pred)))
-    if(is.matrix(pred)){#For multivariate predictions
-        out <- rowSums(out)
-    }
-    return(out)
+estLoss <- function(obs, pred, loss) {
+  out <- switch(loss,
+    "squared" = (obs - pred)^2,
+    "binary" = obs != round(pred),
+    "logistic" = -(obs * log(pred) + (1 - obs) * log(1 - pred))
+  )
+  if (is.matrix(pred)) { # For multivariate predictions
+    out <- rowSums(out)
+  }
+  return(out)
 }

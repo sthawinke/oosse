@@ -72,12 +72,18 @@ The options to estimate the mean squared error (MSE) are cross-validation \inser
 }
 \examples{
 data(Brassica)
-#Linear model
-fitFunLM = function(y, x){lm.fit(y = y, x = cbind(1, x))}
-predFunLM = function(mod, x) {cbind(1,x) \%*\% mod$coef}
-y = Brassica$Pheno$Leaf_8_width
-R2lm = oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
-fitFun = fitFunLM, predFun = predFunLM, nFolds = 10, skillScore = "R2")
+# Linear model
+fitFunLM <- function(y, x) {
+  lm.fit(y = y, x = cbind(1, x))
+}
+predFunLM <- function(mod, x) {
+  cbind(1, x) \%*\% mod$coef
+}
+y <- Brassica$Pheno$Leaf_8_width
+R2lm <- oosse(
+  y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
+  fitFun = fitFunLM, predFun = predFunLM, nFolds = 10, skillScore = "R2"
+)
 }
 \references{
 \insertAllCited{}

@@ -10,7 +10,6 @@ Maintainer: Stijn Hawinkel <stijn.hawinkel@psb.ugent.be>
 Description: Estimates out-of-sample skill scores through bootstrap or cross-validation as a measure of predictive performance. In addition, a standard error for this point estimate is provided, and confidence intervals are constructed.
 License: GPL-2
 Encoding: UTF-8
-RoxygenNote: 7.3.2
 Imports: stats, BiocParallel, Matrix, methods, Rdpack
 RdMacros: Rdpack
 Suggests:
@@ -19,3 +18,4 @@ LazyData: true
 VignetteBuilder: knitr
 Depends: R (>= 4.2.0)
 BugReports: https://github.com/sthawinke/oosse
+Config/roxygen2/version: 8.0.0

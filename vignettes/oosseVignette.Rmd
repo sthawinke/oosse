@@ -43,47 +43,53 @@ data(Brassica)
 The fitting model must accept at least an outcome vector _y_ and a regressor matrix _x_:
 
 ```{r linModelFit} 
-fitFunLM = function(y, x){lm.fit(y = y, x = cbind(1, x))}
+fitFunLM <- function(y, x) {
+  lm.fit(y = y, x = cbind(1, x))
+}
 ```
 
 The predictive model must accept arguments _mod_ (the fitted model) and _x_, the regressor matrix for a new set of observations. 
 
 ```{r linModelPredict} 
-predFunLM = function(mod, x) {cbind(1,x) %*% mod$coef}
+predFunLM <- function(mod, x) {
+  cbind(1, x) %*% mod$coef
+}
 ```
 
 Now that these functions have been defined, we apply the prediction model for leaf_8_width using the first 10 genes. Multithreading is used automatically using the _BiocParallel_ package. Change the following setup depending on your system.
 
 ```{r multithread}
-nCores = 2 # For CRAN build max 2
+nCores <- 2 # For CRAN build max 2
 library(BiocParallel)
-if(.Platform$OS.type == "unix"){
-    #On unix-based systems, use MulticoreParam
-    register(MulticoreParam(nCores))
+if (.Platform$OS.type == "unix") {
+  # On unix-based systems, use MulticoreParam
+  register(MulticoreParam(nCores))
 } else {
-    #On windows, use makeCluster
-    library(doParallel)
-    Clus = makeCluster(nCores)
-    registerDoParallel(Clus)
-    register(DoparParam(), default = TRUE)
+  # On windows, use makeCluster
+  library(doParallel)
+  Clus <- makeCluster(nCores)
+  registerDoParallel(Clus)
+  register(DoparParam(), default = TRUE)
 }
 ```
 
 Now estimate out-of-sample $R^2$, also a rough estimate of the computation time is given. Remember to provide the cluster for multithreading.
 
 ```{r LMpred}
-R2lm = oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:5], 
-               fitFun = fitFunLM, predFun = predFunLM)
+R2lm <- oosse(
+  y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:5],
+  fitFun = fitFunLM, predFun = predFunLM
+)
 ```
 
 Estimates and standard error of the different components are now available.
 
 ```{r lmests}
-#R2
+# R2
 R2lm$R2
-#MSE
+# MSE
 R2lm$MSE
-#MST
+# MST
 R2lm$MST
 ```
 
@@ -92,30 +98,34 @@ Also confidence intervals can be constructed:
 ```{r confintlm}
 # R2
 buildConfInt(R2lm)
-#MSE, 90% confidence interval
+# MSE, 90% confidence interval
 buildConfInt(R2lm, what = "MSE", conf = 0.9)
-#MST, based on chi-square distribution
+# MST, based on chi-square distribution
 buildConfInt(R2lm, what = "MST")
 ```
 
 By default, cross-validation (CV) is used to estimate the MSE, and nonparametric bootstrapping is used to estimate the correlation between MSE and MST estimators. Other choices can be supplied though, e.g. for bootstrap .632 estimation of the MSE and jackknife estimation of the correlation:
 
 ```{r lmBoot}
-R2lm632jn = oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:5], 
-                    fitFun = fitFunLM, predFun = predFunLM, methodLoss = "bootstrap",
-                    methodCor = "jackknife")
+R2lm632jn <- oosse(
+  y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:5],
+  fitFun = fitFunLM, predFun = predFunLM, methodLoss = "bootstrap",
+  methodCor = "jackknife"
+)
 ```
 
 Supplying a dataframe with predictor variables is not allowed. The user is asked to build the design matrix yourself with model.matrix prior to calling _oosse_:
 
 ```{r modelMatrix}
-#We construct a fake data frame also containing genotypes
-fakeDf = data.frame(Brassica$Expr[, 1:5], "genotype" = sample(c("Genotype1", "Genotype2", "Genotype3"), replace = TRUE, nrow(Brassica$Expr)))
-#Build the design matrix. The model.matrix variables automatically constructs dummy variables
-designMatrix = model.matrix(~ .  , data = fakeDf)[, -1] #Include no intercept as fitting function already does this
-#Now run oosse
-R2modMat = oosse(y = Brassica$Pheno$Leaf_8_width, x = designMatrix, 
-                    fitFun = fitFunLM, predFun = predFunLM)
+# We construct a fake data frame also containing genotypes
+fakeDf <- data.frame(Brassica$Expr[, 1:5], "genotype" = sample(c("Genotype1", "Genotype2", "Genotype3"), replace = TRUE, nrow(Brassica$Expr)))
+# Build the design matrix. The model.matrix variables automatically constructs dummy variables
+designMatrix <- model.matrix(~., data = fakeDf)[, -1] # Include no intercept as fitting function already does this
+# Now run oosse
+R2modMat <- oosse(
+  y = Brassica$Pheno$Leaf_8_width, x = designMatrix,
+  fitFun = fitFunLM, predFun = predFunLM
+)
 ```
 
 ## Regularised linear model
@@ -123,22 +133,31 @@ R2modMat = oosse(y = Brassica$Pheno$Leaf_8_width, x = designMatrix,
 For high-dimensional problems, such as the Brassica dataset, a regularised linear model is better suited to incorporate information for all genes. We use the _cv.glmnet_ function from the _glmnet_ package, which includes internal cross-validation for tuning the penalty parameter. Following custom function definitions are needed to fit in with the naming convention of the _oosse_ package.
 
 ```{r reglinmod}
-fitFunReg = function(y, x, ...) {cv.glmnet(y = y, x = x, ...)}
-predFunReg = function(mod, x, ...){predict(mod, newx = x, ...)}
+fitFunReg <- function(y, x, ...) {
+  cv.glmnet(y = y, x = x, ...)
+}
+predFunReg <- function(mod, x, ...) {
+  predict(mod, newx = x, ...)
+}
 ```
 
 We adapt the parameter settings a bit to reduce computation time of the vignette, it is recommended to use 10-fold cross-validation, at least 200 repeats of the cross-validation splits and 50 bootstrap replicates.
 
 ```{r reglinmodR2}
-nFolds = 5; cvReps = 1e2; nBoots = 4e1;numFeat = 25
-if(require(glmnet)){
-    if(onWindows <- (.Platform$OS.type == "windows")){
-        clusterEvalQ(Clus, require(glmnet))
-    }
-    R2pen = oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(numFeat)], #Subset genes for speed
-                    nFolds = nFolds, cvReps = cvReps, nBootstrapsCor = nBoots,
-                        fitFun = fitFunReg, predFun = predFunReg, alpha = 1)#Lasso model
-    R2pen$R2
+nFolds <- 5
+cvReps <- 1e2
+nBoots <- 4e1
+numFeat <- 25
+if (require(glmnet)) {
+  if (onWindows <- (.Platform$OS.type == "windows")) {
+    clusterEvalQ(Clus, require(glmnet))
+  }
+  R2pen <- oosse(
+    y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(numFeat)], # Subset genes for speed
+    nFolds = nFolds, cvReps = cvReps, nBootstrapsCor = nBoots,
+    fitFun = fitFunReg, predFun = predFunReg, alpha = 1
+  ) # Lasso model
+  R2pen$R2
 }
 ```
 
@@ -147,19 +166,25 @@ if(require(glmnet)){
 As a final example we use a random forest as a prediction model. We use the implementation from the _randomForest_ package.
 
 ```{r predRf}
-if(require(randomForest)){
-   if(onWindows){
-        clusterEvalQ(Clus, require(randomForest))
-    }
-    fitFunrf = function(y, x, ...){randomForest(y = y, x, ...)}
-    predFunrf = function(mod, x, ...){predict(mod, x, ...)}
-    R2rf = oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(numFeat)],
-                     nFolds = nFolds, cvReps = cvReps, nBootstrapsCor = nBoots,
-                        fitFun = fitFunrf, predFun = predFunrf)
-    R2rf$R2
+if (require(randomForest)) {
+  if (onWindows) {
+    clusterEvalQ(Clus, require(randomForest))
+  }
+  fitFunrf <- function(y, x, ...) {
+    randomForest(y = y, x, ...)
+  }
+  predFunrf <- function(mod, x, ...) {
+    predict(mod, x, ...)
+  }
+  R2rf <- oosse(
+    y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(numFeat)],
+    nFolds = nFolds, cvReps = cvReps, nBootstrapsCor = nBoots,
+    fitFun = fitFunrf, predFun = predFunrf
+  )
+  R2rf$R2
 }
-if(onWindows){
-    stopCluster(Clus)
+if (onWindows) {
+  stopCluster(Clus)
 }
 ```
 

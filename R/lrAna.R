@@ -7,14 +7,14 @@
 #' @param covEst The estimated covariance between estimators for yBar and kappaHat
 #'
 #' @return The
-lrAnaBinMod = function(yBar, kappaHat, n, covEst){
-    lrAna = yBar*(1-kappaHat) + (1-yBar)*kappaHat + 2 *covEst
-    deltaSE = NA # Fix me
-    c(lrAna, deltaSE)
-    #ADD: standard error, see Hogan 2009
+lrAnaBinMod <- function(yBar, kappaHat, n, covEst) {
+  yBar * (1 - kappaHat) + (1 - yBar) * kappaHat + 2 * covEst
+  #deltaSE <- NA # Mathematically intractable due to weird definition (Stephenson)
+  #c(lrAna, deltaSE)
+  # ADD: standard error of the full HSS, see Hogan 2009
 }
-lrAnaBinObs = function(yBar, n){
-    lrAna = 2*yBar*(1-yBar)*(n)/(n-1)
-    deltaSE = sqrt(4*(1-2*yBar)^2*yBar*(1-yBar)*n^2/(n-1)^3)
-    c(lrAna, deltaSE)
+lrAnaBinObs <- function(yBar, n) {
+  lrAna <- 2 * yBar * (1 - yBar) * (n) / (n - 1)
+  deltaSE <- sqrt(4 * (1 - 2 * yBar)^2 * yBar * (1 - yBar) * n^2 / (n - 1)^3)
+  c(lrAna, deltaSE)
 }

@@ -2,14 +2,16 @@
 % Please edit documentation in R/skillScoreSE.R
 \name{skillScoreSE}
 \alias{skillScoreSE}
-\title{Calculate out-of-sample R² and its standard error based on MSE estimates}
+\title{Calculate out-of-sample skill score and its standard error based on MSE estimates}
 \usage{
-skillScoreSE(meanLoss, meanLossSE, corEst, refLoss, refLossSE, skillScore)
+skillScoreSE(meanLoss, meanLossSE, n, corEst, refLoss, refLossSE, skillScore)
 }
 \arguments{
 \item{meanLoss}{An estimate of the mean squared error (MSE)}
 
 \item{meanLossSE}{The standard error on the MSE estimate}
+
+\item{n}{Sample size, needed for the R^2}
 
 \item{corEst}{The correlation between model and reference loss estimators, or a 3x3 correlation matrix for the Peirce skill score}
 
@@ -18,26 +20,31 @@ skillScoreSE(meanLoss, meanLossSE, corEst, refLoss, refLossSE, skillScore)
 \item{skillScore}{The desired skill score. Currently, "R2", "Brier", "Heidke", "Appleman" and "McFadden", "RankedProbability" are implemented.}
 }
 \value{
-A vector with the R² and standard error estimates
+A vector with the skill score and standard error estimates
 }
 \description{
-Calculate out-of-sample R² and its standard error based on MSE estimates
+Calculate out-of-sample skill score and its standard error based on MSE estimates
 }
 \details{
 This function is exported to allow the user to estimate the MSE and its standard error
 and the correlation between MSE and refLoss estimators himself.
-The marginal variance is scaled by (n+1)/n to the out-of-sample refLoss, so the user does not need to do this.
 }
 \examples{
 # The out-of-sample R² calculated using externally provided estimates
-skillScoreSE(meanLoss = 3, refLoss = 4, meanLossSE = 0.4,
-corEst = 0.75, skillScore = "R2")
+skillScoreSE(
+  meanLoss = 3, refLoss = 4, refLossSE = 0.24, meanLossSE = 0.4,
+  corEst = 0.75, skillScore = "R2"
+)
 # The out-of-sample Brier skill score
-skillScoreSE(meanLoss = .3, meanLossSE = 0.4, refLoss = .4, refLossSE = 0.2,
-corEst = 0.75, skillScore = "Brier")
+skillScoreSE(
+  meanLoss = .3, meanLossSE = 0.4, refLoss = .4, refLossSE = 0.2,
+  corEst = 0.75, skillScore = "Brier"
+)
 # The out-of-sample Peirce skill score
-skillScoreSE(meanLoss = .3, meanLossSE = 0.05, refLoss = .44,
-refLossSE = 0.02, corEst = 0.75, skillScore = "Heidke")
+skillScoreSE(
+  meanLoss = .3, meanLossSE = 0.05, refLoss = .44,
+  refLossSE = 0.02, corEst = 0.75, skillScore = "Heidke"
+)
 }
 \references{
 \insertRef{Hawinkel2023}{oosse}
