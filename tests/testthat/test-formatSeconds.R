@@ -1,5 +1,5 @@
 context("Formatting seconds")
-test_that("Seonds are properly formatted", {
+test_that("Seconds are properly formatted", {
   expect_false(grepl("minutes", formatSeconds(50)))
   expect_true(grepl("minutes", formatSeconds(100)))
   expect_false(grepl("hours", formatSeconds(3000)))

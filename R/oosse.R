@@ -60,7 +60,7 @@ oosse <- function(y, x, fitFun, predFun, skillScore = c("R2", "Brier", "Peirce",
   if ((skillScore %in% (binSS <- c("Brier", "Peirce", "Appleman", "McFadden", "Heidke"))) && !all(y %in% c(0, 1))) {
     stop("For skill score", skillScore, "only binary outcomes y are allowed!")
   }
-  if ((multId <- skillScore %in% c("RankedProbability")) && length(unique(y)) <= 2) {
+  if ((multId <- skillScore == "RankedProbability") && length(unique(y)) <= 2) {
     stop("For skill score", skillScore, "more than two different outcome values are needed")
   }
   if (is.data.frame(x)) {

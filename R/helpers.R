@@ -13,6 +13,8 @@ isPD <- function(mat, tol = 1e-6) {
 #' @param x The input to be converted to a probability
 #' @return expit(x)
 #' @export
+#' @examples
+#' expit(2)
 expit <- function(x) {
   exp(x) / (1 + exp(x))
 }
@@ -25,7 +27,7 @@ determineLoss <- function(skillScore) {
     "squared"
   } else if (skillScore %in% c("Peirce", "Appleman", "Heidke")) {
     "binary"
-  } else if (skillScore %in% c("McFadden")) {
+  } else if (skillScore %in% "McFadden") {
     "logistic"
   }
 }

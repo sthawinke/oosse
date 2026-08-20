@@ -15,3 +15,6 @@ expit(x)
 \description{
 The expit function
 }
+\examples{
+expit(2)
+}

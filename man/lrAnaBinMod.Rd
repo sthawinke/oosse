@@ -17,7 +17,7 @@ lrAnaBinMod(yBar, kappaHat, n, covEst)
 \item{covEst}{The estimated covariance between estimators for yBar and kappaHat}
 }
 \value{
-The
+The reference loss
 }
 \description{
 Analytically estimate out-of-sample binary reference loss and its standard error

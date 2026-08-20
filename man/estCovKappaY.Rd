@@ -3,7 +3,7 @@
 \name{estCovKappaY}
 \alias{estCovKappaY}
 \title{Estimate covariance between the average prediction (\eqn{\hat{\kappa}}) and
-the average outcome (\eqn{\bar{y}}) through the bootstrap.}
+the average outcome (\eqn{\bar{y}}) and the variance of \eqn{\hat{\kappa}} through the bootstrap.}
 \usage{
 estCovKappaY(y, x, fitFun, predFun, nBootstraps)
 }
@@ -19,9 +19,9 @@ estCovKappaY(y, x, fitFun, predFun, nBootstraps)
 \item{nBootstraps}{The number of .632 bootstraps}
 }
 \value{
-The estimated covariance
+The estimated covariance and variance
 }
 \description{
 Estimate covariance between the average prediction (\eqn{\hat{\kappa}}) and
-the average outcome (\eqn{\bar{y}}) through the bootstrap.
+the average outcome (\eqn{\bar{y}}) and the variance of \eqn{\hat{\kappa}} through the bootstrap.
 }
