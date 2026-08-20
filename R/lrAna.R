@@ -18,3 +18,11 @@ lrAnaBinObs <- function(yBar, n) {
   deltaSE <- sqrt(4 * (1 - 2 * yBar)^2 * yBar * (1 - yBar) * n^2 / (n - 1)^3)
   c(lrAna, deltaSE)
 }
+#' Find variance of HSS reference loss through the delta nethod
+#'
+#' @returns The approximated variance
+getLrSE = function(yBar, kappaHat, n, covEst){
+    vec = c(-2*kappaHat+1, -2*yBar+1)
+    vcovMat = matrix(c(yBar*(1-yBar)/(n-1), covEst["cov"], covEst["cov"], covEst["varKappa"]), 2, 2)
+    sqrt(vec %*% vcovMat %*% vec)
+}

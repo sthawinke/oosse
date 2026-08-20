@@ -40,7 +40,7 @@ estCovKappaY <- function(y, x, fitFun, predFun, nBootstraps) {
     id <- sample(n, replace = TRUE)
     c(yBar = mean(y[id]), kappaHat = mean(predFun(fitFun(y[id], x[id, , drop = FALSE]), x[id, , drop = FALSE])))
   })
-  c("cov" = cov(booIns[1, ], booIns[2, ], use = "pairwise.complete.obs"), "seKappa" =  sd(booIns[2, ], na.rm = TRUE))
+  c("cov" = cov(booIns[1, ], booIns[2, ], use = "pairwise.complete.obs"), "varKappa" =  var(booIns[2, ], na.rm = TRUE))
 }
 #' Estimate correlation between MSE and MST estimators
 #'

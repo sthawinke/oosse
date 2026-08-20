@@ -28,10 +28,12 @@ estRefLoss <- function(y, x, skillScore, fitFun, predFun, kappaHat, nBootstraps)
     lrObs <- lrAnaBinObs(yBar, n)
     covEst = estCovKappaY(y, x, fitFun, predFun, nBootstraps)
     lrMod <- lrAnaBinMod(yBar, kappaHat, n, covEst["cov"])
+    lrSE = getLrSE(yBar, kappaHat, n, covEst)
+
     c(lrObs, lrMod, covEst["seKappa"])
   } else if (skillScore == "Heidke") {
     covEst = estCovKappaY(y, x, fitFun, predFun, nBootstraps)
-    c(lrAnaBinMod(yBar, kappaHat, n, covEst["cov"]), covEst["seKappa"])
+    c(lrAnaBinMod(yBar, kappaHat, n, covEst["cov"]), sqrt(covEst["varKappa"]))
   } else if (skillScore == "AgnosticHeidke") {
     lrAnaBinObs(yBar, n)
   } else if (skillScore == "Appleman") {
