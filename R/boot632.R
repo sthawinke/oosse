@@ -11,13 +11,13 @@
 #' @references
 #'   \insertAllCited{}
 boot632 <- function(y, x, id, fitFun, predFun, loss, yMat, skillScore) {
-  modTrain <- fitFun(y, x) # Fit on full model
-  eOut <- predFun(modTrain, x[-id, , drop = FALSE]) # Out of sample prediction
-  eIn <- predFun(modTrain, x) # In sample prediction
-  ErrOutOfSample <- mean(estLoss(subsetY(y, yMat, skillScore, -id), eOut, loss)) # Out of sample error
-  ErrInSample <- mean(estLoss(if (skillScore == "RankedProbability") yMat else y, eIn, loss)) # In sample error
-  expvec <- c(exp(-1), 1 - exp(-1))
-  c("loss" = sum(expvec * c(ErrInSample, ErrOutOfSample)), "kappaHat" = mean(eOut))
+    modTrain <- fitFun(y, x) # Fit on full model
+    eOut <- predFun(modTrain, x[-id, , drop = FALSE]) # Out of sample prediction
+    eIn <- predFun(modTrain, x) # In sample prediction
+    ErrOutOfSample <- mean(estLoss(subsetY(y, yMat, skillScore, -id), eOut, loss)) # Out of sample error
+    ErrInSample <- mean(estLoss(if (skillScore == "RankedProbability") yMat else y, eIn, loss)) # In sample error
+    expvec <- c(exp(-1), 1 - exp(-1))
+    c("loss" = sum(expvec * c(ErrInSample, ErrOutOfSample)), "kappaHat" = mean(eOut))
 }
 #' Repeated .632 bootstrapa
 #'
@@ -26,9 +26,9 @@ boot632 <- function(y, x, id, fitFun, predFun, loss, yMat, skillScore) {
 #'
 #' @return The estimated MSE
 boot632multiple <- function(nBootstraps, y, ...) {
-  tmp <- vapply(seq_len(nBootstraps), FUN.VALUE = double(2), function(br) {
-    id <- sample(length(y), replace = TRUE)
-    boot632(y = y, id = id, ...)
-  })
-  return(rowMeans(tmp))
+    tmp <- vapply(seq_len(nBootstraps), FUN.VALUE = double(2), function(br) {
+        id <- sample(length(y), replace = TRUE)
+        boot632(y = y, id = id, ...)
+    })
+    return(rowMeans(tmp))
 }

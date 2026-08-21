@@ -38,7 +38,7 @@ The fitting model must accept at least an outcome vector _y_ and a regressor mat
 
 ```{r linModelFit}
 fitFunReg <- function(y, x, ...) {
-  cv.glmnet(y = y, x = x, ...)
+    cv.glmnet(y = y, x = x, ...)
 }
 ```
 
@@ -46,7 +46,7 @@ The predictive model must accept arguments _mod_ (the fitted model) and _x_, the
 
 ```{r linModelPredict}
 predFunReg <- function(mod, x, ...) {
-  predict(mod, newx = x)
+    predict(mod, newx = x)
 }
 ```
 
@@ -63,8 +63,8 @@ Now estimate $R^2$ while passing on the cluster object, also an estimate of the 
 ```{r LMpred}
 library(glmnet)
 R2pen <- oosse(
-  y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)],
-  fitFun = fitFunReg, predFun = predFunReg, alpha = 1
+    y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)],
+    fitFun = fitFunReg, predFun = predFunReg, alpha = 1
 ) # Lasso model
 ```
 
@@ -94,9 +94,9 @@ By default, cross-validation (CV) is used to estimate the MSE, and nonparametric
 
 ```{r lmBoot}
 R2penBoot <- oosse(
-  y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)],
-  methodMSE = "bootstrap", methodCor = "jackknife", fitFun = fitFunReg,
-  predFun = predFunReg, alpha = 1, nBootstraps = 1e2
+    y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)],
+    methodMSE = "bootstrap", methodCor = "jackknife", fitFun = fitFunReg,
+    predFun = predFunReg, alpha = 1, nBootstraps = 1e2
 ) # Lasso model
 ```
 
@@ -107,15 +107,15 @@ As a second example we use a random forest as a prediction model. We use the imp
 ```{r predSvm}
 library(randomForest)
 fitFunrf <- function(y, x, ...) {
-  randomForest(y = y, x, ...)
+    randomForest(y = y, x, ...)
 }
 predFunrf <- function(mod, x, ...) {
-  predict(mod, x, ...)
+    predict(mod, x, ...)
 }
 R2rf <- oosse(
-  y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)],
-  nFolds = 5, cvReps = 1e2, nBootstrapsCor = 30,
-  fitFun = fitFunrf, predFun = predFunrf
+    y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)],
+    nFolds = 5, cvReps = 1e2, nBootstrapsCor = 30,
+    fitFun = fitFunrf, predFun = predFunrf
 )
 R2rf$R2
 ```

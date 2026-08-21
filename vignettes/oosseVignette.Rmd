@@ -44,7 +44,7 @@ The fitting model must accept at least an outcome vector _y_ and a regressor mat
 
 ```{r linModelFit} 
 fitFunLM <- function(y, x) {
-  lm.fit(y = y, x = cbind(1, x))
+    lm.fit(y = y, x = cbind(1, x))
 }
 ```
 
@@ -52,7 +52,7 @@ The predictive model must accept arguments _mod_ (the fitted model) and _x_, the
 
 ```{r linModelPredict} 
 predFunLM <- function(mod, x) {
-  cbind(1, x) %*% mod$coef
+    cbind(1, x) %*% mod$coef
 }
 ```
 
@@ -62,14 +62,14 @@ Now that these functions have been defined, we apply the prediction model for le
 nCores <- 2 # For CRAN build max 2
 library(BiocParallel)
 if (.Platform$OS.type == "unix") {
-  # On unix-based systems, use MulticoreParam
-  register(MulticoreParam(nCores))
+    # On unix-based systems, use MulticoreParam
+    register(MulticoreParam(nCores))
 } else {
-  # On windows, use makeCluster
-  library(doParallel)
-  Clus <- makeCluster(nCores)
-  registerDoParallel(Clus)
-  register(DoparParam(), default = TRUE)
+    # On windows, use makeCluster
+    library(doParallel)
+    Clus <- makeCluster(nCores)
+    registerDoParallel(Clus)
+    register(DoparParam(), default = TRUE)
 }
 ```
 
@@ -77,8 +77,8 @@ Now estimate out-of-sample $R^2$, also a rough estimate of the computation time 
 
 ```{r LMpred}
 R2lm <- oosse(
-  y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:5],
-  fitFun = fitFunLM, predFun = predFunLM
+    y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:5],
+    fitFun = fitFunLM, predFun = predFunLM
 )
 ```
 
@@ -108,9 +108,9 @@ By default, cross-validation (CV) is used to estimate the MSE, and nonparametric
 
 ```{r lmBoot}
 R2lm632jn <- oosse(
-  y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:5],
-  fitFun = fitFunLM, predFun = predFunLM, methodLoss = "bootstrap",
-  methodCor = "jackknife"
+    y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:5],
+    fitFun = fitFunLM, predFun = predFunLM, methodLoss = "bootstrap",
+    methodCor = "jackknife"
 )
 ```
 
@@ -123,8 +123,8 @@ fakeDf <- data.frame(Brassica$Expr[, 1:5], "genotype" = sample(c("Genotype1", "G
 designMatrix <- model.matrix(~., data = fakeDf)[, -1] # Include no intercept as fitting function already does this
 # Now run oosse
 R2modMat <- oosse(
-  y = Brassica$Pheno$Leaf_8_width, x = designMatrix,
-  fitFun = fitFunLM, predFun = predFunLM
+    y = Brassica$Pheno$Leaf_8_width, x = designMatrix,
+    fitFun = fitFunLM, predFun = predFunLM
 )
 ```
 
@@ -134,10 +134,10 @@ For high-dimensional problems, such as the Brassica dataset, a regularised linea
 
 ```{r reglinmod}
 fitFunReg <- function(y, x, ...) {
-  cv.glmnet(y = y, x = x, ...)
+    cv.glmnet(y = y, x = x, ...)
 }
 predFunReg <- function(mod, x, ...) {
-  predict(mod, newx = x, ...)
+    predict(mod, newx = x, ...)
 }
 ```
 
@@ -149,15 +149,15 @@ cvReps <- 1e2
 nBoots <- 4e1
 numFeat <- 25
 if (require(glmnet)) {
-  if (onWindows <- (.Platform$OS.type == "windows")) {
-    clusterEvalQ(Clus, require(glmnet))
-  }
-  R2pen <- oosse(
-    y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(numFeat)], # Subset genes for speed
-    nFolds = nFolds, cvReps = cvReps, nBootstrapsCor = nBoots,
-    fitFun = fitFunReg, predFun = predFunReg, alpha = 1
-  ) # Lasso model
-  R2pen$R2
+    if (onWindows <- (.Platform$OS.type == "windows")) {
+        clusterEvalQ(Clus, require(glmnet))
+    }
+    R2pen <- oosse(
+        y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(numFeat)], # Subset genes for speed
+        nFolds = nFolds, cvReps = cvReps, nBootstrapsCor = nBoots,
+        fitFun = fitFunReg, predFun = predFunReg, alpha = 1
+    ) # Lasso model
+    R2pen$R2
 }
 ```
 
@@ -167,24 +167,24 @@ As a final example we use a random forest as a prediction model. We use the impl
 
 ```{r predRf}
 if (require(randomForest)) {
-  if (onWindows) {
-    clusterEvalQ(Clus, require(randomForest))
-  }
-  fitFunrf <- function(y, x, ...) {
-    randomForest(y = y, x, ...)
-  }
-  predFunrf <- function(mod, x, ...) {
-    predict(mod, x, ...)
-  }
-  R2rf <- oosse(
-    y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(numFeat)],
-    nFolds = nFolds, cvReps = cvReps, nBootstrapsCor = nBoots,
-    fitFun = fitFunrf, predFun = predFunrf
-  )
-  R2rf$R2
+    if (onWindows) {
+        clusterEvalQ(Clus, require(randomForest))
+    }
+    fitFunrf <- function(y, x, ...) {
+        randomForest(y = y, x, ...)
+    }
+    predFunrf <- function(mod, x, ...) {
+        predict(mod, x, ...)
+    }
+    R2rf <- oosse(
+        y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(numFeat)],
+        nFolds = nFolds, cvReps = cvReps, nBootstrapsCor = nBoots,
+        fitFun = fitFunrf, predFun = predFunrf
+    )
+    R2rf$R2
 }
 if (onWindows) {
-  stopCluster(Clus)
+    stopCluster(Clus)
 }
 ```
 

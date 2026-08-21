@@ -20,14 +20,14 @@
 #' @examples
 #' data(Brassica)
 #' fitFunLM <- function(y, x) {
-#'   lm.fit(y = y, x = cbind(1, x))
+#'     lm.fit(y = y, x = cbind(1, x))
 #' }
 #' predFunLM <- function(mod, x) {
-#'   cbind(1, x) %*% mod$coef
+#'     cbind(1, x) %*% mod$coef
 #' }
 #' R2lm <- oosse(
-#'   y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
-#'   fitFun = fitFunLM, predFun = predFunLM, nFolds = 10
+#'     y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
+#'     fitFun = fitFunLM, predFun = predFunLM, nFolds = 10
 #' )
 #' buildConfInt(R2lm)
 #' buildConfInt(R2lm, what = "MSE")
@@ -35,33 +35,33 @@
 #' @references
 #'    \insertAllCited{}
 buildConfInt <- function(oosseObj, what = names(oosseObj)[1], conf = 0.95) {
-  stopifnot(conf > 0, conf < 1)
-  what <- match.arg(what, choices = choices <- c(
-    "R2", "MSE", "MST", "BrierScore", "BrierSkillScore", "ReferenceBrierScore",
-    "ModelMisclassRate", "ReferenceMisclassRate", "PeirceSkillScore", "HeidkeSkillScore",
-    "AgnosticHeidkeSkillScore", "ApplemanSkillScore", "ReferenceLogLoss", "ModelLogLoss",
-    "McFaddenSkillScore"
-  ))
-  bounds <- c((1 - conf) / 2, conf + (1 - conf) / 2)
-  if (what %in% setdiff(choices, "MST")) {
-    zQuants <- qnorm(bounds)
-    obj <- oosseObj[[what]]
-    ci <- with(oosseObj, obj["Estimate"] + obj["StandardError"] * zQuants)
-    if (what %in% c(
-      "R2", "BrierSkillScore", "PeirceSkillScore", "MisclassifcationSkillScore", "McFaddenSkillScore",
-      "ModelMisclassRate", "ReferenceMisclassRate", "BrierScore", "ReferenceBrierScore"
-    )) {
-      ci[2] <- min(ci[2], 1) # Truncate at 1
-    } else if (what %in% c(
-      "MSE", "ModelMisclassRate", "ReferenceMisclassRate", "BrierScore",
-      "ReferenceLogLoss", "ModelLogLoss", "ReferenceBrierScore"
-    )) {
-      ci[1] <- max(ci[1], 0) # Truncate at 0
+    stopifnot(conf > 0, conf < 1)
+    what <- match.arg(what, choices = choices <- c(
+        "R2", "MSE", "MST", "BrierScore", "BrierSkillScore", "ReferenceBrierScore",
+        "ModelMisclassRate", "ReferenceMisclassRate", "PeirceSkillScore", "HeidkeSkillScore",
+        "AgnosticHeidkeSkillScore", "ApplemanSkillScore", "ReferenceLogLoss", "ModelLogLoss",
+        "McFaddenSkillScore"
+    ))
+    bounds <- c((1 - conf) / 2, conf + (1 - conf) / 2)
+    if (what %in% setdiff(choices, "MST")) {
+        zQuants <- qnorm(bounds)
+        obj <- oosseObj[[what]]
+        ci <- with(oosseObj, obj["Estimate"] + obj["StandardError"] * zQuants)
+        if (what %in% c(
+            "R2", "BrierSkillScore", "PeirceSkillScore", "MisclassifcationSkillScore", "McFaddenSkillScore",
+            "ModelMisclassRate", "ReferenceMisclassRate", "BrierScore", "ReferenceBrierScore"
+        )) {
+            ci[2] <- min(ci[2], 1) # Truncate at 1
+        } else if (what %in% c(
+            "MSE", "ModelMisclassRate", "ReferenceMisclassRate", "BrierScore",
+            "ReferenceLogLoss", "ModelLogLoss", "ReferenceBrierScore"
+        )) {
+            ci[1] <- max(ci[1], 0) # Truncate at 0
+        }
+    } else if (what == "MST") {
+        obj <- oosseObj[[what]]
+        ci <- with(oosseObj, obj["Estimate"] * ((n - 1) / qchisq(p = bounds[2:1], df = (n - 1))))
     }
-  } else if (what == "MST") {
-    obj <- oosseObj[[what]]
-    ci <- with(oosseObj, obj["Estimate"] * ((n - 1) / qchisq(p = bounds[2:1], df = (n - 1))))
-  }
-  names(ci) <- paste0(bounds * 100, "%")
-  return(ci)
+    names(ci) <- paste0(bounds * 100, "%")
+    return(ci)
 }

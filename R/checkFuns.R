@@ -6,18 +6,18 @@
 #' @return Throws an error when requirements not met, otherwise returns the function
 #' @importFrom methods formalArgs
 checkFitFun <- function(fitFun, reqArgs = c("y", "x")) {
-  fitFun <- match.fun(fitFun)
-  if (all(id <- (reqArgs %in% (args <- formalArgs(fitFun))))) {
-      return(fitFun)
-  } else {
-     stop("Fitting function does not accept\n", paste(reqArgs[!id], collapse = ", "), "\nas argument")
+    fitFun <- match.fun(fitFun)
+    if (all(id <- (reqArgs %in% (args <- formalArgs(fitFun))))) {
+        return(fitFun)
+    } else {
+        stop("Fitting function does not accept\n", paste(reqArgs[!id], collapse = ", "), "\nas argument")
     }
 }
 checkPredFun <- function(predFun, reqArgs = c("mod", "x")) {
-  predFun <- match.fun(predFun)
-  if (all(id <- (reqArgs %in% (args <- formalArgs(predFun))))) {
-      return(predFun)
-  } else {
-      stop("Prediction function does not accept\n", paste(reqArgs[!id], collapse = ", "), "\nas argument")
-  }
+    predFun <- match.fun(predFun)
+    if (all(id <- (reqArgs %in% (args <- formalArgs(predFun))))) {
+        return(predFun)
+    } else {
+        stop("Prediction function does not accept\n", paste(reqArgs[!id], collapse = ", "), "\nas argument")
+    }
 }

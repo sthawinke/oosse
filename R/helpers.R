@@ -5,8 +5,8 @@
 #'
 #' @return A boolean indicating positive definiteness
 isPD <- function(mat, tol = 1e-6) {
-  ev <- eigen(mat, symmetric = TRUE)$values
-  all(ev >= -tol * abs(ev[1L]))
+    ev <- eigen(mat, symmetric = TRUE)$values
+    all(ev >= -tol * abs(ev[1L]))
 }
 #' The expit function
 #'
@@ -16,36 +16,36 @@ isPD <- function(mat, tol = 1e-6) {
 #' @examples
 #' expit(2)
 expit <- function(x) {
-  exp(x) / (1 + exp(x))
+    exp(x) / (1 + exp(x))
 }
 #' Determine the skill score
 #'
 #' @inheritParams oosse
 #' @return The name of the loss
 determineLoss <- function(skillScore) {
-  if (skillScore %in% c("R2", "Brier", "RankedProbability")) {
-    "squared"
-  } else if (skillScore %in% c("Peirce", "Appleman", "Heidke", "AgnosticHeidke")) {
-    "binary"
-  } else if (skillScore %in% "McFadden") {
-    "logistic"
-  }
+    if (skillScore %in% c("R2", "Brier", "RankedProbability")) {
+        "squared"
+    } else if (skillScore %in% c("Peirce", "Appleman", "Heidke", "AgnosticHeidke")) {
+        "binary"
+    } else if (skillScore %in% "McFadden") {
+        "logistic"
+    }
 }
 #' Determine the names for skill score and model and reference loss
 #'
 #' @inheritParams oosse
 #' @return A character vector of length 3
 determineNames <- function(skillScore) {
-  switch(skillScore,
-    "R2" = c("R2", "MSE", "MST"),
-    "Brier" = c("BrierSkillScore", "BrierScore", "ReferenceBrierScore"),
-    "Peirce" = c("PeirceSkillScore", "ModelMisclassRate", "ReferenceMisclassRate"),
-    "Heidke" = c("HeidkeSkillScore", "ModelMisclassRate", "ReferenceMisclassRate"),
-    "AgnosticHeidke" = c("AgnosticHeidkeSkillScore", "ModelMisclassRate", "ReferenceMisclassRate"),
-    "Appleman" = c("ApplemanSkillScore", "ModelMisclassRate", "ReferenceMisclassRate"),
-    "McFadden" = c("McFaddenSkillScore", "ModelLogLoss", "ReferenceLogLoss"),
-    "RankedProbability" = c("RankedProbabilitySkillScore", "ModelSquaredLoss", "ReferenceSquaredLoss")
-  )
+    switch(skillScore,
+        "R2" = c("R2", "MSE", "MST"),
+        "Brier" = c("BrierSkillScore", "BrierScore", "ReferenceBrierScore"),
+        "Peirce" = c("PeirceSkillScore", "ModelMisclassRate", "ReferenceMisclassRate"),
+        "Heidke" = c("HeidkeSkillScore", "ModelMisclassRate", "ReferenceMisclassRate"),
+        "AgnosticHeidke" = c("AgnosticHeidkeSkillScore", "ModelMisclassRate", "ReferenceMisclassRate"),
+        "Appleman" = c("ApplemanSkillScore", "ModelMisclassRate", "ReferenceMisclassRate"),
+        "McFadden" = c("McFaddenSkillScore", "ModelLogLoss", "ReferenceLogLoss"),
+        "RankedProbability" = c("RankedProbabilitySkillScore", "ModelSquaredLoss", "ReferenceSquaredLoss")
+    )
 }
 #' Estimate the time needed to finish and print message
 #'
@@ -55,33 +55,33 @@ determineNames <- function(skillScore) {
 #' @inheritParams oosse
 #' @return Prints a message to the console
 timeEstimate <- function(methodLoss, cvReps, nFolds, nInnerFolds, nBootstraps,
-                         nBootstrapsCor, singleRunTime, n, methodCor) {
-  # Predict time this will take
-  estModelLossreps <- switch(methodLoss,
-    "CV" = cvReps * nFolds * (nInnerFolds + 1),
-    "bootstrap" = nBootstraps * 2
-  )
-  # Number of repeats for estimating the MSE and its SE
-  estCorReps <- switch(methodCor,
-    "nonparametric" = nBootstrapsCor,
-    "jackknife" = n
-  ) *
-    switch(methodLoss,
-      "CV" = nFolds,
-      "bootstrap" = nBootstraps
-    ) # Number of repeats for correlation estimation
-  message(
-    "Fitting and evaluating the model once took ", formatSeconds(singleRunTime), ".\nYou requested ",
-    switch(methodLoss,
-      "CV" = paste0(cvReps, " repeats of ", nFolds, "-fold cross-validation"),
-      "bootstrap" = paste(nBootstraps, ".632 bootstrap instances")
-    ),
-    " with ", nCores <- bpnworkers(bpparam()), " cores, which is expected to last for roughly\n",
-    formatSeconds(sec <- (estModelLossreps + estCorReps) * singleRunTime / nCores),
-    if (nCores == 1 && (sec > 10)) {
-      "\nConsider using multithreading with the 'BiocParallel' package to speed up computations."
-    }, "\n"
-  )
+    nBootstrapsCor, singleRunTime, n, methodCor) {
+    # Predict time this will take
+    estModelLossreps <- switch(methodLoss,
+        "CV" = cvReps * nFolds * (nInnerFolds + 1),
+        "bootstrap" = nBootstraps * 2
+    )
+    # Number of repeats for estimating the MSE and its SE
+    estCorReps <- switch(methodCor,
+        "nonparametric" = nBootstrapsCor,
+        "jackknife" = n
+    ) *
+        switch(methodLoss,
+            "CV" = nFolds,
+            "bootstrap" = nBootstraps
+        ) # Number of repeats for correlation estimation
+    message(
+        "Fitting and evaluating the model once took ", formatSeconds(singleRunTime), ".\nYou requested ",
+        switch(methodLoss,
+            "CV" = paste0(cvReps, " repeats of ", nFolds, "-fold cross-validation"),
+            "bootstrap" = paste(nBootstraps, ".632 bootstrap instances")
+        ),
+        " with ", nCores <- bpnworkers(bpparam()), " cores, which is expected to last for roughly\n",
+        formatSeconds(sec <- (estModelLossreps + estCorReps) * singleRunTime / nCores),
+        if (nCores == 1 && (sec > 10)) {
+            "\nConsider using multithreading with the 'BiocParallel' package to speed up computations."
+        }, "\n"
+    )
 }
 #' Construct matrix form of multivariate outcome
 #'
@@ -90,7 +90,7 @@ timeEstimate <- function(methodLoss, cvReps, nFolds, nInnerFolds, nBootstraps,
 #' @return A matrix with categories in the columns and number of rows equal to the length of y
 #' @importFrom stats model.matrix
 makeYMatrix <- function(y) {
-  model.matrix(~ y - 1)
+    model.matrix(~ y - 1)
 }
 #' Subset y regardless of whether it is a vector or matrix
 #'
@@ -101,11 +101,11 @@ makeYMatrix <- function(y) {
 #'
 #' @return The subset vector or matrix
 subsetY <- function(y, yMat, skillScore, id) {
-  if (skillScore == "RankedProbability") {
-    yMat[id, , drop = FALSE]
-  } else {
-    y[id]
-  }
+    if (skillScore == "RankedProbability") {
+        yMat[id, , drop = FALSE]
+    } else {
+        y[id]
+    }
 }
 #' Build the multinomial variance covariance matrix
 #'
@@ -114,7 +114,7 @@ subsetY <- function(y, yMat, skillScore, id) {
 #'
 #' @return The variance covariance matrix
 buildVarCovarMult <- function(pi, n) {
-  tmp <- tcrossprod(pi) / (1 - n)
-  diag(tmp) <- pi * (1 - pi) / (n - 1)
-  tmp
+    tmp <- tcrossprod(pi) / (1 - n)
+    diag(tmp) <- pi * (1 - pi) / (n - 1)
+    tmp
 }

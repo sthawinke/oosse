@@ -35,99 +35,99 @@
 #' data(Brassica)
 #' # Linear model
 #' fitFunLM <- function(y, x) {
-#'   lm.fit(y = y, x = cbind(1, x))
+#'     lm.fit(y = y, x = cbind(1, x))
 #' }
 #' predFunLM <- function(mod, x) {
-#'   cbind(1, x) %*% mod$coef
+#'     cbind(1, x) %*% mod$coef
 #' }
 #' y <- Brassica$Pheno$Leaf_8_width
 #' R2lm <- oosse(
-#'   y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
-#'   fitFun = fitFunLM, predFun = predFunLM, nFolds = 10, skillScore = "R2"
+#'     y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:10],
+#'     fitFun = fitFunLM, predFun = predFunLM, nFolds = 10, skillScore = "R2"
 #' )
 #' @seealso \link{buildConfInt}
 #' @references
 #'   \insertAllCited{}
 oosse <- function(y, x, fitFun, predFun, skillScore = c("R2", "Brier", "Peirce", "Heidke", "AgnosticHeidke", "Appleman", "McFadden", "RankedProbability"),
-                  methodLoss = c("CV", "bootstrap"), methodCor = c("nonparametric", "jackknife"), printTimeEstimate = TRUE,
-                  nFolds = 10L, nInnerFolds = nFolds - 1L, cvReps = 200L, nBootstraps = 200L, nBootstrapsCor = 50L, ...) {
-  fitFun <- checkFitFun(fitFun) # Version of the fit function for internal use
-  predFun <- checkPredFun(predFun)
-  methodLoss <- match.arg(methodLoss)
-  methodCor <- match.arg(methodCor)
-  skillScore <- match.arg(skillScore)
-  loss <- determineLoss(skillScore)
-  if ((skillScore %in% (binSS <- c("Brier", "Peirce", "Appleman", "McFadden", "Heidke"))) && !all(y %in% c(0, 1))) {
-    stop("For skill score", skillScore, "only binary outcomes y are allowed!")
-  }
-  if ((multId <- skillScore == "RankedProbability") && length(unique(y)) <= 2) {
-    stop("For skill score", skillScore, "more than two different outcome values are needed")
-  }
-  if (is.data.frame(x)) {
-    stop("Supplying dataframes as predictors is not supported. Convert to a design matrix using model.matrix.\nSee the vignette for an example.")
-  }
-  if ((n <- length(y)) != NROW(x)) {
-    stop("Number of observations in y and x must match!")
-  } else if (NCOL(x) == 1) {
-    x <- matrix(x, nrow = n) # Convert to matrix if vector supplied
-  }
-  if (NCOL(y) != 1) {
-    stop("Outcome must be one-dimensional!")
-  }
-  if (nFolds < 3) {
-    stop("Number of folds must be at least 3!")
-  }
-  stopifnot(is.numeric(nFolds), is.numeric(nInnerFolds), is.numeric(cvReps), is.numeric(nBootstraps), is.numeric(nBootstrapsCor))
-  if (cvReps < 1e2) {
-    warning("Fewer than 100 repeats of the cross-validation split does not yield reliable estimates of the standard error!",
-      immediate. = TRUE
+    methodLoss = c("CV", "bootstrap"), methodCor = c("nonparametric", "jackknife"), printTimeEstimate = TRUE,
+    nFolds = 10L, nInnerFolds = nFolds - 1L, cvReps = 200L, nBootstraps = 200L, nBootstrapsCor = 50L, ...) {
+    fitFun <- checkFitFun(fitFun) # Version of the fit function for internal use
+    predFun <- checkPredFun(predFun)
+    methodLoss <- match.arg(methodLoss)
+    methodCor <- match.arg(methodCor)
+    skillScore <- match.arg(skillScore)
+    loss <- determineLoss(skillScore)
+    if ((skillScore %in% (binSS <- c("Brier", "Peirce", "Appleman", "McFadden", "Heidke"))) && !all(y %in% c(0, 1))) {
+        stop("For skill score", skillScore, "only binary outcomes y are allowed!")
+    }
+    if ((multId <- skillScore == "RankedProbability") && length(unique(y)) <= 2) {
+        stop("For skill score", skillScore, "more than two different outcome values are needed")
+    }
+    if (is.data.frame(x)) {
+        stop("Supplying dataframes as predictors is not supported. Convert to a design matrix using model.matrix.\nSee the vignette for an example.")
+    }
+    if ((n <- length(y)) != NROW(x)) {
+        stop("Number of observations in y and x must match!")
+    } else if (NCOL(x) == 1) {
+        x <- matrix(x, nrow = n) # Convert to matrix if vector supplied
+    }
+    if (NCOL(y) != 1) {
+        stop("Outcome must be one-dimensional!")
+    }
+    if (nFolds < 3) {
+        stop("Number of folds must be at least 3!")
+    }
+    stopifnot(is.numeric(nFolds), is.numeric(nInnerFolds), is.numeric(cvReps), is.numeric(nBootstraps), is.numeric(nBootstrapsCor))
+    if (cvReps < 1e2) {
+        warning("Fewer than 100 repeats of the cross-validation split does not yield reliable estimates of the standard error!",
+            immediate. = TRUE
+        )
+    }
+    singleRunTime <- system.time(fullPred <- try(predFun(fullModel <- try(fitFun(y, x, ...), silent = TRUE), x), silent = TRUE))["elapsed"]
+    if (inherits(fullModel, "try-error")) {
+        stop("Fitting model failed with error", fullModel, "\nCheck your fitFun")
+    } else if (inherits(fullPred, "try-error")) {
+        stop("Prediction model failed with error", fullPred, "\nCheck your predFun")
+    } else if (skillScore %in% binSS && any(fullPred < 0 | fullPred > 1)) {
+        stop("Prediction model must return values in [0,1] range for ", skillScore, "skill score!")
+    } else if (multId && NROW(fullPred) != n) {
+        stop("Matrix predictions with categories in colums needed for multivariate outcomes!")
+    } else if (printTimeEstimate) {
+        timeEstimate(methodLoss, cvReps, nFolds, nInnerFolds, nBootstraps, nBootstrapsCor, singleRunTime, n, methodCor)
+    }
+    if (skillScore == "RankedProbability") {
+        y <- factor(y)
+        yMat <- makeYMatrix(y)
+    }
+    modelLoss <- estModelLoss(y, x, fitFun, predFun, methodLoss,
+        nFolds = nFolds, skillScore = skillScore, yMat = yMat,
+        nInnerFolds = nInnerFolds, cvReps = cvReps, nBootstraps = nBootstraps, loss = loss
     )
-  }
-  singleRunTime <- system.time(fullPred <- try(predFun(fullModel <- try(fitFun(y, x, ...), silent = TRUE), x), silent = TRUE))["elapsed"]
-  if (inherits(fullModel, "try-error")) {
-    stop("Fitting model failed with error", fullModel, "\nCheck your fitFun")
-  } else if (inherits(fullPred, "try-error")) {
-    stop("Prediction model failed with error", fullPred, "\nCheck your predFun")
-  } else if (skillScore %in% binSS && any(fullPred < 0 | fullPred > 1)) {
-    stop("Prediction model must return values in [0,1] range for ", skillScore, "skill score!")
-  } else if (multId && NROW(fullPred) != n) {
-    stop("Matrix predictions with categories in colums needed for multivariate outcomes!")
-  } else if (printTimeEstimate) {
-    timeEstimate(methodLoss, cvReps, nFolds, nInnerFolds, nBootstraps, nBootstrapsCor, singleRunTime, n, methodCor)
-  }
-  if (skillScore == "RankedProbability") {
-    y <- factor(y)
-    yMat <- makeYMatrix(y)
-  }
-  modelLoss <- estModelLoss(y, x, fitFun, predFun, methodLoss,
-    nFolds = nFolds, skillScore = skillScore, yMat = yMat,
-    nInnerFolds = nInnerFolds, cvReps = cvReps, nBootstraps = nBootstraps, loss = loss
-  )
-  refLoss <- estRefLoss(y, x,
-    skillScore = skillScore, fitFun = fitFun, predFun = predFun,
-    kappaHat = modelLoss["kappaHat"], nBootstraps = nBootstraps
-  )
-  corEst <- estCorMeanRef(y, x, fitFun, predFun, methodLoss, methodCor, nBootstrapsCor,
-    yMat = yMat,
-    nFolds = nFolds, nBootstraps = nBootstraps, loss = loss, skillScore = skillScore
-  )
-  skillScoreRes <- skillScoreSE(
-    meanLoss = modelLoss["Estimate"], skillScore = skillScore,
-    meanLossSE = modelLoss["StandardError"], corEst = corEst,
-    refLoss = refLoss["Estimate"], refLossSE = refLoss["StandardError"]
-  )
-  list0 <- list(skillScoreRes, modelLoss, refLoss)
-  names(list0) <- determineNames(skillScore)
-  return(c(list0, list(
-    "corEst" = corEst,
-    "params" = c(
-      switch(methodLoss,
-        "CV" = c("nFolds" = nFolds, "nInnerFolds" = nInnerFolds, "cvReps" = cvReps),
-        "bootstrap" = c("nBootstraps" = nBootstraps)
-      ),
-      "methodLoss" = methodLoss, "loss" = loss, "skillScore" = skillScore,
-      "methodCor" = methodCor, "nBootstrapsCor" = if (methodCor == "nonparametric") nBootstrapsCor
-    ),
-    "fullModel" = fullModel, "n" = n
-  )))
+    refLoss <- estRefLoss(y, x,
+        skillScore = skillScore, fitFun = fitFun, predFun = predFun,
+        kappaHat = modelLoss["kappaHat"], nBootstraps = nBootstraps
+    )
+    corEst <- estCorMeanRef(y, x, fitFun, predFun, methodLoss, methodCor, nBootstrapsCor,
+        yMat = yMat,
+        nFolds = nFolds, nBootstraps = nBootstraps, loss = loss, skillScore = skillScore
+    )
+    skillScoreRes <- skillScoreSE(
+        meanLoss = modelLoss["Estimate"], skillScore = skillScore,
+        meanLossSE = modelLoss["StandardError"], corEst = corEst,
+        refLoss = refLoss["Estimate"], refLossSE = refLoss["StandardError"]
+    )
+    list0 <- list(skillScoreRes, modelLoss, refLoss)
+    names(list0) <- determineNames(skillScore)
+    return(c(list0, list(
+        "corEst" = corEst,
+        "params" = c(
+            switch(methodLoss,
+                "CV" = c("nFolds" = nFolds, "nInnerFolds" = nInnerFolds, "cvReps" = cvReps),
+                "bootstrap" = c("nBootstraps" = nBootstraps)
+            ),
+            "methodLoss" = methodLoss, "loss" = loss, "skillScore" = skillScore,
+            "methodCor" = methodCor, "nBootstrapsCor" = if (methodCor == "nonparametric") nBootstrapsCor
+        ),
+        "fullModel" = fullModel, "n" = n
+    )))
 }

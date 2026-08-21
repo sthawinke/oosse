@@ -32,18 +32,18 @@ and the correlation between MSE and refLoss estimators himself.
 \examples{
 # The out-of-sample R² calculated using externally provided estimates
 skillScoreSE(
-  meanLoss = 3, refLoss = 4, refLossSE = 0.24, meanLossSE = 0.4,
-  corEst = 0.75, skillScore = "R2"
+    meanLoss = 3, refLoss = 4, refLossSE = 0.24, meanLossSE = 0.4,
+    corEst = 0.75, skillScore = "R2"
 )
 # The out-of-sample Brier skill score
 skillScoreSE(
-  meanLoss = .3, meanLossSE = 0.4, refLoss = .4, refLossSE = 0.2,
-  corEst = 0.75, skillScore = "Brier"
+    meanLoss = .3, meanLossSE = 0.4, refLoss = .4, refLossSE = 0.2,
+    corEst = 0.75, skillScore = "Brier"
 )
 # The out-of-sample Peirce skill score
 skillScoreSE(
-  meanLoss = .3, meanLossSE = 0.05, refLoss = .44,
-  refLossSE = 0.02, corEst = 0.75, skillScore = "Heidke"
+    meanLoss = .3, meanLossSE = 0.05, refLoss = .44,
+    refLossSE = 0.02, corEst = 0.75, skillScore = "Heidke"
 )
 }
 \references{

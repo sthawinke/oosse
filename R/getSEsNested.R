@@ -11,33 +11,33 @@
 #'   \insertAllCited{}
 #' @importFrom stats cor sd
 getSEsNested <- function(cvSplitReps, nOuterFolds, n) {
-  ErrNCV <- mean(na.rm = TRUE, vapply(cvSplitReps,
-    FUN.VALUE = double(nOuterFolds),
-    function(y) vapply(y, FUN.VALUE = double(1), function(x) x[["errHatTilde"]])
-  ))
-  MSEhat <- mean(na.rm = TRUE, vapply(cvSplitReps,
-    FUN.VALUE = double(nOuterFolds),
-    function(y) vapply(y, FUN.VALUE = double(1), function(x) x[["a"]] - x[["b"]])
-  ))
-  errOuter0 <- lapply(cvSplitReps, function(y) lapply(y, function(x) x[["eOut"]]))
-  mseOuter <- vapply(FUN.VALUE = double(nOuterFolds), errOuter0, function(w) vapply(FUN.VALUE = double(1), w, mean, na.rm = TRUE))
-  errOuter <- unlist(errOuter0)
-  SEest <- sqrt(max(0, nOuterFolds / (nOuterFolds - 1) * MSEhat))
-  naiveRMSE <- sd(errOuter, na.rm = TRUE) / sqrt(n)
-  maxMSE <- naiveRMSE * sqrt(nOuterFolds)
-  if (is.na(SEest) || (SEest < naiveRMSE)) { # See below equation (17), prevent implausible values
-    SEest <- naiveRMSE
-  } else if (SEest > maxMSE) {
-    SEest <- maxMSE
-  }
-  # Correct the bias
-  ErrCV <- mean(errOuter, na.rm = TRUE)
-  Bias <- (1 + (nOuterFolds - 2) / nOuterFolds) * (ErrNCV - ErrCV)
-  ErrNCVBC <- ErrNCV - Bias # Bias correction
-  kappaHat <- mean(na.rm = TRUE, unlist(lapply(
-    cvSplitReps,
-    function(y) lapply(y, function(x) x[["predTest"]])
-  )))
-  # Mean out-of-sample prediction
-  c("Estimate" = ErrNCVBC, "StandardError" = SEest, "kappaHat" = kappaHat)
+    ErrNCV <- mean(na.rm = TRUE, vapply(cvSplitReps,
+        FUN.VALUE = double(nOuterFolds),
+        function(y) vapply(y, FUN.VALUE = double(1), function(x) x[["errHatTilde"]])
+    ))
+    MSEhat <- mean(na.rm = TRUE, vapply(cvSplitReps,
+        FUN.VALUE = double(nOuterFolds),
+        function(y) vapply(y, FUN.VALUE = double(1), function(x) x[["a"]] - x[["b"]])
+    ))
+    errOuter0 <- lapply(cvSplitReps, function(y) lapply(y, function(x) x[["eOut"]]))
+    mseOuter <- vapply(FUN.VALUE = double(nOuterFolds), errOuter0, function(w) vapply(FUN.VALUE = double(1), w, mean, na.rm = TRUE))
+    errOuter <- unlist(errOuter0)
+    SEest <- sqrt(max(0, nOuterFolds / (nOuterFolds - 1) * MSEhat))
+    naiveRMSE <- sd(errOuter, na.rm = TRUE) / sqrt(n)
+    maxMSE <- naiveRMSE * sqrt(nOuterFolds)
+    if (is.na(SEest) || (SEest < naiveRMSE)) { # See below equation (17), prevent implausible values
+        SEest <- naiveRMSE
+    } else if (SEest > maxMSE) {
+        SEest <- maxMSE
+    }
+    # Correct the bias
+    ErrCV <- mean(errOuter, na.rm = TRUE)
+    Bias <- (1 + (nOuterFolds - 2) / nOuterFolds) * (ErrNCV - ErrCV)
+    ErrNCVBC <- ErrNCV - Bias # Bias correction
+    kappaHat <- mean(na.rm = TRUE, unlist(lapply(
+        cvSplitReps,
+        function(y) lapply(y, function(x) x[["predTest"]])
+    )))
+    # Mean out-of-sample prediction
+    c("Estimate" = ErrNCVBC, "StandardError" = SEest, "kappaHat" = kappaHat)
 }
