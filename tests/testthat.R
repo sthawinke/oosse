@@ -1,5 +1,17 @@
 library(testthat)
 library(oosse)
+nCores <- 2 # For CRAN build max 2
+library(BiocParallel)
+if (.Platform$OS.type == "unix") {
+    # On unix-based systems, use MulticoreParam
+    register(MulticoreParam(nCores))
+} else {
+    # On windows, use makeCluster
+    library(doParallel)
+    Clus <- makeCluster(nCores)
+    registerDoParallel(Clus)
+    register(DoparParam(), default = TRUE)
+}
 fitFunTest <- function(y, x) {
   lm.fit(y = y, x = cbind(1, x))
 }

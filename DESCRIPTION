@@ -16,6 +16,6 @@ Suggests:
     knitr,rmarkdown,testthat,randomForest,glmnet,doParallel,nnet
 LazyData: true
 VignetteBuilder: knitr
-Depends: R (>= 4.2.0)
+Depends: R (>= 4.6.0)
 BugReports: https://github.com/sthawinke/oosse/issues
 Config/roxygen2/version: 8.0.0
