@@ -25,7 +25,7 @@ expit <- function(x) {
 determineLoss <- function(skillScore) {
   if (skillScore %in% c("R2", "Brier", "RankedProbability")) {
     "squared"
-  } else if (skillScore %in% c("Peirce", "Appleman", "Heidke")) {
+  } else if (skillScore %in% c("Peirce", "Appleman", "Heidke", "AgnosticHeidke")) {
     "binary"
   } else if (skillScore %in% "McFadden") {
     "logistic"
@@ -41,6 +41,7 @@ determineNames <- function(skillScore) {
     "Brier" = c("BrierSkillScore", "BrierScore", "ReferenceBrierScore"),
     "Peirce" = c("PeirceSkillScore", "ModelMisclassRate", "ReferenceMisclassRate"),
     "Heidke" = c("HeidkeSkillScore", "ModelMisclassRate", "ReferenceMisclassRate"),
+    "AgnosticHeidke" = c("AgnosticHeidkeSkillScore", "ModelMisclassRate", "ReferenceMisclassRate"),
     "Appleman" = c("ApplemanSkillScore", "ModelMisclassRate", "ReferenceMisclassRate"),
     "McFadden" = c("McFaddenSkillScore", "ModelLogLoss", "ReferenceLogLoss"),
     "RankedProbability" = c("RankedProbabilitySkillScore", "ModelSquaredLoss", "ReferenceSquaredLoss")
