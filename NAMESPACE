@@ -9,7 +9,9 @@ importFrom(Rdpack,reprompt)
 importFrom(doParallel,registerDoParallel)
 importFrom(methods,formalArgs)
 importFrom(parallel,parLapply)
-importFrom(stats,cor)
-importFrom(stats,qnorm)
-importFrom(stats,sd)
-importFrom(stats,var)
+importFrom(stats,
+  cor,
+  qnorm,
+  sd,
+  var
+)
