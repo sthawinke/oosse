@@ -2,7 +2,7 @@
 % Please edit documentation in R/boot632.R
 \name{boot632multiple}
 \alias{boot632multiple}
-\title{Repeated .632 bootstrapa}
+\title{Repeated .632 bootstraps}
 \usage{
 boot632multiple(nBootstraps, y, ...)
 }
@@ -17,5 +17,5 @@ boot632multiple(nBootstraps, y, ...)
 The estimated MSE
 }
 \description{
-Repeated .632 bootstrapa
+Repeated .632 bootstraps
 }

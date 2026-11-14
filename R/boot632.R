@@ -17,7 +17,7 @@ boot632 = function(y, x, id, fitFun, predFun){
             expvec = c(exp(-1), 1-exp(-1))
             sum(expvec*c(ErrInSample, ErrOutOfSample))
 }
-#' Repeated .632 bootstrapa
+#' Repeated .632 bootstraps
 #'
 #' @inheritParams R2oosse
 #' @param ... passed onto boot632
