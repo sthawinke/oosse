@@ -14,7 +14,7 @@ estCorMSEMST(
   nBootstrapsCor,
   nFolds,
   nBootstraps,
-  cvReps,
+  cvRepsCor,
   ...
 )
 }
@@ -37,7 +37,7 @@ estCorMSEMST(
 
 \item{nBootstraps}{The number of .632 bootstraps}
 
-\item{cvReps}{The number of repeats for the cross-validation}
+\item{cvRepsCor}{The number of the number of repeats for the cross-validation when estimating MSE-MST correlation}
 
 \item{...}{passed onto fitFun and predFun}
 }

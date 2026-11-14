@@ -17,6 +17,7 @@ R2oosse(
   cvReps = 200L,
   nBootstraps = 200L,
   nBootstrapsCor = 50L,
+  cvRepsCor = 10L,
   ...
 )
 }
@@ -44,6 +45,8 @@ R2oosse(
 \item{nBootstraps}{The number of .632 bootstraps}
 
 \item{nBootstrapsCor}{The number of bootstraps to estimate the correlation}
+
+\item{cvRepsCor}{The number of the number of repeats for the cross-validation when estimating MSE-MST correlation}
 
 \item{...}{passed onto fitFun and predFun}
 }

@@ -12,6 +12,7 @@
 #' @param cvReps The number of repeats for the cross-validation
 #' @param nBootstraps The number of .632 bootstraps
 #' @param nBootstrapsCor The number of bootstraps to estimate the correlation
+#' @param cvRepsCor The number of the number of repeats for the cross-validation when estimating MSE-MST correlation
 #' @param ... passed onto fitFun and predFun
 #'
 #' @return A list with components
@@ -45,7 +46,7 @@
 #' @references
 #'   \insertAllCited{}
 R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), methodCor = c("nonparametric", "jackknife"), printTimeEstimate = TRUE,
-                       nFolds = 10L, nInnerFolds = nFolds - 1L, cvReps = 200L, nBootstraps = 200L, nBootstrapsCor = 50L,...){
+                       nFolds = 10L, nInnerFolds = nFolds - 1L, cvReps = 200L, nBootstraps = 200L, nBootstrapsCor = 50L, cvRepsCor = 10L,...){
     fitFun = checkFitFun(fitFun) #Version of the fit function for internal use
     predFun = checkPredFun(predFun)
     methodMSE = match.arg(methodMSE)
@@ -90,7 +91,7 @@ R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), meth
         if(nCores==1 && (sec >10)) {"\nConsider using multithreading with the 'BiocParallel' package to speed up computations."}, "\n")
     }
     seVec = estMSE(y, x, fitFun, predFun, methodMSE, nFolds = nFolds, nInnerFolds = nInnerFolds, cvReps = cvReps, nBootstraps = nBootstraps, ...)
-    corMSEMST = estCorMSEMST(y, x, fitFun, predFun, methodMSE, methodCor, nBootstrapsCor, nFolds = nFolds, nBootstraps = nBootstraps, cvReps = cvReps, ...)
+    corMSEMST = estCorMSEMST(y, x, fitFun, predFun, methodMSE, methodCor, nBootstrapsCor, nFolds = nFolds, nBootstraps = nBootstraps, cvRepsCor = cvRepsCor, ...)
     R2est = RsquaredSE(MSE = seVec["MSE"], margVar = margVar <- var(y), n = n, SEMSE = seVec["MSESE"], corMSEMST = corMSEMST)
     MST = margVar*(n+1)/n
     return(list("R2" = R2est, "MSE" = seVec, "MST" = c("MST" = MST, "MSTSE" = sqrt(2/(n-1))*MST), "corMSEMST" = corMSEMST,

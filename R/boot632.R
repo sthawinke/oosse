@@ -9,7 +9,7 @@
 #' @references
 #'   \insertAllCited{}
 boot632 = function(y, x, id, fitFun, predFun, ...){
-            modTrain = fitFun(y, x) #Fit on full model
+            modTrain = fitFun(y, x, ...) #Fit on full model
             eOut = predFun(modTrain, x[-id, , drop = FALSE], ...) #Out of sample prediction
             eIn = predFun(modTrain, x, ...) #In sample prediction
             ErrOutOfSample = mean((eOut-y[-id])^2) #Out of sample error

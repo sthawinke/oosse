@@ -36,3 +36,11 @@
 
  - Correct BugReports url
  - Change Brassica reference to published version
+ 
+# 1.0.13
+
+ - Switch to repeated CV also for estimating the correlation between MSE and MST in simpleCV()
+ - Correct scaling factor for SE of MSE to (nOuterFolds-1)/nOuterFolds instead of nOuterFolds/(nOuterFolds-1), which was erring on the conservative side. This error was also present in the code of the original publication
+ - Correct bug to propagate ... to all predFun and fitFun instances
+ - Correct bug in fold assignment in estMSE()
+
