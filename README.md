@@ -80,16 +80,16 @@ library(glmnet)
 
     ## Loading required package: Matrix
 
-    ## Loaded glmnet 4.1-7
+    ## Loaded glmnet 5.1
 
 ``` r
 R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)],
                fitFun = fitFunReg, predFun = predFunReg, alpha = 1) #Lasso model
 ```
 
-    ## Fitting and evaluating the model once took 0.08 seconds.
+    ## Fitting and evaluating the model once took 0.13 seconds.
     ## You requested 200 repeats of 10-fold cross-validation with 10 cores, which is expected to last for roughly
-    ## 2 minutes and 39.9 seconds
+    ## 4 minutes and 32.65 seconds
 
 Estimates and standard error of the different components are now
 available.
@@ -100,7 +100,7 @@ R2pen$R2
 ```
 
     ##         R2       R2SE 
-    ## 0.62903914 0.08722818
+    ## 0.63444689 0.07549019
 
 ``` r
 #MSE
@@ -108,7 +108,7 @@ R2pen$MSE
 ```
 
     ##       MSE     MSESE 
-    ## 2.1216311 0.3840195
+    ## 2.0907027 0.4038375
 
 ``` r
 #MST
@@ -126,7 +126,7 @@ buildConfInt(R2pen)
 ```
 
     ##      2.5%     97.5% 
-    ## 0.4580750 0.8000032
+    ## 0.4864888 0.7824049
 
 ``` r
 #MSE, 90% confidence interval
@@ -134,7 +134,7 @@ buildConfInt(R2pen, what = "MSE", conf = 0.9)
 ```
 
     ##       5%      95% 
-    ## 1.489975 2.753287
+    ## 1.426449 2.754956
 
 ``` r
 #MST
@@ -156,9 +156,9 @@ R2penBoot = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len
                         predFun = predFunReg, alpha = 1, nBootstraps = 1e2)#Lasso model
 ```
 
-    ## Fitting and evaluating the model once took 0.06 seconds.
+    ## Fitting and evaluating the model once took 0.19 seconds.
     ## You requested 100 .632 bootstrap instances with 10 cores, which is expected to last for roughly
-    ## 35.2 seconds
+    ## 2 minutes and 4.8 seconds
 
 ## Random forest
 
@@ -169,7 +169,7 @@ the implementation from the *randomForest* package.
 library(randomForest)
 ```
 
-    ## randomForest 4.7-1.1
+    ## randomForest 4.7-1.2
 
     ## Type rfNews() to see new features/changes/bug fixes.
 
@@ -181,13 +181,13 @@ R2rf = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)
                     fitFun = fitFunrf, predFun = predFunrf)
 ```
 
-    ## Fitting and evaluating the model once took 0.16 seconds.
+    ## Fitting and evaluating the model once took 0.22 seconds.
     ## You requested 100 repeats of 5-fold cross-validation with 10 cores, which is expected to last for roughly
-    ## 42.4 seconds
+    ## 58.57 seconds
 
 ``` r
 R2rf$R2
 ```
 
-    ##         R2       R2SE 
-    ## 0.67358124 0.09647814
+    ##        R2      R2SE 
+    ## 0.7051188 0.1106145
