@@ -131,11 +131,7 @@ We adapt the parameter settings a bit to reduce computation time of the vignette
 
 ```{r reglinmodR2}
 nFolds = 5; cvReps = 1e2; nBoots = 4e1;numFeat = 25
-onWindows <- .Platform$OS.type == "windows"
 if(require(glmnet)){
-    if(onWindows){
-        clusterEvalQ(Clus, require(glmnet))
-    }
     R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(numFeat)], #Subset genes for speed
                     nFolds = nFolds, cvReps = cvReps, nBootstrapsCor = nBoots, cvRepsBoot = 5L,
                         fitFun = fitFunReg, predFun = predFunReg, alpha = 1)#Lasso model
@@ -149,18 +145,12 @@ As a final example we use a random forest as a prediction model. We use the impl
 
 ```{r predRf}
 if(require(randomForest)){
-   if(onWindows){
-        clusterEvalQ(Clus, require(randomForest))
-    }
     fitFunrf = function(y, x, ...){randomForest(y = y, x, ...)}
     predFunrf = function(mod, x, ...){predict(mod, x, ...)}
     R2rf = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(numFeat)],
                      nFolds = nFolds, cvReps = cvReps, nBootstrapsCor = nBoots,
                         fitFun = fitFunrf, predFun = predFunrf)
     R2rf$R2
-}
-if(onWindows){
-    stopCluster(Clus)
 }
 ```
 
