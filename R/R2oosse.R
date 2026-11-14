@@ -65,7 +65,7 @@ R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), meth
     if(nFolds < 3){
         stop("Number of folds must be at least 3!")
         }
-    stopifnot(is.numeric(nFolds), is.numeric(nInnerFolds), is.numeric(cvReps), is.numeric(nBootstraps), is.numeric(nBootstrapsCor))
+    stopifnot(is.numeric(nFolds), is.numeric(nInnerFolds), is.numeric(cvReps), is.numeric(nBootstraps), is.numeric(nBootstrapsCor), is.numeric(cvRepsCor))
     if(cvReps < 1e2){
         warning("Fewer than 100 repeats of the cross-validation split does not yield reliable estimates of the standard error!",
                 immediate. = TRUE)
