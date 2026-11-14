@@ -2,7 +2,6 @@ library(testthat)
 library(oosse)
 library(BiocParallel)
 nCores = 2 # For CRAN build max 2
-library(BiocParallel)
 if(.Platform$OS.type == "unix"){
     #On unix-based systems, use MulticoreParam
     register(MulticoreParam(nCores))
