@@ -139,7 +139,7 @@ if(require(glmnet)){
         clusterEvalQ(Clus, require(glmnet))
     }
     R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(numFeat)], #Subset genes for speed
-                    nFolds = nFolds, cvReps = cvReps, nBootstrapsCor = nBoots,
+                    nFolds = nFolds, cvReps = cvReps, nBootstrapsCor = nBoots, cvRepsBoot = 5L,
                         fitFun = fitFunReg, predFun = predFunReg, alpha = 1)#Lasso model
     R2pen$R2
 }
