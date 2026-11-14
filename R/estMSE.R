@@ -13,7 +13,7 @@ estMSE = function(y, x, fitFun, predFun, methodMSE, nFolds, nInnerFolds,
         n <- length(y)
         seVec =  if(methodMSE == "CV"){
             #Nested cross-validation
-            unFolds <- seq_len(nFolds);unFoldsIn <- seq_len(nInnerFolds) #Prepare the folds
+            unFolds <- seq_len(nFolds) #Prepare the folds
             cvSplitReps = bplapply(seq_len(cvReps), function(cvs){
                 folds = sample(rep(unFolds, length.out = n))
                 lapply(unFolds, function(uf){
@@ -23,12 +23,12 @@ estMSE = function(y, x, fitFun, predFun, methodMSE, nFolds, nInnerFolds,
                     predTest = predFun(modTrain, x[!idTrain, , drop = FALSE])
                     eOut = (predTest-y[!idTrain])^2
                     #Inner loop
-                    inFolds = sample(rep(unFoldsIn, length.out = sum(idTrain)))
-                    eIn =  lapply(unFoldsIn, function(inf){
-                        idTrainIn = inFolds!=inf
+                    eIn = lapply(setdiff(folds, uf), function(inf){
+                        idTrainOut = folds==inf
+                        idTrainIn = !idTrainOut & idTrain
                         modTrain = fitFun(y[idTrainIn], x[idTrainIn,,drop = FALSE])
-                        predTest = predFun(modTrain, x[!idTrainIn, , drop = FALSE])
-                        (predTest-y[!idTrainIn])^2
+                        predTest = predFun(modTrain, x[idTrainOut, , drop = FALSE])
+                        (predTest-y[idTrainOut])^2
                     })
                     #summary statistics
                     errHatTilde = mean(unlist(eIn))
