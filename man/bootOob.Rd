@@ -4,7 +4,7 @@
 \alias{bootOob}
 \title{The oob bootstrap (smooths leave-one-out CV)}
 \usage{
-bootOob(y, x, id, fitFun, predFun)
+bootOob(y, x, id, fitFun, predFun, ...)
 }
 \arguments{
 \item{y}{The vector of outcome values}
@@ -16,6 +16,8 @@ bootOob(y, x, id, fitFun, predFun)
 \item{fitFun}{The function for fitting the prediction model}
 
 \item{predFun}{The function for evaluating the prediction model}
+
+\item{...}{passed onto fitFun and predFun}
 }
 \value{
 matrix of errors and inclusion times

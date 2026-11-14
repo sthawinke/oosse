@@ -13,7 +13,8 @@ estMSE(
   nFolds,
   nInnerFolds,
   cvReps,
-  nBootstraps
+  nBootstraps,
+  ...
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ estMSE(
 \item{cvReps}{The number of repeats for the cross-validation}
 
 \item{nBootstraps}{The number of .632 bootstraps}
+
+\item{...}{passed onto fitFun and predFun}
 }
 \value{
 A vector with MSE estimate and its standard error

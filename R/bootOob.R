@@ -7,12 +7,12 @@
 #' @seealso \link{estMSE} \link{boot632}
 #' @references
 #'   \insertAllCited{}
-bootOob = function(y, x, id, fitFun, predFun){
+bootOob = function(y, x, id, fitFun, predFun, ...){
     id2 = (id0 <- seq_along(y))[-id]
     Eis = double(length(id))
     Nis = vapply(id0, FUN.VALUE = integer(1), function(x) sum(x==id))
     Eis[id2] = {
-        predTest = predFun(fitFun(x = x[id,,drop = FALSE], y = y[id]), x[id2,,drop = FALSE])
+        predTest = predFun(fitFun(x = x[id,,drop = FALSE], y = y[id], ...), x[id2,,drop = FALSE], ...)
         (predTest-y[id2])^2
     }
     cbind(Eis, "Nis" = Nis)

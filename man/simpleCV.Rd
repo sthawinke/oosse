@@ -4,7 +4,7 @@
 \alias{simpleCV}
 \title{Perform simple CV, and return the MSE estimate}
 \usage{
-simpleCV(y, x, fitFun, predFun, nFolds)
+simpleCV(y, x, fitFun, predFun, nFolds, ...)
 }
 \arguments{
 \item{y}{The vector of outcome values}
@@ -16,6 +16,8 @@ simpleCV(y, x, fitFun, predFun, nFolds)
 \item{predFun}{The function for evaluating the prediction model}
 
 \item{nFolds}{The number of outer folds for cross-validation}
+
+\item{...}{passed onto fitFun and predFun}
 }
 \value{
 The MSE estimate

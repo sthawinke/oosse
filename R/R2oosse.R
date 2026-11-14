@@ -69,7 +69,7 @@ R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), meth
         warning("Fewer than 100 repeats of the cross-validation split does not yield reliable estimates of the standard error!",
                 immediate. = TRUE)
     }
-    singleRunTime = system.time(fullPred <- try(predFun(fullModel <- try(fitFun(y, x, ...), silent = TRUE), x), silent = TRUE))["elapsed"]
+    singleRunTime = system.time(fullPred <- try(predFun(fullModel <- try(fitFun(y, x, ...), silent = TRUE), x, ...), silent = TRUE))["elapsed"]
     if(inherits(fullModel, "try-error")){
         stop("Fitting model failed with error", fullModel, "\nCheck your fitFun")
     } else if (inherits(fullPred, "try-error")){
@@ -89,8 +89,8 @@ R2oosse = function(y, x, fitFun, predFun, methodMSE = c("CV", "bootstrap"), meth
         formatSeconds(sec <- (estMSEreps + estCorReps)*singleRunTime/nCores),
         if(nCores==1 && (sec >10)) {"\nConsider using multithreading with the 'BiocParallel' package to speed up computations."}, "\n")
     }
-    seVec = estMSE(y, x, fitFun, predFun, methodMSE, nFolds = nFolds, nInnerFolds = nInnerFolds, cvReps = cvReps, nBootstraps = nBootstraps)
-    corMSEMST = estCorMSEMST(y, x, fitFun, predFun, methodMSE, methodCor, nBootstrapsCor, nFolds = nFolds, nBootstraps = nBootstraps)
+    seVec = estMSE(y, x, fitFun, predFun, methodMSE, nFolds = nFolds, nInnerFolds = nInnerFolds, cvReps = cvReps, nBootstraps = nBootstraps, ...)
+    corMSEMST = estCorMSEMST(y, x, fitFun, predFun, methodMSE, methodCor, nBootstrapsCor, nFolds = nFolds, nBootstraps = nBootstraps, ...)
     R2est = RsquaredSE(MSE = seVec["MSE"], margVar = margVar <- var(y), n = n, SEMSE = seVec["MSESE"], corMSEMST = corMSEMST)
     MST = margVar*(n+1)/n
     return(list("R2" = R2est, "MSE" = seVec, "MST" = c("MST" = MST, "MSTSE" = sqrt(2/(n-1))*MST), "corMSEMST" = corMSEMST,
