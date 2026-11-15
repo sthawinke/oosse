@@ -11,8 +11,8 @@
 boot632 = function(y, x, id, fitFun, predFun, ...){
             modTrain = fitFun(y, x, ...) #Fit on full model
             modBoot = fitFun(y[id], x[id, , drop = FALSE], ...) #Training fit
-            eOut = predFun(modBoot, x[-id, , drop = FALSE], ...) #Out of sample prediction
             eIn = predFun(modTrain, x, ...) #In sample prediction
+            eOut = predFun(modBoot, x[-id, , drop = FALSE], ...) #Out of sample prediction
             ErrOutOfSample = mean((eOut-y[-id])^2) #Out of sample error
             ErrInSample = mean((eIn-y)^2)#In sample error
             expvec = c(exp(-1), 1-exp(-1))
