@@ -19,7 +19,7 @@ bootOob = function(y, x, id, fitFun, predFun, ...){
 }
 #' Process the out-of-bag bootstraps to get to standard errors following Efron 1997
 #'
-#' @param x the list with out=of=bag bootstrap results
+#' @param x the list with out-of-bag bootstrap results
 #'
 #' @return out-of-bag MSE estimate and standard error
 processOob = function(x){
@@ -29,7 +29,7 @@ processOob = function(x){
     rI = rowSums(Imat)
     IQmat = vapply(FUN.VALUE = double(n), x, function(y){y$oobObj[,"Eis"]})*Imat
     Eis = rowSums(IQmat)/rI
-    errEst = sum(Eis)
+    errEst = mean(Eis)
     # Following Efron1997, equation (40)
     qMat = colMeans(IQmat)
     Dis = (2+1/(n-1))*(Eis-errEst)/n + ((Nmat-rowMeans(Nmat)) %*% qMat)/rI

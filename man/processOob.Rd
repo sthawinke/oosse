@@ -7,7 +7,7 @@
 processOob(x)
 }
 \arguments{
-\item{x}{the list with out=of=bag bootstrap results}
+\item{x}{the list with out-of-bag bootstrap results}
 }
 \value{
 out-of-bag MSE estimate and standard error
