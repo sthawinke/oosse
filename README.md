@@ -87,9 +87,9 @@ R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2
                fitFun = fitFunReg, predFun = predFunReg, alpha = 1) #Lasso model
 ```
 
-    ## Fitting and evaluating the model once took 0.13 seconds.
+    ## Fitting and evaluating the model once took 0.28 seconds.
     ## You requested 200 repeats of 10-fold cross-validation with 10 cores, which is expected to last for roughly
-    ## 4 minutes and 32.65 seconds
+    ## 9 minutes and 29.9 seconds
 
 Estimates and standard error of the different components are now
 available.
@@ -156,9 +156,9 @@ R2penBoot = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len
                         predFun = predFunReg, alpha = 1, nBootstraps = 1e2)#Lasso model
 ```
 
-    ## Fitting and evaluating the model once took 0.19 seconds.
+    ## Fitting and evaluating the model once took 0.13 seconds.
     ## You requested 100 .632 bootstrap instances with 10 cores, which is expected to last for roughly
-    ## 2 minutes and 4.8 seconds
+    ## 1 minutes and 20.64 seconds
 
 ## Random forest
 
@@ -181,9 +181,9 @@ R2rf = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)
                     fitFun = fitFunrf, predFun = predFunrf)
 ```
 
-    ## Fitting and evaluating the model once took 0.22 seconds.
+    ## Fitting and evaluating the model once took 0.33 seconds.
     ## You requested 100 repeats of 5-fold cross-validation with 10 cores, which is expected to last for roughly
-    ## 58.57 seconds
+    ## 1 minutes and 28.25 seconds
 
 ``` r
 R2rf$R2
