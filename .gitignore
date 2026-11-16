@@ -6,3 +6,5 @@
 .Rbuildignore
 revdep
 *.Rcheck
+CRAN-SUBMISSION
+cran-comments.md
