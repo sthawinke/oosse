@@ -71,10 +71,10 @@ register(param)
 Now estimate out-of-sample $R^2$, also a rough estimate of the computation time is given. Remember to provide the cluster for multithreading. We limit the number of bootstrap and cross-validation instances here to limit compile time of the vignette. For a real analysis we recommend the default values.
 
 ```{r LMpred}
-nFolds = 5; cvReps = 1e2; nBoots = 4e1;numFeat = 25;cvRepsBoot = 5L
+nFolds = 5; cvReps = 1e2; nBoots = 4e1;cvRepsCor = 5L
 R2lm = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:5], 
                fitFun = fitFunLM, predFun = predFunLM, nFolds = nFolds, 
-               cvReps = cvReps, nBootstrapsCor = nBoots, cvRepsBoot = cvRepsBoot)
+               cvReps = cvReps, nBootstrapsCor = nBoots, cvRepsCor = cvRepsCor)
 ```
 
 Estimates and standard error of the different components are now available.
@@ -105,7 +105,7 @@ By default, cross-validation (CV) is used to estimate the MSE, and nonparametric
 R2lm632jn = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, 1:5], 
                     fitFun = fitFunLM, predFun = predFunLM, methodMSE = "bootstrap",
                     methodCor = "jackknife", nFolds = nFolds, cvReps = cvReps, 
-                    nBootstrapsCor = nBoots, cvRepsBoot = cvRepsBoot)
+                    nBootstrapsCor = nBoots, cvRepsCor = cvRepsCor)
 ```
 
 Supplying a dataframe with predictor variables is not allowed. The user is asked to build the design matrix yourself with model.matrix prior to calling _R2oosse_:
@@ -118,7 +118,7 @@ designMatrix = model.matrix(~ .  , data = fakeDf)[, -1] #Include no intercept as
 #Now run oosse
 R2modMat = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = designMatrix, 
                    nFolds = nFolds, cvReps = cvReps, nBootstrapsCor = nBoots, 
-               cvRepsBoot = cvRepsBoot, fitFun = fitFunLM, predFun = predFunLM)
+               cvRepsCor = cvRepsCor, fitFun = fitFunLM, predFun = predFunLM)
 ```
 
 
@@ -134,9 +134,10 @@ predFunReg = function(mod, x, ...){predict(mod, newx = x, ...)}
 We adapt the parameter settings a bit to reduce computation time of the vignette, it is recommended to use 10-fold cross-validation, at least 200 repeats of the cross-validation splits and 50 bootstrap replicates.
 
 ```{r reglinmodR2}
+numFeat = 25;
 if(require(glmnet)){
     R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(numFeat)], #Subset genes for speed
-                    nFolds = nFolds, cvReps = cvReps, nBootstrapsCor = nBoots, cvRepsBoot = cvRepsBoot,
+                    nFolds = nFolds, cvReps = cvReps, nBootstrapsCor = nBoots, cvRepsCor = cvRepsCor,
                         fitFun = fitFunReg, predFun = predFunReg, alpha = 1)#Lasso model
     R2pen$R2
 }
@@ -152,7 +153,7 @@ if(require(randomForest)){
     predFunrf = function(mod, x, ...){predict(mod, x, ...)}
     R2rf = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(numFeat)],
                      nFolds = nFolds, cvReps = cvReps, nBootstrapsCor = nBoots,
-                   cvRepsBoot = cvRepsBoot, fitFun = fitFunrf, predFun = predFunrf)
+                   cvRepsCor = cvRepsCor, fitFun = fitFunrf, predFun = predFunrf)
     R2rf$R2
 }
 ```
