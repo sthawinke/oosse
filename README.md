@@ -1,5 +1,5 @@
 
-[![](https://cranlogs.r-pkg.org/badges/oosse)](https://cran.rstudio.com/web/packages/oosse/index.html)
+[![](https://cranlogs.r-pkg.org/badges/oosse)](https://CRAN.R-project.org/package=oosse)
 
 This repository demonstrates the use of the *oosse* package for
 estimating out-of-sample R² (also called Q² in chemometrics) and its
@@ -87,9 +87,9 @@ R2pen = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2
                fitFun = fitFunReg, predFun = predFunReg, alpha = 1) #Lasso model
 ```
 
-    ## Fitting and evaluating the model once took 0.28 seconds.
+    ## Fitting and evaluating the model once took 0.13 seconds.
     ## You requested 200 repeats of 10-fold cross-validation with 10 cores, which is expected to last for roughly
-    ## 9 minutes and 29.9 seconds
+    ## 4 minutes and 20.35 seconds
 
 Estimates and standard error of the different components are now
 available.
@@ -156,9 +156,9 @@ R2penBoot = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len
                         predFun = predFunReg, alpha = 1, nBootstraps = 1e2)#Lasso model
 ```
 
-    ## Fitting and evaluating the model once took 0.13 seconds.
+    ## Fitting and evaluating the model once took 0.09 seconds.
     ## You requested 100 .632 bootstrap instances with 10 cores, which is expected to last for roughly
-    ## 1 minutes and 20.64 seconds
+    ## 58.24 seconds
 
 ## Random forest
 
@@ -181,9 +181,9 @@ R2rf = R2oosse(y = Brassica$Pheno$Leaf_8_width, x = Brassica$Expr[, seq_len(1e2)
                     fitFun = fitFunrf, predFun = predFunrf)
 ```
 
-    ## Fitting and evaluating the model once took 0.33 seconds.
+    ## Fitting and evaluating the model once took 0.21 seconds.
     ## You requested 100 repeats of 5-fold cross-validation with 10 cores, which is expected to last for roughly
-    ## 1 minutes and 28.25 seconds
+    ## 56.18 seconds
 
 ``` r
 R2rf$R2
